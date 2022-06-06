@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一些Mysql的深入1o.o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql深入1">
+<meta property="og:url" content="http://example.com/2022/06/04/Mysql%E6%B7%B1%E5%85%A51/index.html">
+<meta property="og:site_name" content="f1ashades&#39; blogs">
+<meta property="og:description" content="一些Mysql的深入1o.o">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/TgKzdrDO5u6Mxf2-16544888021951.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/ivgQnFRIlw8AuPS-16544888021963.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/8NQSBUeDgXZ5Apy-16544888021965.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/RYzTaZNEGrg5xuk-16544888021967.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/PxhtBiqX7AenEkU-165448880219611.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/VwHtZGLrs3XCBof-16544888021969.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/jKNSIomCEZrgUYO-165448880219613.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/PF2Ilnyv3WgJ158-165448880219715.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/w3E84SoP5DQrZfz-165448880219719.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/Vt5c6AhszexKqJ4-165448880219717.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/qWYeCaVbirOBp5U-165448880219721.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/6NOkcM4nKSljq2P-165448880219723.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/O56V1xY4XIUQKdC-165448880219727.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/4TOz2eSnJlQgwMG-165448880219729.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/PRMQ3GcIDke2JT8-165448880219725.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/FkjyDKNR7I3vOJp-165448880219731.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/OWcUtonTPCm1AIz-165448880219833.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/sdyktMcIi34x7Yf-165448880219835.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/om9e35AVERQkFtp-165448880219839.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/nvBiLafzYgQoTdE-165448880219837.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/sGodEcNFX4xguPp-165448880219841.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/6iQB9kvRUHuPTaF-165448880219843.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/OfSv69jIyRxr2ZU-165448880219845.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/1YSkTZX36dUajbK-165448880219847.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/6sTWjenSC1rkZJK-165448880219849.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/Q7jpROgLsWVGa8F-165448880219951.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/oVfsBG8Y5zRk9g2-165448880219953.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/Kqopg7ycnHTEiJA-165448880219957.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/5tnMHfhJiLPN8zA-165448880219955.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/VZqa8Y4G7PQkyn1-165448880220061.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/PKirfo5e8sMUayt-165448880219959.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/U28D1M73bECdFNB-165448880220063.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/FPUskB4agijIlmc-165448880220065.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/NIjZkwAqCT8ag17-165448880220067.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/q3dHPWGOjCmbiuV.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/1TqV4HuaYOr72UZ-165448880220170.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/tJyPSdwBC9jTQKp-165448880220174.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/nUtDKR5ovh9GS13-165448880220172.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/kOgybzdqNjQ8JEI-165448880220176.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/n7wA5Xzhkp6cfMI-165448880220178.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/xofWdeGj46PXapn-165448880220180.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/Auf65IJFRTaBkV2-165448880220182.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/WNq4xmK3uFQkyEJ-165448880220184.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/1jurzLWNCq38GgR-165448880220188.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/elfca7NMZozb5Bs-165448880220186.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/K8Pkat2cEFLAWrj-165448880220190.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/UORIs8H4YrPA6V5-165448880220192.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/STAePBOwDfnj7cJ-165448880220194.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/3Y2QDaPhfWiwut7-165448880220198.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/sZq8wyVMIe5RbNj-165448880220196.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/Op8GUxfHWs54hT3-1654488802201100.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/mtKREcBoqsPlnM8-1654488802202104.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/SEk1IJ5BmihubyA-1654488802201102.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/1Ak5SrFvWPBQgzC-1654488802202106.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/M1x9wWs8PiyJDad-1654488802202108.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/nVMW81tYsRckBX4-1654488802202110.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/M1x9wWs8PiyJDad-1654488802202108.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/73tWz4SUXwqK8f6-1654488802202112.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/pebuDKW48JadAIx-1654488802202114.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/13nhUgyF8cwzxsB-1654488802203116.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/K2E1FBPGgZdwhQ3-1654488802203118.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/O1EnUrXhtJMRKDP-1654488802203120.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/dPaH7NSteDTi8hI-1654488802203122.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/85TpM4tfOrSyZAE-1654488802203124.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/image-20220509170102112.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/EeXWmpy6u9o4qMV-1654488802203126.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/6bDL1dOAgfG9ev4-1654488802203128.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/ecoGstjKThgfPar-1654488802203130.png">
+<meta property="article:published_time" content="2022-06-04T07:29:48.000Z">
+<meta property="article:modified_time" content="2022-06-06T04:13:56.167Z">
+<meta property="article:author" content="f1ashades">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/Typora/TyporaPictureBed/TgKzdrDO5u6Mxf2-16544888021951.png">
+
+<link rel="canonical" href="http://example.com/2022/06/04/Mysql%E6%B7%B1%E5%85%A51/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>mysql深入1 | f1ashades' blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">f1ashades' blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/04/Mysql%E6%B7%B1%E5%85%A51/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/mine.jpg">
+      <meta itemprop="name" content="f1ashades">
+      <meta itemprop="description" content="once again I am a child">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="f1ashades' blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          mysql深入1
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-06-04 15:29:48" itemprop="dateCreated datePublished" datetime="2022-06-04T15:29:48+08:00">2022-06-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-06-06 12:13:56" itemprop="dateModified" datetime="2022-06-06T12:13:56+08:00">2022-06-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index"><span itemprop="name">mysql</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>一些Mysql的深入1o.o</p>
+<span id="more"></span>
+
+<h1 id="四、sql优化"><a href="#四、sql优化" class="headerlink" title="四、sql优化"></a>四、sql优化</h1><p><img src="D:/Typora/TyporaPictureBed/TgKzdrDO5u6Mxf2-16544888021951.png" alt="image-20220503171504262"></p>
+<h2 id="1-插入数据（insert，load）"><a href="#1-插入数据（insert，load）" class="headerlink" title="1.插入数据（insert，load）"></a>1.插入数据（insert，load）</h2><p>普通插入：</p>
+<ol>
+<li>采用批量插入（一次插入的数据不建议超过1000条）</li>
+<li>手动提交事务（mysql默认自动提交事务，执行3条insert就会有三次事务，可以直接start transaction (3条insert) commit）</li>
+<li>主键顺序插入</li>
+</ol>
+<p>大批量插入（load本地文件）：<br>如果一次性需要插入大批量数据，使用insert语句插入性能较低，此时可以使用MySQL数据库提供的load指令插入。</p>
+<p>①客户端连接服务端时，加上参数 –local-infile（这一行在bash&#x2F;cmd界面输入）<br><code>mysql --local-infile -u root -p</code></p>
+<p>②设置全局参数local_infile为1，开启从本地加载文件导入数据的开关</p>
+<p><code>set global local_infile = 1;</code><br><code>select @@local_infile;</code></p>
+<p>③执行load指令将准备好的数据，加载到表结构中</p>
+<p><code>load data local infile &#39;/root/sql1.log&#39; into table &#39;tb_user&#39; fields terminated by &#39;,&#39; lines terminated by &#39;\n&#39;;</code></p>
+<h2 id="2-主键优化"><a href="#2-主键优化" class="headerlink" title="2.主键优化"></a>2.主键优化</h2><p>数据组织方式：在InnoDB存储引擎中，表数据都是根据主键顺序组织存放的，这种存储方式的表称为索引组织表（Index organized table, IOT）</p>
+<p>a. 页分裂：</p>
+<p><img src="D:/Typora/TyporaPictureBed/ivgQnFRIlw8AuPS-16544888021963.png" alt="image-20220501184608187"></p>
+<p><img src="D:/Typora/TyporaPictureBed/8NQSBUeDgXZ5Apy-16544888021965.png" alt="image-20220501184715525"></p>
+<p>若不按顺序排列，在后面就会涉及到一个重新排序的页分裂动作</p>
+<p>b. 页合并：</p>
+<p><img src="D:/Typora/TyporaPictureBed/RYzTaZNEGrg5xuk-16544888021967.png" alt="image-20220501184804556"></p>
+<p>当删除一行记录时，实际上记录并没有被物理删除，只是记录被标记（flaged）为删除并且它的空间变得允许被其他记录声明使用。当页中删除的记录到达 MERGE_THRESHOLD（默认为页的50%），InnoDB会开始寻找最靠近的页（前后）看看是否可以将这两个页合并以优化空间使用。</p>
+<p>如图中14，15，16三条数据已经被标记不被使用，如果此时page2的删除达到阈值，就会尝试将右边的17，18，19合并进一个page</p>
+<p>MERGE_THRESHOLD：合并页的阈值，可以自己设置，在创建表或创建索引时指定</p>
+<blockquote>
+<p>文字说明不够清晰明了，具体可以看视频里的PPT演示过程：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Kr4y1i7ru?p=90">https://www.bilibili.com/video/BV1Kr4y1i7ru?p=90</a></p>
+</blockquote>
+<p>个主键设计原则：</p>
+<ul>
+<li><p>满足业务需求的情况下，尽量降低主键的长度</p>
+<ul>
+<li>二级索引叶子节点挂的是主键，如果主键较长，二级索引较大会占用IO，效率变低</li>
+</ul>
+</li>
+<li><p>插入数据时，尽量选择顺序插入，选择使用 AUTO_INCREMENT 自增主键</p>
+</li>
+<li><p>尽量不要使用 UUID 做主键或者是其他的自然主键，如身份证号</p>
+<ul>
+<li>因为这些是无序插入，会产生页分裂现象，并且长度可能较长</li>
+</ul>
+</li>
+<li><p>业务操作时，避免对主键的修改</p>
+</li>
+</ul>
+<h2 id="3-order-by优化"><a href="#3-order-by优化" class="headerlink" title="3.order by优化"></a>3.order by优化</h2><ol>
+<li>Using filesort：通过表的索引或全表扫描，读取满足条件的数据行，然后在排序缓冲区 sort buffer 中完成排序操作，所有不是通过索引直接返回排序结果的排序都叫 FileSort 排序</li>
+<li>Using index：通过有序索引顺序扫描直接返回有序数据，这种情况即为 using index，不需要额外排序，操作效率高</li>
+</ol>
+<p>如果order by字段全部使用升序排序或者降序排序，则都会走索引，但是如果一个字段升序排序，另一个字段降序排序，则不会走索引，explain的extra信息显示的是<code>Using index, Using filesort</code>，如果要优化掉Using filesort，则需要另外再创建一个索引，如：<code>create index idx_user_age_phone_ad on tb_user(age asc, phone desc);</code>，此时使用<code>select id, age, phone from tb_user order by age asc, phone desc;</code>会全部走索引</p>
+<p>总结：</p>
+<ul>
+<li><p>根据排序字段建立合适的索引，多字段排序时，也遵循最左前缀法则</p>
+<ul>
+<li>order by phone，age; 在index&#x3D;age，phone的情况下是不会使用索引的，因为首先按phone排序，但是索引第一个是age</li>
+</ul>
+</li>
+<li><p>尽量使用覆盖索引</p>
+</li>
+<li><p>多字段排序，一个升序一个降序，此时需要注意联合索引在创建时的规则（ASC&#x2F;DESC）</p>
+</li>
+<li><p>如果不可避免出现filesort，大数据量排序时，可以适当增大排序缓冲区大小 sort_buffer_size（默认256k）</p>
+</li>
+</ul>
+<h2 id="4-group-by优化"><a href="#4-group-by优化" class="headerlink" title="4.group by优化"></a>4.group by优化</h2><ul>
+<li>在分组操作时，可以通过索引来提高效率</li>
+<li>分组操作时，索引的使用也是满足最左前缀法则的</li>
+</ul>
+<p>如索引为<code>idx_user_pro_age_stat</code>，</p>
+<p><code>select profession,age,coun(*) from tb_user group by profession</code> </p>
+<p><code>select age where profession group by age</code> （where 后有了profession，也算是最左）</p>
+<p>以上两条都符合最左前缀法则</p>
+<p>注意：</p>
+<p><code>explain select age,count(age) from tb_user group by age;</code></p>
+<p>虽然也用到了索引，但是也用到了临时表，其实效率并不高</p>
+<h2 id="5-limit优化"><a href="#5-limit优化" class="headerlink" title="5.limit优化"></a>5.limit优化</h2><p>常见的问题如<code>limit 2000000, 10</code>，此时需要 MySQL 排序前2000000条记录，但仅仅返回2000000 - 2000010的记录，其他记录丢弃，查询排序的代价非常大。<br>优化方案：一般分页查询时，通过创建覆盖索引能够比较好地提高性能，可以通过<code>覆盖索引</code>加<code>子查询</code>形式进行优化</p>
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-- 此语句耗时很长</span><br><span class="line">select * from tb_sku limit 9000000, 10;</span><br><span class="line">-- 通过覆盖索引加快速度，直接通过主键索引进行排序及查询</span><br><span class="line">select id from tb_sku order by id limit 9000000, 10;</span><br><span class="line">-- 下面的语句是错误的，因为 MySQL 不支持 in 里面使用 limit</span><br><span class="line">-- select * from tb_sku where id in (select id from tb_sku order by id limit 9000000, 10);</span><br><span class="line">-- 通过连表查询即可实现第一句的效果，并且能达到第二句的速度</span><br><span class="line">select * from tb_sku as s, (select id from tb_sku order by id limit 9000000, 10) as a where s.id = a.id;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="6-count优化"><a href="#6-count优化" class="headerlink" title="6.count优化"></a>6.count优化</h2><p>MyISAM 引擎把一个表的总行数存在了磁盘上，因此执行 count(*) 的时候会直接返回这个数，效率很高（前提是不适用where）；<br>InnoDB 在执行 count(*) 时，需要把数据一行一行地从引擎里面读出来，然后累计计数。<br>优化方案：自己计数，如创建key-value表存储在内存或硬盘，或者是用redis</p>
+<p><img src="D:/Typora/TyporaPictureBed/PxhtBiqX7AenEkU-165448880219611.png" alt="image-20220503163840118"></p>
+<p>​	从上面可以看出，count(1)和count(*)是没有取值的过程，所以小</p>
+<h2 id="7-update优化（避免行锁升级为表锁）"><a href="#7-update优化（避免行锁升级为表锁）" class="headerlink" title="7.update优化（避免行锁升级为表锁）"></a>7.update优化（避免行锁升级为表锁）</h2><p>InnoDB 的<code>行锁是针对索引加的锁</code>，不是针对记录加的锁，并且该索引不能失效，否则会从行锁升级为表锁。</p>
+<p>如以下两条语句：<br><code>update student set no = &#39;123&#39; where id = 1;</code>，这句由于id有主键索引，所以只会锁这一行；<br><code>update student set no = &#39;123&#39; where name = &#39;test&#39;;</code>，这句由于name没有索引，所以会把整张表都锁住进行数据更新，解决方法是给name字段添加索引</p>
+<h1 id="五、视图-x2F-存储过程-x2F-触发器"><a href="#五、视图-x2F-存储过程-x2F-触发器" class="headerlink" title="五、视图&#x2F;存储过程&#x2F;触发器"></a>五、视图&#x2F;存储过程&#x2F;触发器</h1><p><img src="D:/Typora/TyporaPictureBed/VwHtZGLrs3XCBof-16544888021969.png" alt="image-20220506163730446"></p>
+<h2 id="1-视图"><a href="#1-视图" class="headerlink" title="1. 视图"></a>1. 视图</h2><p>①语法</p>
+<p><img src="D:/Typora/TyporaPictureBed/jKNSIomCEZrgUYO-165448880219613.png" alt="image-20220504160140852"></p>
+<p>1）with cascaded check option</p>
+<p>v1 通过 user基表建立，v2通过v1建立，v3通过v2建立</p>
+<p><img src="D:/Typora/TyporaPictureBed/PF2Ilnyv3WgJ158-165448880219715.png" alt="image-20220504161658280"></p>
+<p><img src="D:/Typora/TyporaPictureBed/w3E84SoP5DQrZfz-165448880219719.png" alt="image-20220504162025288"></p>
+<p>当v2表cascaded后，它在insert数据的时候也会检查其所依赖的v1条件；v3没有cascaded，虽然它依赖了cascaded的v2，但是insert的数据检查也只会检查v1，v2的条件，并不会检查v3</p>
+<p>2）with local check option</p>
+<p><img src="D:/Typora/TyporaPictureBed/Vt5c6AhszexKqJ4-165448880219717.png" alt="image-20220504162607548"></p>
+<p>local就是会递归的去寻找，满足v2后会看v1的option，如果没有则不会管v1的条件</p>
+<p>3）相关事项及实例</p>
+<p>注意：</p>
+<ul>
+<li>视图的增删改操作必须是视图中的一条数据对应基表的一条数据，若使用了聚合函数、group by、distinct、having、union(all)等，视图是无法更新的</li>
+<li>视图的作用：<ul>
+<li>简单：方便用户对数据理解，可以将经常查询的数据定义成一张视图</li>
+<li>安全：视图能让用户只浏览和修改到他们被允许的数据（mysql的表权限中不包含columns的权限）</li>
+<li>数据独立：屏蔽真实表结构变化带来的影响 name -&gt; stuName</li>
+</ul>
+</li>
+</ul>
+<p><img src="D:/Typora/TyporaPictureBed/qWYeCaVbirOBp5U-165448880219721.png" alt="image-20220504164219294"></p>
+<p>​	三表联查：</p>
+<p>​	<img src="D:/Typora/TyporaPictureBed/6NOkcM4nKSljq2P-165448880219723.png" alt="image-20220504165031609"></p>
+<h2 id="2-存储过程"><a href="#2-存储过程" class="headerlink" title="2. 存储过程"></a>2. 存储过程</h2><h3 id="1）变量"><a href="#1）变量" class="headerlink" title="1）变量"></a>1）变量</h3><p>1）系统变量（@@）</p>
+<p>​	session：会话变量，在另外一个会话中则不存在，未指定默认是session</p>
+<p>​	global：全局变量，在所有会话中都存在，但是在restart mysql后还是不会改变（持久改变需要在配置文件中配置）</p>
+<p><img src="D:/Typora/TyporaPictureBed/O56V1xY4XIUQKdC-165448880219727.png" alt="image-20220504205411850"></p>
+<p>2）用户自定义变量（@）</p>
+<p><img src="D:/Typora/TyporaPictureBed/4TOz2eSnJlQgwMG-165448880219729.png" alt="image-20220504205426856"></p>
+<p>3）局部变量</p>
+<p>​	只在存储过程中生效</p>
+<p><img src="D:/Typora/TyporaPictureBed/PRMQ3GcIDke2JT8-165448880219725.png" alt="image-20220505210448969"></p>
+<h3 id="2）存储过程中的语法"><a href="#2）存储过程中的语法" class="headerlink" title="2）存储过程中的语法"></a>2）存储过程中的语法</h3><h4 id="①if"><a href="#①if" class="headerlink" title="①if"></a>①if</h4><p><img src="D:/Typora/TyporaPictureBed/FkjyDKNR7I3vOJp-165448880219731.png" alt="image-20220505154639503"></p>
+<p>​	</p>
+<h4 id="②case"><a href="#②case" class="headerlink" title="②case"></a>②case</h4><p><img src="D:/Typora/TyporaPictureBed/OWcUtonTPCm1AIz-165448880219833.png" alt="image-20220505154816329"></p>
+<p>​	<img src="D:/Typora/TyporaPictureBed/sdyktMcIi34x7Yf-165448880219835.png" alt="image-20220505155327524"></p>
+<h4 id="③while"><a href="#③while" class="headerlink" title="③while"></a>③while</h4><p><img src="D:/Typora/TyporaPictureBed/om9e35AVERQkFtp-165448880219839.png" alt="image-20220505164543557"></p>
+<h4 id="④repeat"><a href="#④repeat" class="headerlink" title="④repeat"></a>④repeat</h4><p><img src="D:/Typora/TyporaPictureBed/nvBiLafzYgQoTdE-165448880219837.png" alt="image-20220505164840620"></p>
+<h4 id="⑤loop"><a href="#⑤loop" class="headerlink" title="⑤loop"></a>⑤loop</h4><p><img src="D:/Typora/TyporaPictureBed/sGodEcNFX4xguPp-165448880219841.png" alt="image-20220505164923239"></p>
+<p><img src="D:/Typora/TyporaPictureBed/6iQB9kvRUHuPTaF-165448880219843.png" alt="image-20220505165923716"></p>
+<h4 id="⑥cursor-游标"><a href="#⑥cursor-游标" class="headerlink" title="⑥cursor 游标"></a>⑥cursor 游标</h4><p>游标类似于一个集合、迭代器，每次从游标中取一行数据</p>
+<p>​	<img src="D:/Typora/TyporaPictureBed/OfSv69jIyRxr2ZU-165448880219845.png" alt="image-20220505172302719"></p>
+<p>eg：</p>
+<p><img src="D:/Typora/TyporaPictureBed/1YSkTZX36dUajbK-165448880219847.png" alt="image-20220505172434324"></p>
+<h4 id="⑦handler-条件处理程序"><a href="#⑦handler-条件处理程序" class="headerlink" title="⑦handler 条件处理程序"></a>⑦handler 条件处理程序</h4><p>类似于异常处理，根据捕获的异常码来处理</p>
+<p><img src="D:/Typora/TyporaPictureBed/6sTWjenSC1rkZJK-165448880219849.png" alt="image-20220505211156206"></p>
+<p>eg：</p>
+<p><img src="D:/Typora/TyporaPictureBed/Q7jpROgLsWVGa8F-165448880219951.png" alt="image-20220505172652900"></p>
+<p><img src="D:/Typora/TyporaPictureBed/oVfsBG8Y5zRk9g2-165448880219953.png" alt="image-20220505211219491"></p>
+<p>这个对游标的改进就是在，游标抛出异常02000（not found）后关闭cursor</p>
+<h3 id="3）存储函数"><a href="#3）存储函数" class="headerlink" title="3）存储函数"></a>3）存储函数</h3><p><img src="D:/Typora/TyporaPictureBed/Kqopg7ycnHTEiJA-165448880219957.png" alt="image-20220505211335765"></p>
+<p><img src="D:/Typora/TyporaPictureBed/5tnMHfhJiLPN8zA-165448880219955.png" alt="image-20220505173415696"></p>
+<h2 id="3-触发器"><a href="#3-触发器" class="headerlink" title="3. 触发器"></a>3. 触发器</h2><p>触发器可以在insert&#x2F;update&#x2F;delete 语句执行之后，执行触发器中定义的sql，可以完成日志记录、数据校验等工作</p>
+<p>触发器目前只支持 <code>行级触发</code>：如一条语句影响了5行数据，那么触发器会被执行5次</p>
+<p>​								<code>语句级触发</code>：如一条语句影响了多行数据，但是触发器只会触发一次</p>
+<p><img src="D:/Typora/TyporaPictureBed/VZqa8Y4G7PQkyn1-165448880220061.png" alt="image-20220505211434421"></p>
+<p>1）语法</p>
+<p><img src="D:/Typora/TyporaPictureBed/PKirfo5e8sMUayt-165448880219959.png" alt="image-20220506160024421"></p>
+<p>2）案例</p>
+<p>eg1：insert案例</p>
+<p><img src="D:/Typora/TyporaPictureBed/U28D1M73bECdFNB-165448880220063.png" alt="image-20220506162909736"></p>
+<p>eg2：update案例</p>
+<p><img src="D:/Typora/TyporaPictureBed/FPUskB4agijIlmc-165448880220065.png" alt="image-20220506162935928"></p>
+<p>eg3：delete案例</p>
+<p><img src="D:/Typora/TyporaPictureBed/NIjZkwAqCT8ag17-165448880220067.png" alt="image-20220506163012628"></p>
+<h1 id="六、锁"><a href="#六、锁" class="headerlink" title="六、锁"></a>六、锁</h1><p><img src="D:/Typora/TyporaPictureBed/q3dHPWGOjCmbiuV.png" alt="image-20220507164328021"></p>
+<h2 id="1-全局锁"><a href="#1-全局锁" class="headerlink" title="1. 全局锁"></a>1. 全局锁</h2><p>​	1）全局锁是对整个数据库加锁，加锁后可以查询DQL，但是DDL和DML语句都不能执行，主要用于备份：</p>
+<p><img src="D:/Typora/TyporaPictureBed/1TqV4HuaYOr72UZ-165448880220170.png" alt="image-20220506195714936"></p>
+<p>​	如在备份库存的过程中，用户下单后，库存扣减，但是备份后的库存还是扣减前的数据，然后开始备份订单表和订单日志表，下单后这些数据都会增加，这两个的备份库都会有新的用户下单的数据，这样就和备份的库存数据不一致了，丧失了数据一致性</p>
+<p>2）使用过程</p>
+<p><img src="D:/Typora/TyporaPictureBed/tJyPSdwBC9jTQKp-165448880220174.png" alt="image-20220506200002758"></p>
+<p><img src="D:/Typora/TyporaPictureBed/nUtDKR5ovh9GS13-165448880220172.png" alt="image-20220506195947699"></p>
+<h2 id="2-表级锁"><a href="#2-表级锁" class="headerlink" title="2. 表级锁"></a>2. 表级锁</h2><h3 id="1）表锁"><a href="#1）表锁" class="headerlink" title="1）表锁"></a>1）表锁</h3><p><img src="D:/Typora/TyporaPictureBed/kOgybzdqNjQ8JEI-165448880220176.png" alt="image-20220506200850896"></p>
+<p>读锁（表共享读锁）：读锁本会话可读不可写，其他会话也是可读不可写</p>
+<p>写锁（表独占写锁）：写锁本会话可读可写，其他会话不可读不可写（会被阻塞，释放锁以后会继续执行）</p>
+<h3 id="2）元数据锁"><a href="#2）元数据锁" class="headerlink" title="2）元数据锁"></a>2）元数据锁</h3><p>在事务中使用sql语句的时候，系统会自动添加</p>
+<p><img src="D:/Typora/TyporaPictureBed/n7wA5Xzhkp6cfMI-165448880220178.png" alt="image-20220507110751888"></p>
+<p><img src="D:/Typora/TyporaPictureBed/xofWdeGj46PXapn-165448880220180.png" alt="image-20220507110905936"></p>
+<p>事务A在做select查询并且事务没结束，那么这时候通过alter改变表结构（元数据）是不被允许的</p>
+<h3 id="3）意向锁"><a href="#3）意向锁" class="headerlink" title="3）意向锁"></a>3）意向锁</h3><p>意向锁的作用，一个例子：</p>
+<p><img src="D:/Typora/TyporaPictureBed/Auf65IJFRTaBkV2-165448880220182.png" alt="image-20220507151137396"></p>
+<p>​	当线程A中的事务中执行update语句的时候（根据id索引）会锁住这一行的数据，如果此时有另外一个线程要为该表加read&#x2F;write lock，那么这个线程有需要一条一条的检查看是否有行锁，这样效率太低了</p>
+<p>​	为解决这一问题，在事务中执行sql语句的时候，mysql除了添加行锁，还会为整张表添加一个意向锁，当其他线程要为该表加锁的时候，就可以根据所加的意向锁判断是否能加锁，而不需要一条一条检查数据</p>
+<p><img src="D:/Typora/TyporaPictureBed/WNq4xmK3uFQkyEJ-165448880220184.png" alt="image-20220507151525142"></p>
+<ul>
+<li><p>select …. lock in share mode 会添加意向共享锁，可以与表共享读锁（read）兼容，与表独占写锁（write）互斥（会发生阻塞）</p>
+</li>
+<li><p>增删改、查询for update 会添加意向排他锁，与read和write都互斥</p>
+</li>
+<li><p>意向锁直接都是兼容的，意向共享锁和read锁兼容和write锁互斥，意向排他锁与read锁和write都互锁</p>
+</li>
+</ul>
+<h2 id="3-行级锁"><a href="#3-行级锁" class="headerlink" title="3. 行级锁"></a>3. 行级锁</h2><p><img src="D:/Typora/TyporaPictureBed/1jurzLWNCq38GgR-165448880220188.png" alt="image-20220507164656196"></p>
+<h3 id="1）行锁"><a href="#1）行锁" class="headerlink" title="1）行锁"></a>1）行锁</h3><p>行锁有两种：s（共享锁）、x（排他锁）</p>
+<p><img src="D:/Typora/TyporaPictureBed/elfca7NMZozb5Bs-165448880220186.png" alt="image-20220507161617768"></p>
+<p><img src="D:/Typora/TyporaPictureBed/K8Pkat2cEFLAWrj-165448880220190.png" alt="image-20220507161648455"></p>
+<p>总结：</p>
+<ul>
+<li>增删改操作都是加排他锁</li>
+<li>普通select不加锁</li>
+<li>select语句后加lock in share mode 共享锁，加for update 加排他锁</li>
+</ul>
+<p>注意：</p>
+<ul>
+<li>mysql的行级锁是针对索引的锁，锁住的是聚集索引叶子结点的一个数据，若在增删改的时候没有用到索引，那么行锁就会升级成为表锁</li>
+<li>查询元数据锁和行锁的语句<ul>
+<li>select object_schema,object_name,index_name,lock_type,lock_mode,lock_data from<br>performance_schema.data_locks;</li>
+</ul>
+</li>
+</ul>
+<p><img src="D:/Typora/TyporaPictureBed/UORIs8H4YrPA6V5-165448880220192.png" alt="image-20220507163229143"></p>
+<p><img src="D:/Typora/TyporaPictureBed/STAePBOwDfnj7cJ-165448880220194.png" alt="image-20220507163251643"></p>
+<h3 id="2）间隙锁、临键锁"><a href="#2）间隙锁、临键锁" class="headerlink" title="2）间隙锁、临键锁"></a>2）间隙锁、临键锁</h3><p><img src="D:/Typora/TyporaPictureBed/3Y2QDaPhfWiwut7-165448880220198.png" alt="image-20220507164737508"></p>
+<p>默认情况下，使用的是next-key临键锁来进行搜索和索引扫描，当某些情况下临键锁可以优化成间隙锁：</p>
+<p>如当用主键查询不存在的数据的时候：</p>
+<p><img src="D:/Typora/TyporaPictureBed/sZq8wyVMIe5RbNj-165448880220196.png" alt="image-20220507165107119"></p>
+<p>事务A我们想插入一条id&#x3D;4的数据，第一次查询id&#x3D;4发现没有数据，这时候临键锁优化为间隙锁，将3与5的间隙锁起来（B+树结构中，这两个row是相邻的），那么事务B就不能在3和5间插入id&#x3D;4的事务，那么事务A在插入id&#x3D;4的数据的时候就不会出现幻读的现象</p>
+<h1 id="七、InnoDB引擎"><a href="#七、InnoDB引擎" class="headerlink" title="七、InnoDB引擎"></a>七、InnoDB引擎</h1><h2 id="1-架构图"><a href="#1-架构图" class="headerlink" title="1. 架构图"></a>1. 架构图</h2><h3 id="1）逻辑结构"><a href="#1）逻辑结构" class="headerlink" title="1）逻辑结构"></a>1）逻辑结构</h3><p><img src="D:/Typora/TyporaPictureBed/Op8GUxfHWs54hT3-1654488802201100.png" alt="image-20220508165847667"></p>
+<h3 id="2）物理结构"><a href="#2）物理结构" class="headerlink" title="2）物理结构"></a>2）物理结构</h3><p><img src="D:/Typora/TyporaPictureBed/mtKREcBoqsPlnM8-1654488802202104.png" alt="image-20220507202940981"></p>
+<p>逻辑结构：<img src="D:/Typora/TyporaPictureBed/SEk1IJ5BmihubyA-1654488802201102.png" alt="image-20220507203031934"></p>
+<h2 id="2-事务原理"><a href="#2-事务原理" class="headerlink" title="2. 事务原理"></a>2. 事务原理</h2><p><img src="D:/Typora/TyporaPictureBed/1Ak5SrFvWPBQgzC-1654488802202106.png" alt="image-20220507203617939"></p>
+<p><img src="D:/Typora/TyporaPictureBed/M1x9wWs8PiyJDad-1654488802202108.png" alt="image-20220509203029027"></p>
+<p>​	MVCC（无锁）+锁保证了事务的隔离性，redo log 保证了事务的持久性，undo log 保证了事务的原子性，redo log 和 undo log 一起保证了事务的一致性。</p>
+<h3 id="1）redo-log"><a href="#1）redo-log" class="headerlink" title="1）redo log"></a>1）redo log</h3><p>​	redo log保证了事务的<code>持久性</code></p>
+<p><img src="D:/Typora/TyporaPictureBed/nVMW81tYsRckBX4-1654488802202110.png" alt="image-20220507204134284"></p>
+<p>问题情境：</p>
+<p>​	InnoDB内存结构中，主要的内存区就是缓冲池，缓冲池中缓冲了很多的数据页。当我们在一个事务中执行增删改操作的时候，InnoDB会先操作缓冲池中的数据，将缓冲池中的数据修改，在缓冲区中被修改过的数据页称为脏页。脏页会在一定的时机，通过后台线程刷新到磁盘中，从而保证缓冲区中数据和磁盘中的数据一致。因此缓冲区的脏页数据并不是实时刷新的，若过一段时间后在从缓冲区向磁盘刷新数据的过程中出错了，但提示给用户事务提交成功，但是数据却没持久化下来。</p>
+<p>解决办法redo log：</p>
+<p>​	有了redo log 后，在对缓冲区的数据进行增删改操作后，会首先将数据页的变化记录在redo log buffer中，在事务提交时会将redo log buffer中的数据刷新到redo log磁盘文件中。如果脏页数据出错，此时就可以借助于redo log来进行数据恢复，以此来保护数据持久性。若 脏页数据已经成功刷新到磁盘 或 涉及到的数据已经落盘，那么redo log就没用了，可以删除了，所以存在的两个redo log文件是循环写的（一个没用了删掉用另一个）</p>
+<p>总结：</p>
+<ul>
+<li>redo log 有两部分<ul>
+<li>内存：redo log buffer 在事务提交后马上刷新给磁盘中的redo log</li>
+<li>磁盘：两个redo log 循环写</li>
+</ul>
+</li>
+<li>为什么不能直接将脏页数据实时刷新，而是刷新redo log buffer中的数据？<ul>
+<li>因为操作的数据页地址是随机的，如果实时刷新脏数据，那么就是随机IO（随机读写磁盘），性能低</li>
+<li>redo log的刷新是顺序IO（日志按顺序写的），数据效率高</li>
+</ul>
+</li>
+</ul>
+<h3 id="2）undo-log"><a href="#2）undo-log" class="headerlink" title="2）undo log"></a>2）undo log</h3><p>​	undo log 保证了事务的<code>原子性</code></p>
+<p>​	undo log 主要是为了 <code>回滚事务</code> 和 <code>MVCC</code>，不同于redo log 是物理日志，undo log 是逻辑日志：</p>
+<p>​	当在事务中执行了一条insert语句后，undo log就会记录一条相反逻辑的delete语句，执行一条update语句后，undo log就会记录一条相反逻辑的update语句</p>
+<ul>
+<li><p>undo log 的销毁：</p>
+<ul>
+<li>在执行完事务后（commit 或 rollback后），并不会马上删除，因为MVCC还可能用到undo log</li>
+</ul>
+</li>
+<li><p>undo log 的存储：undo log 通过段segment的方式存储，（segment有 数据段—B+树叶子节点，索引段—非叶子节点，回滚段—undo log）</p>
+</li>
+<li><p>两个作用：</p>
+<ul>
+<li>回滚：回滚是在事务结束的时候（commit或rollback），如果选择回滚，那么mysql会执行undo log中的逻辑记录</li>
+<li>MVCC：undo log 中记录了版本链，版本链配合readview来完成MVCC版本控制</li>
+</ul>
+</li>
+</ul>
+<h3 id="3）MVCC"><a href="#3）MVCC" class="headerlink" title="3）MVCC"></a>3）MVCC</h3><p><img src="D:/Typora/TyporaPictureBed/M1x9wWs8PiyJDad-1654488802202108.png" alt="image-20220509203029027"></p>
+<p>MVCC是在快照读的时候通过<code>事务id</code>，<code>undo log 版本链</code>，<code>ReadView</code>来查找返回的历史版本数据。</p>
+<p>MVCC就是通过表中的隐藏字段<code>事务id</code>，<code>undo log 版本链</code>，<code>ReadView</code>（事务确定）三者来实现的：</p>
+<p>查询的时候会根据<code>当前的事务活动情况</code>和<code>事务id</code>来确定<code>ReadView</code>，然后再从<code>undo log版本链</code>头部开始通过查看<code>事务id</code>是否满足<code>ReadView</code>的匹配条件，满足条件则返回该版本</p>
+<h4 id="①当前读和快照读"><a href="#①当前读和快照读" class="headerlink" title="①当前读和快照读"></a>①当前读和快照读</h4><p>a）当前读</p>
+<p><img src="D:/Typora/TyporaPictureBed/73tWz4SUXwqK8f6-1654488802202112.png" alt="image-20220509155839795"></p>
+<p>当前读读取的是记录的最新版本，读取的需要保证其他并发事务，所以会对读取的数据加锁</p>
+<p>eg：</p>
+<p><img src="D:/Typora/TyporaPictureBed/pebuDKW48JadAIx-1654488802202114.png" alt="image-20220509161941938"></p>
+<p>​	当A事务开启后，①的查询结果id&#x3D;2是PHP，此时开启B事务并执行修改id&#x3D;2为JSP数据操作，再次通过事务A的①查，查不出该次变化，因为当前隔离级别是可重复读，保证了两次读取事务的一致性；如果读取到当前事务的最新数据，可以使用select …. lock in share mode 来进行当前读，这样读取到的就是最新的数据id&#x3D;2是JSP。</p>
+<p>b）快照读</p>
+<p><img src="D:/Typora/TyporaPictureBed/13nhUgyF8cwzxsB-1654488802203116.png" alt="image-20220509155825016"></p>
+<p>​	快照读是根据一定规则MVCC读取记录数据的可见版本，有可能是历史数据，这个过程是不加锁的</p>
+<pre><code>* 读已提交：每次的select都是一个快照读
+* 可重复读：开启事务后的第一个select是快照读，后续的select只是直接使用第一个快照读的数据（查询的实际上是第一个快照数据）
+* 串行化：快照读退化成当前读
+</code></pre>
+<h4 id="②隐藏字段"><a href="#②隐藏字段" class="headerlink" title="②隐藏字段"></a>②隐藏字段</h4><p><img src="D:/Typora/TyporaPictureBed/K2E1FBPGgZdwhQ3-1654488802203118.png" alt="image-20220509162454905"></p>
+<p>​	每一张表都会有两个隐藏字段：最近事务id、回滚指针，如果该表结构未指定主键，那么会生成隐藏字段row_id。</p>
+<h4 id="③undo-log"><a href="#③undo-log" class="headerlink" title="③undo log"></a>③undo log</h4><p>undo log 是回滚日志，在insert、update、delete的时候会产生回滚数据来产生。</p>
+<p>当insert的时候，数据只需要回滚的时候使用，所以commit后（证明没有rollback）可以直接删除</p>
+<p>update、delete，数据不仅在回滚的时候需要使用，在快照读的时候也需要，所以不能删除</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Kr4y1i7ru?p=143&amp;spm_id_from=pageDriver">https://www.bilibili.com/video/BV1Kr4y1i7ru?p=143&amp;spm_id_from=pageDriver</a></p>
+<p>undo log 版本链：</p>
+<p><img src="D:/Typora/TyporaPictureBed/O1EnUrXhtJMRKDP-1654488802203120.png" alt="image-20220509163719909"></p>
+<ul>
+<li>每当要修改一条记录的时候，就会在undo log存储该版本（包括事务id，回滚指针指向上个版本），最新记录的回滚指针指向该版本</li>
+<li>版本之间通过回滚指针连接，头部是最新记录，尾部是最旧记录</li>
+</ul>
+<h4 id="④readview-读视图）"><a href="#④readview-读视图）" class="headerlink" title="④readview(读视图）"></a>④readview(读视图）</h4><p>readview是每个事务独有的，主要内容有两部分：有四个字段、定义了 <code>快照读sql</code>访问版本链的规则</p>
+<p>a）字段</p>
+<p><img src="D:/Typora/TyporaPictureBed/dPaH7NSteDTi8hI-1654488802203122.png" alt="image-20220509164846607"></p>
+<p>注意max_trx_id 并不是目前最大id，而是最大事务id+1（下一个分配的id）</p>
+<p>b）定义的访问undo log 版本链的规则</p>
+<p><img src="D:/Typora/TyporaPictureBed/85TpM4tfOrSyZAE-1654488802203124.png" alt="image-20220509165041625"></p>
+<p>trx_id 代表的当前版本链中隐藏字段中的 <code>事务id</code></p>
+<p>注意：不同的隔离级别，会在不同的时机生成readview来进行快照读</p>
+<ul>
+<li><p>读已提交</p>
+<ul>
+<li>会在每次select时都生成一个readview来作为此次快照读的依据（读已提交每次select都是一个快照读）</li>
+</ul>
+</li>
+<li><p>可重复读</p>
+<ul>
+<li>会在第一次select时生成一个readview来作为本次快照读的依据（可重复读只有第一次select是快照读，后序select都是复用该次数据）</li>
+</ul>
+</li>
+</ul>
+<h4 id="⑤RC和RR的MVCC"><a href="#⑤RC和RR的MVCC" class="headerlink" title="⑤RC和RR的MVCC"></a>⑤RC和RR的MVCC</h4><p>a）RC 隔离级别</p>
+<p><img src="D:/Typora/TyporaPictureBed/image-20220509170102112.png" alt="image-20220509170102112"></p>
+<p>PC的每次select都是一个快照读，所以事务5的两次select会有两个ReadView</p>
+<p><img src="D:/Typora/TyporaPictureBed/EeXWmpy6u9o4qMV-1654488802203126.png" alt="image-20220509170537409"></p>
+<p>​	MVCC就是在快照读的时候，根据该次select产生的readView，将undo log 的版本链中从头开始 通过每条数据中隐藏字段中的<code>事务id</code>与readView指定的规则做匹配，如果匹配了则返回该条版本记录。</p>
+<p>b）RR 隔离级别</p>
+<p><img src="D:/Typora/TyporaPictureBed/6bDL1dOAgfG9ev4-1654488802203128.png" alt="image-20220509202827554"></p>
+<p>​	在RR隔离级别下，只有在第一个select快照读的时候会生成ReadView，后序的select都是复用该ReadView，所以可以保证多次select的数据是一致的。</p>
+<h1 id="八、系统数据库"><a href="#八、系统数据库" class="headerlink" title="八、系统数据库"></a>八、系统数据库</h1><h2 id="1-基本表"><a href="#1-基本表" class="headerlink" title="1. 基本表"></a>1. 基本表</h2><p><img src="D:/Typora/TyporaPictureBed/ecoGstjKThgfPar-1654488802203130.png" alt="image-20220509205237239"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/06/04/mysql%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/" rel="prev" title="mysql基本语法">
+      <i class="fa fa-chevron-left"></i> mysql基本语法
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81sql%E4%BC%98%E5%8C%96"><span class="nav-text">四、sql优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE%EF%BC%88insert%EF%BC%8Cload%EF%BC%89"><span class="nav-text">1.插入数据（insert，load）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%B8%BB%E9%94%AE%E4%BC%98%E5%8C%96"><span class="nav-text">2.主键优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-order-by%E4%BC%98%E5%8C%96"><span class="nav-text">3.order by优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-group-by%E4%BC%98%E5%8C%96"><span class="nav-text">4.group by优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-limit%E4%BC%98%E5%8C%96"><span class="nav-text">5.limit优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-count%E4%BC%98%E5%8C%96"><span class="nav-text">6.count优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-update%E4%BC%98%E5%8C%96%EF%BC%88%E9%81%BF%E5%85%8D%E8%A1%8C%E9%94%81%E5%8D%87%E7%BA%A7%E4%B8%BA%E8%A1%A8%E9%94%81%EF%BC%89"><span class="nav-text">7.update优化（避免行锁升级为表锁）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E8%A7%86%E5%9B%BE-x2F-%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B-x2F-%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-text">五、视图&#x2F;存储过程&#x2F;触发器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%A7%86%E5%9B%BE"><span class="nav-text">1. 视图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="nav-text">2. 存储过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%8F%98%E9%87%8F"><span class="nav-text">1）变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95"><span class="nav-text">2）存储过程中的语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0if"><span class="nav-text">①if</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1case"><span class="nav-text">②case</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2while"><span class="nav-text">③while</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3repeat"><span class="nav-text">④repeat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4loop"><span class="nav-text">⑤loop</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A5cursor-%E6%B8%B8%E6%A0%87"><span class="nav-text">⑥cursor 游标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A6handler-%E6%9D%A1%E4%BB%B6%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F"><span class="nav-text">⑦handler 条件处理程序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E5%AD%98%E5%82%A8%E5%87%BD%E6%95%B0"><span class="nav-text">3）存储函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-text">3. 触发器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E9%94%81"><span class="nav-text">六、锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%85%A8%E5%B1%80%E9%94%81"><span class="nav-text">1. 全局锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%A1%A8%E7%BA%A7%E9%94%81"><span class="nav-text">2. 表级锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E8%A1%A8%E9%94%81"><span class="nav-text">1）表锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E5%85%83%E6%95%B0%E6%8D%AE%E9%94%81"><span class="nav-text">2）元数据锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E6%84%8F%E5%90%91%E9%94%81"><span class="nav-text">3）意向锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%A1%8C%E7%BA%A7%E9%94%81"><span class="nav-text">3. 行级锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E8%A1%8C%E9%94%81"><span class="nav-text">1）行锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E9%97%B4%E9%9A%99%E9%94%81%E3%80%81%E4%B8%B4%E9%94%AE%E9%94%81"><span class="nav-text">2）间隙锁、临键锁</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%83%E3%80%81InnoDB%E5%BC%95%E6%93%8E"><span class="nav-text">七、InnoDB引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="nav-text">1. 架构图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84"><span class="nav-text">1）逻辑结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E7%89%A9%E7%90%86%E7%BB%93%E6%9E%84"><span class="nav-text">2）物理结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BA%8B%E5%8A%A1%E5%8E%9F%E7%90%86"><span class="nav-text">2. 事务原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89redo-log"><span class="nav-text">1）redo log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89undo-log"><span class="nav-text">2）undo log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89MVCC"><span class="nav-text">3）MVCC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%BD%93%E5%89%8D%E8%AF%BB%E5%92%8C%E5%BF%AB%E7%85%A7%E8%AF%BB"><span class="nav-text">①当前读和快照读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E9%9A%90%E8%97%8F%E5%AD%97%E6%AE%B5"><span class="nav-text">②隐藏字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2undo-log"><span class="nav-text">③undo log</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3readview-%E8%AF%BB%E8%A7%86%E5%9B%BE%EF%BC%89"><span class="nav-text">④readview(读视图）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4RC%E5%92%8CRR%E7%9A%84MVCC"><span class="nav-text">⑤RC和RR的MVCC</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E7%B3%BB%E7%BB%9F%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">八、系统数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%9F%BA%E6%9C%AC%E8%A1%A8"><span class="nav-text">1. 基本表</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="f1ashades"
+      src="/images/mine.jpg">
+  <p class="site-author-name" itemprop="name">f1ashades</p>
+  <div class="site-description" itemprop="description">once again I am a child</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">f1ashades</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

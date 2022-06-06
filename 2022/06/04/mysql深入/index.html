@@ -39,6 +39,19 @@
 <meta property="og:image" content="https://s2.loli.net/2022/04/30/ocWZvNhuSs1VBgt.png">
 <meta property="og:image" content="https://s2.loli.net/2022/06/04/KwRVxtr2qhoFd7g.png">
 <meta property="og:image" content="https://s2.loli.net/2022/06/04/WGJnCjK37u2v68o.png">
+<meta property="og:image" content="http://example.com/Typora/TyporaPictureBed/brk8NdOZXlhq23t-16544910435261.png">
+<meta property="og:image" content="http://example.com/Typora/TyporaPictureBed/zqmAFYeTyiXBrNl-16544910435273.png">
+<meta property="og:image" content="http://example.com/Typora/TyporaPictureBed/AnONs5KXudJpZgv-16544910435275.png">
+<meta property="og:image" content="http://example.com/Typora/TyporaPictureBed/AgFNWb4lrUYofGe-16544910435277.png">
+<meta property="og:image" content="http://example.com/Typora/TyporaPictureBed/VRtgf75F6iyTZXM-16544910435279.png">
+<meta property="og:image" content="http://example.com/Typora/TyporaPictureBed/oej2vmnNVUDzhWZ-165449104352711.png">
+<meta property="og:image" content="http://example.com/Typora/TyporaPictureBed/IyqERfjPizUQOSs-165449104352713.png">
+<meta property="og:image" content="http://example.com/Typora/TyporaPictureBed/6QNDVjHxdI5Fatu-165449104352715.png">
+<meta property="og:image" content="http://example.com/Typora/TyporaPictureBed/ez7OVMCQshElxrT-165449104352717.png">
+<meta property="og:image" content="http://example.com/Typora/TyporaPictureBed/LHd9CkzsG2rFv5p-165449104352719.png">
+<meta property="og:image" content="http://example.com/Typora/TyporaPictureBed/cCjQklvUs84A76o-165449104352721.png">
+<meta property="og:image" content="http://example.com/Typora/TyporaPictureBed/7MSNr4i3qFDPYb2-165449104352723.png">
+<meta property="og:image" content="http://example.com/Typora/TyporaPictureBed/75qcEWAOeDoXujJ-165449104352725.png">
 <meta property="og:image" content="https://s2.loli.net/2022/05/04/TgKzdrDO5u6Mxf2.png">
 <meta property="og:image" content="https://s2.loli.net/2022/05/03/ivgQnFRIlw8AuPS.png">
 <meta property="og:image" content="https://s2.loli.net/2022/05/03/8NQSBUeDgXZ5Apy.png">
@@ -108,7 +121,7 @@
 <meta property="og:image" content="https://s2.loli.net/2022/05/09/6bDL1dOAgfG9ev4.png">
 <meta property="og:image" content="https://s2.loli.net/2022/06/04/ecoGstjKThgfPar.png">
 <meta property="article:published_time" content="2022-06-04T07:29:48.000Z">
-<meta property="article:modified_time" content="2022-06-06T04:46:33.779Z">
+<meta property="article:modified_time" content="2022-06-06T04:50:46.697Z">
 <meta property="article:author" content="f1ashades">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary">
@@ -272,7 +285,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-06-06 12:46:33" itemprop="dateModified" datetime="2022-06-06T12:46:33+08:00">2022-06-06</time>
+                <time title="修改时间：2022-06-06 12:50:46" itemprop="dateModified" datetime="2022-06-06T12:50:46+08:00">2022-06-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -718,6 +731,121 @@
 <p>②通过慢查询日志可以定位哪台主机通过哪个user执行了哪条<code>sql语句</code>，执行效率较低</p>
 <p>③慢查询日志只会记录超过设定时间的sql，如果要查看没有超过时限的sql则需要通过profiles来查询</p>
 <p>④explain会查看sql具体的执行信息</p>
+<h2 id="5-使用规则"><a href="#5-使用规则" class="headerlink" title="5. 使用规则"></a>5. 使用规则</h2><h4 id="1）最左前缀法则（联合索引）"><a href="#1）最左前缀法则（联合索引）" class="headerlink" title="1）最左前缀法则（联合索引）"></a>1）最左前缀法则（联合索引）</h4><p>如果索引关联了多列（联合索引），要遵守最左前缀法则，最左前缀法则指的是查询从索引的最左列开始，并且不跳过索引中的列。<br>如果跳跃某一列，索引将部分失效（后面的字段索引失效）。</p>
+<p>联合索引中，出现范围查询（&lt;, &gt;），范围查询右侧的列索引失效。可以用&gt;&#x3D;或者&lt;&#x3D;来规避索引失效问题。</p>
+<p><img src="/../../../Typora/TyporaPictureBed/brk8NdOZXlhq23t-16544910435261.png" alt="image-20220430160710489"></p>
+<p>​	在这样一条联合索引中，索引的顺序分别是：profession（47），age（2），status（5），</p>
+<ul>
+<li><p>profession列一定存在，但在where中的顺序不影响</p>
+<ul>
+<li><img src="/../../../Typora/TyporaPictureBed/zqmAFYeTyiXBrNl-16544910435273.png" alt="image-20220430160919490"></li>
+<li>这样两条sql都会走该联合索引，只是索引长度可能不一致，第一条会按顺序查询 pro，age，status三条索引（54）</li>
+<li>下面一条没有status，只会顺序查询pro，age两条索引（49）</li>
+</ul>
+</li>
+<li><p>中间跳过某一列后，后面的索引就会失效</p>
+<ul>
+<li><p><img src="/../../../Typora/TyporaPictureBed/AnONs5KXudJpZgv-16544910435275.png" alt="image-20220430161324620"></p>
+</li>
+<li><p>这样两条sql都会走联合查询，因为有pro在（最左边的列在）（where后and的顺序不重要）</p>
+</li>
+<li><p>但是只会查询pro索引，因为跳过了中间的age索引（没有），那么age后status索引也不会查询（47）</p>
+</li>
+<li><p>可以这样说：age单说是没有索引的，因为如果只根据age去查，没有pro的话，age的索引也不会用到</p>
+</li>
+<li><p>注：如果select字段中包含了该联合查询的字段而不需要回表查询也会使用联合查询</p>
+<p><img src="/../../../Typora/TyporaPictureBed/AgFNWb4lrUYofGe-16544910435277.png" alt="image-20220430182127493"></p>
+<p><img src="/../../../Typora/TyporaPictureBed/VRtgf75F6iyTZXM-16544910435279.png" alt="image-20220430182201299"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>​				因为select字段在pro_age_sta的联合索引中都含有，而id则是联合索引的叶子节点值，所以通过索引能将这些值全部查询出来，这样就会使用索引，虽然不满足最左前缀原则，之前不使用是因为select * ，不能直接通过该联合索引获取所有值，需要回表查询</p>
+<p>联合索引失效tips：</p>
+<ul>
+<li>跳过联合索引中的某一列，该列右边的所有索引都会失效</li>
+<li>若在索引上使用了&gt;，&lt; 等范围查询会让该索引右边的列索引失效（自身不会失效）<ul>
+<li><img src="/../../../Typora/TyporaPictureBed/oej2vmnNVUDzhWZ-165449104352711.png" alt="image-20220430162904070"></li>
+<li>上面这条查询会查询pro，age，但是age使用了范围查询&gt;，所以age不会失效，status索引会失效（49）</li>
+<li>解决办法：在业务允许的情况下，尽量使用&gt;&#x3D;和&lt;&#x3D;</li>
+<li><img src="/../../../Typora/TyporaPictureBed/IyqERfjPizUQOSs-165449104352713.png" alt="image-20220430163118495"></li>
+<li>这样查询就会查询pro，age，status三条索引</li>
+</ul>
+</li>
+</ul>
+<p>​			</p>
+<h4 id="2）普通索引失效情况"><a href="#2）普通索引失效情况" class="headerlink" title="2）普通索引失效情况"></a>2）普通索引失效情况</h4><ol>
+<li><p>在索引列上进行运算操作（如函数运算），索引将失效。</p>
+<p>如：查询手机号后两位是15的用户</p>
+<p><code>explain select * from tb_user where substring(phone, 10, 2) = &#39;15&#39;;</code></p>
+<p>这样不会走phone索引，因为在phone索引上进行了函数运算</p>
+</li>
+<li><p>字符串类型字段使用时，不加引号，索引将失效。</p>
+<p>如：<code>explain select * from tb_user where phone = 17799990015;</code>，此处phone的值没有加引号</p>
+<p>虽然可以查询出来，但是并不会走phone的索引</p>
+</li>
+<li><p>模糊查询中，如果仅仅是尾部模糊匹配，索引不会是失效；如果是头部模糊匹配，索引失效。</p>
+<p>如：<code>explain select * from tb_user where profession like &#39;%工程&#39;;</code> 前面有%会失效</p>
+<p>​	    <code>explain select * from tb_user where profession like &#39;工程%&#39;;</code>后面有%不会失效</p>
+<p>注：’_’ 和 ‘%’ 的情况是一样的</p>
+</li>
+<li><p>用 or 分割开的条件，如果 or 其中一个条件的列没有索引，那么涉及的索引都不会被用到。</p>
+<p><img src="/../../../Typora/TyporaPictureBed/6QNDVjHxdI5Fatu-165449104352715.png" alt="image-20220430165521463"><img src="/../../../Typora/TyporaPictureBed/ez7OVMCQshElxrT-165449104352717.png" alt="image-20220430165544822"></p>
+<p>如该条数据，可能会走主键索引，但是最后没走索引，因为age没有索引，解决办法就是为age添加上索引</p>
+</li>
+<li><p>如果 MySQL 评估使用索引比全表更慢，则不使用索引。</p>
+<p>如：<code>explain select * from tb_user where profession is null;</code> pro字段只有少部分是null，所以会走索引</p>
+</li>
+</ol>
+<p>​			   <code>explain select * from tb_user where profession is not null;</code> pro字段大部分都不是null，这样还不如扫描all，所以不会走索引</p>
+<h4 id="3）SQL-提示"><a href="#3）SQL-提示" class="headerlink" title="3）SQL 提示"></a>3）SQL 提示</h4><p>​	是优化数据库的一个重要手段，简单来说，就是在SQL语句中加入一些人为的提示来达到优化操作的目的：</p>
+<p>如用户告诉mysql在有多个索引的情况下，选择哪个索引而不是让mysql的优化选择器自己选择</p>
+<p>例如：</p>
+<ol>
+<li><p>在可能多个索引的情况下：</p>
+<p>使用哪个索引：</p>
+<p><code>explain select * from tb_user use index(idx_user_pro) where profession=&quot;软件工程&quot;;</code></p>
+<p>不使用哪个索引：<br><code>explain select * from tb_user ignore index(idx_user_pro) where profession=&quot;软件工程&quot;;</code><br>必须使用哪个索引：<br><code>explain select * from tb_user force index(idx_user_pro) where profession=&quot;软件工程&quot;;</code></p>
+</li>
+</ol>
+<p>use 是建议，实际使用哪个索引 MySQL 还会自己权衡运行速度去更改，force就是无论如何都强制使用该索引。</p>
+<h4 id="4）覆盖索引-amp-回表查询"><a href="#4）覆盖索引-amp-回表查询" class="headerlink" title="4）覆盖索引&amp;回表查询"></a>4）覆盖索引&amp;回表查询</h4><ul>
+<li>覆盖索引：根据索引可以查询出所有数据</li>
+</ul>
+<p><img src="/../../../Typora/TyporaPictureBed/LHd9CkzsG2rFv5p-165449104352719.png" alt="image-20220430184740825"></p>
+<p><img src="/../../../Typora/TyporaPictureBed/cCjQklvUs84A76o-165449104352721.png" alt="image-20220430184754971"></p>
+<p>查询的数据中id值在该联合索引（二级索引）的叶子节点，所以只需要查一次联合索引就可以查询出所有值而不需要回表查询</p>
+<ul>
+<li>回表查询：二级索引不能查询出所有值，需要通过查询出的主键id来查询聚集索引获取值</li>
+</ul>
+<p><img src="/../../../Typora/TyporaPictureBed/7MSNr4i3qFDPYb2-165449104352723.png" alt="image-20220430185245418"></p>
+<p><img src="/../../../Typora/TyporaPictureBed/75qcEWAOeDoXujJ-165449104352725.png" alt="image-20220430185302627"></p>
+<p>虽然使用了索引查询，但是因为查询的字段中的gender和email是无法通过该联合索引查询出来的，所以在通过二级索引获取了id，profession，age后，还需要通过id值查询聚集索引来获取剩下的gender和email，这就进行了回表查询</p>
+<h4 id="5）前缀索引"><a href="#5）前缀索引" class="headerlink" title="5）前缀索引"></a>5）前缀索引</h4><p>当字段类型为字符串（varchar, text等）时，如果在这些字段上建立索引会导致建立的索引较大，查询时，也会浪费大量的磁盘IO，影响</p>
+<p>查询效率，此时可以只降字符串的一部分前缀，建立索引，这样可以大大节约索引空间，从而提高索引效率。</p>
+<p>比如要在email上建立索引，我们可以截取email的前几个char作为索引，这样就可以减小索引长度，可以根据一个比值选择性k来判断取值的合理性：不同的subString&#x2F;all，eg：当我们截取email字段前5个的时候，10个email中8个的前5个char都不一样，只有两个的前5个char是一样的，这时候k&#x3D;8&#x2F;10&#x3D;0.8，我就可以在k和长度之间做取舍</p>
+<p>求选择性公式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select count(distinct email) / count(*) from tb_user;</span><br><span class="line">select count(distinct substring(email, 1, 5)) / count(*) from tb_user;</span><br></pre></td></tr></table></figure>
+
+<p>语法：<code>create index idx_xxxx on table_name(columnn(n));</code></p>
+<p>show index 里面的sub_part可以看到接取的长度</p>
+<h4 id="6）单列索引-amp-联合索引"><a href="#6）单列索引-amp-联合索引" class="headerlink" title="6）单列索引&amp;联合索引"></a>6）单列索引&amp;联合索引</h4><p>单列索引：即一个索引只包含单个列<br>联合索引：即一个索引包含了多个列<br>在业务场景中，如果存在多个查询条件，考虑针对于查询字段建立索引时，建议建立联合索引，而非单列索引。</p>
+<p>单列索引情况：<br><code>explain select id, phone, name from tb_user where phone = &#39;17799990010&#39; and name = &#39;韩信&#39;;</code><br>这句只会用到phone索引字段，该sql会进行回表查询，因为phone的单列索引中并不包含name列</p>
+<p>所以我们可以根据查询条件构建联合索引（注意顺序——最左前缀法则）</p>
+<p><code>create index idx_user_phone_name on tb_user(phone,name);</code></p>
+<p>注意事项</p>
+<ul>
+<li>多条件联合查询时，MySQL优化器会评估哪个字段的索引效率更高，会选择该索引完成本次查询</li>
+</ul>
+<h4 id="7）设计原则"><a href="#7）设计原则" class="headerlink" title="7）设计原则"></a>7）设计原则</h4><ol>
+<li>针对于数据量较大，且查询比较频繁的表建立索引</li>
+<li>针对于常作为查询条件（where）、排序（order by）、分组（group by）操作的字段建立索引</li>
+<li>尽量选择区分度高的列作为索引，尽量建立唯一索引，区分度越高，使用索引的效率越高</li>
+<li>如果是字符串类型的字段，字段长度较长，可以针对于字段的特点，建立前缀索引</li>
+<li>尽量使用联合索引，减少单列索引，查询时，联合索引很多时候可以覆盖索引，节省存储空间，避免回表，提高查询效率</li>
+<li>要控制索引的数量，索引并不是多多益善，索引越多，维护索引结构的代价就越大，会影响增删改的效率</li>
+<li>如果索引列不能存储NULL值，请在创建表时使用NOT NULL约束它。当优化器知道每列是否包含NULL值时，它可以更好地确定哪个索引最有效地用于查询</li>
+</ol>
 <h1 id="四、sql优化"><a href="#四、sql优化" class="headerlink" title="四、sql优化"></a>四、sql优化</h1><p><img src="https://s2.loli.net/2022/05/04/TgKzdrDO5u6Mxf2.png" alt="image-20220503171504262"></p>
 <h2 id="1-插入数据（insert，load）"><a href="#1-插入数据（insert，load）" class="headerlink" title="1.插入数据（insert，load）"></a>1.插入数据（insert，load）</h2><p>普通插入：</p>
 <ol>
@@ -1102,7 +1230,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BA%8B%E5%8A%A1"><span class="nav-text">一、事务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%9B%9B%E5%A4%A7%E7%89%B9%E6%80%A7ACID"><span class="nav-text">1.四大特性ACID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%B9%B6%E5%8F%91%E4%BA%8B%E5%8A%A1"><span class="nav-text">2.并发事务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-text">二、存储引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-MySQL%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-text">1. MySQL体系结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%B8%B8%E8%A7%81%E5%BC%95%E6%93%8E"><span class="nav-text">2. 常见引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB"><span class="nav-text">InnoDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89MyISAM"><span class="nav-text">2）MyISAM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89Memory"><span class="nav-text">3）Memory</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E7%89%B9%E7%82%B9%E6%AF%94%E8%BE%83"><span class="nav-text">3. 存储引擎特点比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-text">4. 存储引擎的选择</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81-%E7%B4%A2%E5%BC%95"><span class="nav-text">三、 索引</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%B4%A2%E5%BC%95%E7%BB%93%E6%9E%84"><span class="nav-text">1. 索引结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91"><span class="nav-text">1）二叉搜索树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89B-Tree"><span class="nav-text">2）B Tree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89B-Tree"><span class="nav-text">3）B+Tree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89InooDB%E7%9A%84%E6%94%B9%E8%BF%9BB-Tree"><span class="nav-text">4）InooDB的改进B+ Tree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%89Hash%E7%B4%A2%E5%BC%95"><span class="nav-text">5）Hash索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%EF%BC%89%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="nav-text">6）面试题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%B4%A2%E5%BC%95%E5%88%86%E7%B1%BB"><span class="nav-text">2. 索引分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%B4%A2%E5%BC%95%E8%AF%AD%E6%B3%95"><span class="nav-text">3. 索引语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-sql%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90"><span class="nav-text">4. sql性能分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81sql%E4%BC%98%E5%8C%96"><span class="nav-text">四、sql优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE%EF%BC%88insert%EF%BC%8Cload%EF%BC%89"><span class="nav-text">1.插入数据（insert，load）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%B8%BB%E9%94%AE%E4%BC%98%E5%8C%96"><span class="nav-text">2.主键优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-order-by%E4%BC%98%E5%8C%96"><span class="nav-text">3.order by优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-group-by%E4%BC%98%E5%8C%96"><span class="nav-text">4.group by优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-limit%E4%BC%98%E5%8C%96"><span class="nav-text">5.limit优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-count%E4%BC%98%E5%8C%96"><span class="nav-text">6.count优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-update%E4%BC%98%E5%8C%96%EF%BC%88%E9%81%BF%E5%85%8D%E8%A1%8C%E9%94%81%E5%8D%87%E7%BA%A7%E4%B8%BA%E8%A1%A8%E9%94%81%EF%BC%89"><span class="nav-text">7.update优化（避免行锁升级为表锁）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E8%A7%86%E5%9B%BE-x2F-%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B-x2F-%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-text">五、视图&#x2F;存储过程&#x2F;触发器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%A7%86%E5%9B%BE"><span class="nav-text">1. 视图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="nav-text">2. 存储过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%8F%98%E9%87%8F"><span class="nav-text">1）变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95"><span class="nav-text">2）存储过程中的语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0if"><span class="nav-text">①if</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1case"><span class="nav-text">②case</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2while"><span class="nav-text">③while</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3repeat"><span class="nav-text">④repeat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4loop"><span class="nav-text">⑤loop</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A5cursor-%E6%B8%B8%E6%A0%87"><span class="nav-text">⑥cursor 游标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A6handler-%E6%9D%A1%E4%BB%B6%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F"><span class="nav-text">⑦handler 条件处理程序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E5%AD%98%E5%82%A8%E5%87%BD%E6%95%B0"><span class="nav-text">3）存储函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-text">3. 触发器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E9%94%81"><span class="nav-text">六、锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%85%A8%E5%B1%80%E9%94%81"><span class="nav-text">1. 全局锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%A1%A8%E7%BA%A7%E9%94%81"><span class="nav-text">2. 表级锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E8%A1%A8%E9%94%81"><span class="nav-text">1）表锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E5%85%83%E6%95%B0%E6%8D%AE%E9%94%81"><span class="nav-text">2）元数据锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E6%84%8F%E5%90%91%E9%94%81"><span class="nav-text">3）意向锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%A1%8C%E7%BA%A7%E9%94%81"><span class="nav-text">3. 行级锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E8%A1%8C%E9%94%81"><span class="nav-text">1）行锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E9%97%B4%E9%9A%99%E9%94%81%E3%80%81%E4%B8%B4%E9%94%AE%E9%94%81"><span class="nav-text">2）间隙锁、临键锁</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%83%E3%80%81InnoDB%E5%BC%95%E6%93%8E"><span class="nav-text">七、InnoDB引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="nav-text">1. 架构图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84"><span class="nav-text">1）逻辑结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E7%89%A9%E7%90%86%E7%BB%93%E6%9E%84"><span class="nav-text">2）物理结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BA%8B%E5%8A%A1%E5%8E%9F%E7%90%86"><span class="nav-text">2. 事务原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89redo-log"><span class="nav-text">1）redo log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89undo-log"><span class="nav-text">2）undo log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89MVCC"><span class="nav-text">3）MVCC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%BD%93%E5%89%8D%E8%AF%BB%E5%92%8C%E5%BF%AB%E7%85%A7%E8%AF%BB"><span class="nav-text">①当前读和快照读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E9%9A%90%E8%97%8F%E5%AD%97%E6%AE%B5"><span class="nav-text">②隐藏字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2undo-log"><span class="nav-text">③undo log</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3readview-%E8%AF%BB%E8%A7%86%E5%9B%BE%EF%BC%89"><span class="nav-text">④readview(读视图）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4RC%E5%92%8CRR%E7%9A%84MVCC"><span class="nav-text">⑤RC和RR的MVCC</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E7%B3%BB%E7%BB%9F%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">八、系统数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%9F%BA%E6%9C%AC%E8%A1%A8"><span class="nav-text">1. 基本表</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BA%8B%E5%8A%A1"><span class="nav-text">一、事务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%9B%9B%E5%A4%A7%E7%89%B9%E6%80%A7ACID"><span class="nav-text">1.四大特性ACID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%B9%B6%E5%8F%91%E4%BA%8B%E5%8A%A1"><span class="nav-text">2.并发事务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-text">二、存储引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-MySQL%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-text">1. MySQL体系结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%B8%B8%E8%A7%81%E5%BC%95%E6%93%8E"><span class="nav-text">2. 常见引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB"><span class="nav-text">InnoDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89MyISAM"><span class="nav-text">2）MyISAM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89Memory"><span class="nav-text">3）Memory</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E7%89%B9%E7%82%B9%E6%AF%94%E8%BE%83"><span class="nav-text">3. 存储引擎特点比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-text">4. 存储引擎的选择</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81-%E7%B4%A2%E5%BC%95"><span class="nav-text">三、 索引</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%B4%A2%E5%BC%95%E7%BB%93%E6%9E%84"><span class="nav-text">1. 索引结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91"><span class="nav-text">1）二叉搜索树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89B-Tree"><span class="nav-text">2）B Tree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89B-Tree"><span class="nav-text">3）B+Tree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89InooDB%E7%9A%84%E6%94%B9%E8%BF%9BB-Tree"><span class="nav-text">4）InooDB的改进B+ Tree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%89Hash%E7%B4%A2%E5%BC%95"><span class="nav-text">5）Hash索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%EF%BC%89%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="nav-text">6）面试题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%B4%A2%E5%BC%95%E5%88%86%E7%B1%BB"><span class="nav-text">2. 索引分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%B4%A2%E5%BC%95%E8%AF%AD%E6%B3%95"><span class="nav-text">3. 索引语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-sql%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90"><span class="nav-text">4. sql性能分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E4%BD%BF%E7%94%A8%E8%A7%84%E5%88%99"><span class="nav-text">5. 使用规则</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E6%9C%80%E5%B7%A6%E5%89%8D%E7%BC%80%E6%B3%95%E5%88%99%EF%BC%88%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%EF%BC%89"><span class="nav-text">1）最左前缀法则（联合索引）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89%E6%99%AE%E9%80%9A%E7%B4%A2%E5%BC%95%E5%A4%B1%E6%95%88%E6%83%85%E5%86%B5"><span class="nav-text">2）普通索引失效情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%EF%BC%89SQL-%E6%8F%90%E7%A4%BA"><span class="nav-text">3）SQL 提示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%EF%BC%89%E8%A6%86%E7%9B%96%E7%B4%A2%E5%BC%95-amp-%E5%9B%9E%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="nav-text">4）覆盖索引&amp;回表查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5%EF%BC%89%E5%89%8D%E7%BC%80%E7%B4%A2%E5%BC%95"><span class="nav-text">5）前缀索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6%EF%BC%89%E5%8D%95%E5%88%97%E7%B4%A2%E5%BC%95-amp-%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95"><span class="nav-text">6）单列索引&amp;联合索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7%EF%BC%89%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="nav-text">7）设计原则</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81sql%E4%BC%98%E5%8C%96"><span class="nav-text">四、sql优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE%EF%BC%88insert%EF%BC%8Cload%EF%BC%89"><span class="nav-text">1.插入数据（insert，load）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%B8%BB%E9%94%AE%E4%BC%98%E5%8C%96"><span class="nav-text">2.主键优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-order-by%E4%BC%98%E5%8C%96"><span class="nav-text">3.order by优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-group-by%E4%BC%98%E5%8C%96"><span class="nav-text">4.group by优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-limit%E4%BC%98%E5%8C%96"><span class="nav-text">5.limit优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-count%E4%BC%98%E5%8C%96"><span class="nav-text">6.count优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-update%E4%BC%98%E5%8C%96%EF%BC%88%E9%81%BF%E5%85%8D%E8%A1%8C%E9%94%81%E5%8D%87%E7%BA%A7%E4%B8%BA%E8%A1%A8%E9%94%81%EF%BC%89"><span class="nav-text">7.update优化（避免行锁升级为表锁）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E8%A7%86%E5%9B%BE-x2F-%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B-x2F-%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-text">五、视图&#x2F;存储过程&#x2F;触发器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%A7%86%E5%9B%BE"><span class="nav-text">1. 视图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="nav-text">2. 存储过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%8F%98%E9%87%8F"><span class="nav-text">1）变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E8%AF%AD%E6%B3%95"><span class="nav-text">2）存储过程中的语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0if"><span class="nav-text">①if</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1case"><span class="nav-text">②case</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2while"><span class="nav-text">③while</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3repeat"><span class="nav-text">④repeat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4loop"><span class="nav-text">⑤loop</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A5cursor-%E6%B8%B8%E6%A0%87"><span class="nav-text">⑥cursor 游标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A6handler-%E6%9D%A1%E4%BB%B6%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F"><span class="nav-text">⑦handler 条件处理程序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E5%AD%98%E5%82%A8%E5%87%BD%E6%95%B0"><span class="nav-text">3）存储函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-text">3. 触发器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E9%94%81"><span class="nav-text">六、锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%85%A8%E5%B1%80%E9%94%81"><span class="nav-text">1. 全局锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%A1%A8%E7%BA%A7%E9%94%81"><span class="nav-text">2. 表级锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E8%A1%A8%E9%94%81"><span class="nav-text">1）表锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E5%85%83%E6%95%B0%E6%8D%AE%E9%94%81"><span class="nav-text">2）元数据锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E6%84%8F%E5%90%91%E9%94%81"><span class="nav-text">3）意向锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%A1%8C%E7%BA%A7%E9%94%81"><span class="nav-text">3. 行级锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E8%A1%8C%E9%94%81"><span class="nav-text">1）行锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E9%97%B4%E9%9A%99%E9%94%81%E3%80%81%E4%B8%B4%E9%94%AE%E9%94%81"><span class="nav-text">2）间隙锁、临键锁</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%83%E3%80%81InnoDB%E5%BC%95%E6%93%8E"><span class="nav-text">七、InnoDB引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="nav-text">1. 架构图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84"><span class="nav-text">1）逻辑结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E7%89%A9%E7%90%86%E7%BB%93%E6%9E%84"><span class="nav-text">2）物理结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BA%8B%E5%8A%A1%E5%8E%9F%E7%90%86"><span class="nav-text">2. 事务原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89redo-log"><span class="nav-text">1）redo log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89undo-log"><span class="nav-text">2）undo log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89MVCC"><span class="nav-text">3）MVCC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%BD%93%E5%89%8D%E8%AF%BB%E5%92%8C%E5%BF%AB%E7%85%A7%E8%AF%BB"><span class="nav-text">①当前读和快照读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E9%9A%90%E8%97%8F%E5%AD%97%E6%AE%B5"><span class="nav-text">②隐藏字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2undo-log"><span class="nav-text">③undo log</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3readview-%E8%AF%BB%E8%A7%86%E5%9B%BE%EF%BC%89"><span class="nav-text">④readview(读视图）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4RC%E5%92%8CRR%E7%9A%84MVCC"><span class="nav-text">⑤RC和RR的MVCC</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E7%B3%BB%E7%BB%9F%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">八、系统数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%9F%BA%E6%9C%AC%E8%A1%A8"><span class="nav-text">1. 基本表</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

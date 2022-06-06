@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="once again I am a child">
@@ -140,10 +140,6 @@
     </header>
 
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
 
 
     <main class="main">
@@ -188,7 +184,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-06-06 10:54:33" itemprop="dateModified" datetime="2022-06-06T10:54:33+08:00">2022-06-06</time>
+                <time title="修改时间：2022-06-06 11:22:12" itemprop="dateModified" datetime="2022-06-06T11:22:12+08:00">2022-06-06</time>
               </span>
 
           
@@ -213,13 +209,13 @@
 
 
 
-<h2 id="四大特性ACID"><a href="#四大特性ACID" class="headerlink" title="四大特性ACID"></a>四大特性ACID</h2><ul>
+<h2 id="1-四大特性ACID"><a href="#1-四大特性ACID" class="headerlink" title="1.四大特性ACID"></a>1.四大特性ACID</h2><ul>
 <li>原子性(Atomicity)：事务是不可分割的最小操作但愿，要么全部成功，要么全部失败</li>
 <li>一致性(Consistency)：事务完成时，必须使所有数据都保持一致状态</li>
 <li>隔离性(Isolation)：数据库系统提供的隔离机制，保证事务在不受外部并发操作影响的独立环境下运行</li>
 <li>持久性(Durability)：事务一旦提交或回滚，它对数据库中的数据的改变就是永久的</li>
 </ul>
-<h2 id="并发事务"><a href="#并发事务" class="headerlink" title="并发事务"></a>并发事务</h2><table>
+<h2 id="2-并发事务"><a href="#2-并发事务" class="headerlink" title="2.并发事务"></a>2.并发事务</h2><table>
 <thead>
 <tr>
 <th>问题</th>
@@ -311,7 +307,7 @@
 
 
 
-<h2 id="2-常见引擎"><a href="#2-常见引擎" class="headerlink" title="2. 常见引擎"></a>2. 常见引擎</h2><h3 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h3><p>InnoDB 是一种兼顾高可靠性和高性能的通用存储引擎，在 MySQL 5.5 之后，InnoDB 是默认的 MySQL 引擎。</p>
+<h2 id="2-常见引擎"><a href="#2-常见引擎" class="headerlink" title="2. 常见引擎"></a>2. 常见引擎</h2><h3 id="1）InnoDB"><a href="#1）InnoDB" class="headerlink" title="1）InnoDB"></a>1）InnoDB</h3><p>InnoDB 是一种兼顾高可靠性和高性能的通用存储引擎，在 MySQL 5.5 之后，InnoDB 是默认的 MySQL 引擎。</p>
 <p>特点：</p>
 <ul>
 <li>DML 操作遵循 ACID 模型，支持<strong>事务</strong></li>
@@ -328,7 +324,7 @@
 <p>从idb文件提取表结构数据：<br>（在cmd运行）<br><code>ibd2sdi xxx.ibd</code></p>
 <p>InnoDB 逻辑存储结构：</p>
 <p><img src="https://s2.loli.net/2022/06/04/FnZ4XWVfNEJ5k9h.png" alt="image-20220604151045297"></p>
-<h3 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h3><p>MyISAM 是 MySQL 早期的默认存储引擎。</p>
+<h3 id="2）MyISAM"><a href="#2）MyISAM" class="headerlink" title="2）MyISAM"></a>2）MyISAM</h3><p>MyISAM 是 MySQL 早期的默认存储引擎。</p>
 <p>特点：</p>
 <ul>
 <li>不支持事务，不支持外键</li>
@@ -341,7 +337,7 @@
 <li>xxx.MYD: 存储数据</li>
 <li>xxx.MYI: 存储索引</li>
 </ul>
-<h3 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h3><p>Memory 引擎的表数据是存储在内存中的，受硬件问题、断电问题的影响，只能将这些表作为临时表或缓存使用。</p>
+<h3 id="3）Memory"><a href="#3）Memory" class="headerlink" title="3）Memory"></a>3）Memory</h3><p>Memory 引擎的表数据是存储在内存中的，受硬件问题、断电问题的影响，只能将这些表作为临时表或缓存使用。</p>
 <p>特点：</p>
 <ul>
 <li>存放在内存中，速度快</li>
@@ -428,7 +424,7 @@
 <li>Memory: 将所有数据保存在内存中，访问速度快，通常用于临时表及缓存。Memory 的缺陷是对表的大小有限制，太大的表无法缓存在内存中，而且无法保障数据的安全性</li>
 </ul>
 <p>电商中的足迹和评论适合使用 MyISAM 引擎，缓存适合使用 Memory 引擎。</p>
-<h1 id="三、-索引"><a href="#三、-索引" class="headerlink" title="三、* 索引"></a>三、* 索引</h1><h2 id="1-索引结构"><a href="#1-索引结构" class="headerlink" title="1. 索引结构"></a>1. 索引结构</h2><table>
+<h1 id="三、-索引"><a href="#三、-索引" class="headerlink" title="三、 索引"></a>三、 索引</h1><h2 id="1-索引结构"><a href="#1-索引结构" class="headerlink" title="1. 索引结构"></a>1. 索引结构</h2><table>
 <thead>
 <tr>
 <th>索引结构</th>
@@ -486,16 +482,16 @@
 <td>不支持</td>
 </tr>
 </tbody></table>
-<h3 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h3><p><img src="https://s2.loli.net/2022/06/04/UFR5N6rMGEKVnIs.png" alt="image-20220604151133266"></p>
+<h3 id="1）二叉搜索树"><a href="#1）二叉搜索树" class="headerlink" title="1）二叉搜索树"></a>1）二叉搜索树</h3><p><img src="https://s2.loli.net/2022/06/04/UFR5N6rMGEKVnIs.png" alt="image-20220604151133266"></p>
 <p>二叉树的缺点可以用红黑树来解决：<br><img src="https://s2.loli.net/2022/06/04/9cftzj5epWYIF6V.png" alt="image-20220604151200671"><br>红黑树也存在大数据量情况下，层级较深，检索速度慢的问题。</p>
-<h3 id="B-Tree"><a href="#B-Tree" class="headerlink" title="B Tree"></a>B Tree</h3><p>B Tree相较于二叉搜索树维护了自平衡（左右高度差距不会过大）并且增加了一个节点的字节点数量，eg：</p>
+<h3 id="2）B-Tree"><a href="#2）B-Tree" class="headerlink" title="2）B Tree"></a>2）B Tree</h3><p>B Tree相较于二叉搜索树维护了自平衡（左右高度差距不会过大）并且增加了一个节点的字节点数量，eg：</p>
 <p>如下图degree&#x3D;5（子节点个数），一共可存4个key（值），<code>x</code>&lt;20，20&lt;&#x3D;<code>x</code>&lt;30，…，…，89&#x3D;&lt;x</p>
 <p>为了解决上述问题，可以使用 B-Tree 结构。<br>B-Tree (多路平衡查找树) 以一棵最大度数（max-degree，指一个节点的子节点个数）为5（5阶）的 b-tree 为例（每个节点最多存储4个key，5个指针）</p>
 <p><img src="https://s2.loli.net/2022/06/04/1kgTeC5UNWFiEIf.png" alt="image-20220604151214322"></p>
 <blockquote>
 <p>B-Tree 的数据插入过程动画参照：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Kr4y1i7ru?p=68">https://www.bilibili.com/video/BV1Kr4y1i7ru?p=68</a><br>演示地址：<a target="_blank" rel="noopener" href="https://www.cs.usfca.edu/~galles/visualization/BTree.html">https://www.cs.usfca.edu/~galles/visualization/BTree.html</a></p>
 </blockquote>
-<h3 id="B-Tree-1"><a href="#B-Tree-1" class="headerlink" title="B+Tree"></a>B+Tree</h3><p>B+ Tree 相较于B Tree就是将数据全部存储在了叶子节点，如下图左下角x&lt;16，16&lt;&#x3D;x&lt;29，29&lt;&#x3D;x</p>
+<h3 id="3）B-Tree"><a href="#3）B-Tree" class="headerlink" title="3）B+Tree"></a>3）B+Tree</h3><p>B+ Tree 相较于B Tree就是将数据全部存储在了叶子节点，如下图左下角x&lt;16，16&lt;&#x3D;x&lt;29，29&lt;&#x3D;x</p>
 <p>这样key&#x3D;16的数据就存储在了第二个叶子节点</p>
 <p>结构图：</p>
 <p><img src="https://s2.loli.net/2022/06/04/Q21ABD6jfdZPi8p.png" alt="image-20220604151223679"></p>
@@ -507,10 +503,10 @@
 <li>所有的数据都会出现在叶子节点</li>
 <li>叶子节点形成一个单向链表</li>
 </ul>
-<h3 id="InooDB的改进B-Tree"><a href="#InooDB的改进B-Tree" class="headerlink" title="InooDB的改进B+ Tree"></a>InooDB的改进B+ Tree</h3><p>MySQL 索引数据结构对经典的 B+Tree 进行了优化。在原 B+Tree 的基础上，增加一个指向相邻叶子节点的链表指针，就形成了带有顺序指针的 B+Tree，提高区间访问的性能。</p>
+<h3 id="4）InooDB的改进B-Tree"><a href="#4）InooDB的改进B-Tree" class="headerlink" title="4）InooDB的改进B+ Tree"></a>4）InooDB的改进B+ Tree</h3><p>MySQL 索引数据结构对经典的 B+Tree 进行了优化。在原 B+Tree 的基础上，增加一个指向相邻叶子节点的链表指针，就形成了带有顺序指针的 B+Tree，提高区间访问的性能。</p>
 <p><img src="https://s2.loli.net/2022/06/04/aKtQdNDGo6iLmEC.png" alt="image-20220604151239993"></p>
 <p>​	mysql中的B+树对经典的B+树做了优化，1.在叶子相邻叶子节点间添加了一个向前的指针使其成为了双向链表（首尾也是双向指针），这是便于<code>范围搜索</code>和<code>排序</code></p>
-<h3 id="Hash索引"><a href="#Hash索引" class="headerlink" title="Hash索引"></a>Hash索引</h3><p>哈希索引就是采用一定的hash算法，将键值换算成新的hash值，映射到对应的槽位上，然后存储在hash表中。<br>如果两个（或多个）键值，映射到一个相同的槽位上，他们就产生了hash冲突（也称为hash碰撞），可以通过链表来解决。</p>
+<h3 id="5）Hash索引"><a href="#5）Hash索引" class="headerlink" title="5）Hash索引"></a>5）Hash索引</h3><p>哈希索引就是采用一定的hash算法，将键值换算成新的hash值，映射到对应的槽位上，然后存储在hash表中。<br>如果两个（或多个）键值，映射到一个相同的槽位上，他们就产生了hash冲突（也称为hash碰撞），可以通过链表来解决。</p>
 <p><img src="https://s2.loli.net/2022/06/04/z2J1p8j9EChBwcN.png" alt="image-20220604151249990"></p>
 <p>特点：</p>
 <ul>
@@ -523,7 +519,7 @@
 <li>Memory</li>
 <li>InnoDB: 具有自适应hash功能，hash索引是存储引擎根据 B+Tree 索引在指定条件下自动构建的</li>
 </ul>
-<h3 id="面试题"><a href="#面试题" class="headerlink" title="面试题"></a>面试题</h3><ol>
+<h3 id="6）面试题"><a href="#6）面试题" class="headerlink" title="6）面试题"></a>6）面试题</h3><ol>
 <li>为什么 InnoDB 存储引擎选择使用 B+Tree 索引结构？</li>
 </ol>
 <ul>
@@ -600,7 +596,8 @@
 <li>如果不存在主键，将使用第一个唯一(UNIQUE)索引作为聚集索引</li>
 <li>如果表没有主键或没有合适的唯一索引，则 InnoDB 会自动生成一个 rowid 作为隐藏的聚集索引</li>
 </ul>
-<h3 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h3><p>1. 以下 SQL 语句，哪个执行效率高？为什么？</p>
+<p>思考题</p>
+<p>1. 以下 SQL 语句，哪个执行效率高？为什么？</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select * from user where id = 10;</span><br><span class="line">select * from user where name = &#x27;Arm&#x27;;</span><br><span class="line">-- 备注：id为主键，name字段创建的有索引</span><br></pre></td></tr></table></figure>
 
 <p>答：第一条语句，因为第二条需要回表查询，相当于两个步骤。</p>
@@ -620,10 +617,10 @@
 <p>②通过慢查询日志可以定位哪台主机通过哪个user执行了哪条<code>sql语句</code>，执行效率较低</p>
 <p>③慢查询日志只会记录超过设定时间的sql，如果要查看没有超过时限的sql则需要通过profiles来查询</p>
 <p>④explain会查看sql具体的执行信息</p>
-<h3 id="查看执行频次"><a href="#查看执行频次" class="headerlink" title="查看执行频次"></a>查看执行频次</h3><p>查看当前数据库的 INSERT, UPDATE, DELETE, SELECT 访问频次：<br><code>全局：SHOW GLOBAL STATUS LIKE &#39;Com_______&#39;;</code> </p>
+<h3 id="1）查看执行频次"><a href="#1）查看执行频次" class="headerlink" title="1）查看执行频次"></a>1）查看执行频次</h3><p>查看当前数据库的 INSERT, UPDATE, DELETE, SELECT 访问频次：<br><code>全局：SHOW GLOBAL STATUS LIKE &#39;Com_______&#39;;</code> </p>
 <p><code>会话：SHOW SESSION STATUS LIKE &#39;Com_______&#39;;</code></p>
 <p>例：<code>show global status like &#39;Com_______&#39;</code></p>
-<h3 id="慢查询日志"><a href="#慢查询日志" class="headerlink" title="慢查询日志"></a>慢查询日志</h3><p>慢查询日志记录了所有执行时间超过指定参数（long_query_time，单位：秒，默认10秒）的所有SQL语句的日志。<br>MySQL的慢查询日志默认没有开启，需要在MySQL的配置文件（&#x2F;etc&#x2F;my.cnf）中配置如下信息：</p>
+<h3 id="2）慢查询日志"><a href="#2）慢查询日志" class="headerlink" title="2）慢查询日志"></a>2）慢查询日志</h3><p>慢查询日志记录了所有执行时间超过指定参数（long_query_time，单位：秒，默认10秒）的所有SQL语句的日志。<br>MySQL的慢查询日志默认没有开启，需要在MySQL的配置文件（&#x2F;etc&#x2F;my.cnf）中配置如下信息：</p>
 <p>#开启慢查询日志开关</p>
 <p><code>slow_query_log=1</code></p>
 <p>#设置慢查询日志的时间为2秒，SQL语句执行时间超过2秒，就会视为慢查询，记录慢查询日志：</p>
@@ -632,7 +629,7 @@
 <p><code>systemctl restart mysqld</code></p>
 <p>查看慢查询日志开关状态：</p>
 <p><code>show variables like &#39;slow_query_log&#39;;</code></p>
-<h3 id="profile"><a href="#profile" class="headerlink" title="profile"></a>profile</h3><p>show profile 能在做SQL优化时帮我们了解时间都耗费在哪里。通过 have_profiling 参数，能看到当前 MySQL 是否支持 profile 操作：</p>
+<h3 id="3）profile"><a href="#3）profile" class="headerlink" title="3）profile"></a>3）profile</h3><p>show profile 能在做SQL优化时帮我们了解时间都耗费在哪里。通过 have_profiling 参数，能看到当前 MySQL 是否支持 profile 操作：</p>
 <p><code>SELECT @@have_profiling;</code></p>
 <p>profiling 默认关闭，可查询其开启情况（0是关闭）</p>
 <p><code>select @@profiling;</code></p>
@@ -644,7 +641,7 @@
 <p><code>show profile for query query_id;</code></p>
 <p>查看指定query_id的SQL语句CPU的使用情况</p>
 <p><code>show profile cpu for query query_id;</code></p>
-<h3 id="explain"><a href="#explain" class="headerlink" title="explain"></a>explain</h3><p>EXPLAIN 或者 DESC 命令获取 MySQL 如何执行 SELECT 语句的信息，包括在 SELECT 语句执行过程中表如何连接和连接的顺序。<br>语法：<br>    # 直接在select语句之前加上关键字 explain &#x2F; desc<br>    EXPLAIN SELECT 字段列表 FROM 表名 HWERE 条件;</p>
+<h3 id="4）explain"><a href="#4）explain" class="headerlink" title="4）explain"></a>4）explain</h3><p>EXPLAIN 或者 DESC 命令获取 MySQL 如何执行 SELECT 语句的信息，包括在 SELECT 语句执行过程中表如何连接和连接的顺序。<br>语法：<br>    # 直接在select语句之前加上关键字 explain &#x2F; desc<br>    EXPLAIN SELECT 字段列表 FROM 表名 HWERE 条件;</p>
 <p>EXPLAIN 各字段含义：</p>
 <ul>
 <li><p>id*：select </p>
@@ -691,7 +688,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="5-使用规则"><a href="#5-使用规则" class="headerlink" title="5. 使用规则"></a>5. 使用规则</h2><h4 id="最左前缀法则（联合索引）"><a href="#最左前缀法则（联合索引）" class="headerlink" title="最左前缀法则（联合索引）"></a>最左前缀法则（联合索引）</h4><p>如果索引关联了多列（联合索引），要遵守最左前缀法则，最左前缀法则指的是查询从索引的最左列开始，并且不跳过索引中的列。<br>如果跳跃某一列，索引将部分失效（后面的字段索引失效）。</p>
+<h2 id="5-使用规则"><a href="#5-使用规则" class="headerlink" title="5. 使用规则"></a>5. 使用规则</h2><h4 id="1）最左前缀法则（联合索引）"><a href="#1）最左前缀法则（联合索引）" class="headerlink" title="1）最左前缀法则（联合索引）"></a>1）最左前缀法则（联合索引）</h4><p>如果索引关联了多列（联合索引），要遵守最左前缀法则，最左前缀法则指的是查询从索引的最左列开始，并且不跳过索引中的列。<br>如果跳跃某一列，索引将部分失效（后面的字段索引失效）。</p>
 <p>联合索引中，出现范围查询（&lt;, &gt;），范围查询右侧的列索引失效。可以用&gt;&#x3D;或者&lt;&#x3D;来规避索引失效问题。</p>
 <p><img src="https://s2.loli.net/2022/06/04/brk8NdOZXlhq23t.png" alt="image-20220430160710489"></p>
 <p>​	在这样一条联合索引中，索引的顺序分别是：profession（47），age（2），status（5），</p>
@@ -734,7 +731,7 @@
 </li>
 </ul>
 <p>​			</p>
-<h4 id="普通索引失效情况"><a href="#普通索引失效情况" class="headerlink" title="普通索引失效情况"></a>普通索引失效情况</h4><ol>
+<h4 id="2）普通索引失效情况"><a href="#2）普通索引失效情况" class="headerlink" title="2）普通索引失效情况"></a>2）普通索引失效情况</h4><ol>
 <li><p>在索引列上进行运算操作（如函数运算），索引将失效。</p>
 <p>如：查询手机号后两位是15的用户</p>
 <p><code>explain select * from tb_user where substring(phone, 10, 2) = &#39;15&#39;;</code></p>
@@ -758,7 +755,7 @@
 </li>
 </ol>
 <p>​			   <code>explain select * from tb_user where profession is not null;</code> pro字段大部分都不是null，这样还不如扫描all，所以不会走索引</p>
-<h4 id="SQL-提示"><a href="#SQL-提示" class="headerlink" title="SQL 提示"></a>SQL 提示</h4><p>​	是优化数据库的一个重要手段，简单来说，就是在SQL语句中加入一些人为的提示来达到优化操作的目的：</p>
+<h4 id="3）SQL-提示"><a href="#3）SQL-提示" class="headerlink" title="3）SQL 提示"></a>3）SQL 提示</h4><p>​	是优化数据库的一个重要手段，简单来说，就是在SQL语句中加入一些人为的提示来达到优化操作的目的：</p>
 <p>如用户告诉mysql在有多个索引的情况下，选择哪个索引而不是让mysql的优化选择器自己选择</p>
 <p>例如：</p>
 <ol>
@@ -769,7 +766,7 @@
 </li>
 </ol>
 <p>use 是建议，实际使用哪个索引 MySQL 还会自己权衡运行速度去更改，force就是无论如何都强制使用该索引。</p>
-<h4 id="覆盖索引-amp-回表查询"><a href="#覆盖索引-amp-回表查询" class="headerlink" title="覆盖索引&amp;回表查询"></a>覆盖索引&amp;回表查询</h4><ul>
+<h4 id="4）覆盖索引-amp-回表查询"><a href="#4）覆盖索引-amp-回表查询" class="headerlink" title="4）覆盖索引&amp;回表查询"></a>4）覆盖索引&amp;回表查询</h4><ul>
 <li>覆盖索引：根据索引可以查询出所有数据</li>
 </ul>
 <p><img src="https://s2.loli.net/2022/04/30/LHd9CkzsG2rFv5p.png" alt="image-20220430184740825"></p>
@@ -781,7 +778,7 @@
 <p><img src="https://s2.loli.net/2022/04/30/7MSNr4i3qFDPYb2.png" alt="image-20220430185245418"></p>
 <p><img src="https://s2.loli.net/2022/04/30/75qcEWAOeDoXujJ.png" alt="image-20220430185302627"></p>
 <p>虽然使用了索引查询，但是因为查询的字段中的gender和email是无法通过该联合索引查询出来的，所以在通过二级索引获取了id，profession，age后，还需要通过id值查询聚集索引来获取剩下的gender和email，这就进行了回表查询</p>
-<h4 id="前缀索引"><a href="#前缀索引" class="headerlink" title="前缀索引"></a>前缀索引</h4><p>当字段类型为字符串（varchar, text等）时，如果在这些字段上建立索引会导致建立的索引较大，查询时，也会浪费大量的磁盘IO，影响</p>
+<h4 id="5）前缀索引"><a href="#5）前缀索引" class="headerlink" title="5）前缀索引"></a>5）前缀索引</h4><p>当字段类型为字符串（varchar, text等）时，如果在这些字段上建立索引会导致建立的索引较大，查询时，也会浪费大量的磁盘IO，影响</p>
 <p>查询效率，此时可以只降字符串的一部分前缀，建立索引，这样可以大大节约索引空间，从而提高索引效率。</p>
 <p>比如要在email上建立索引，我们可以截取email的前几个char作为索引，这样就可以减小索引长度，可以根据一个比值选择性k来判断取值的合理性：不同的subString&#x2F;all，eg：当我们截取email字段前5个的时候，10个email中8个的前5个char都不一样，只有两个的前5个char是一样的，这时候k&#x3D;8&#x2F;10&#x3D;0.8，我就可以在k和长度之间做取舍</p>
 <p>求选择性公式：</p>
@@ -789,7 +786,7 @@
 
 <p>语法：<code>create index idx_xxxx on table_name(columnn(n));</code></p>
 <p>show index 里面的sub_part可以看到接取的长度</p>
-<h4 id="单列索引-amp-联合索引"><a href="#单列索引-amp-联合索引" class="headerlink" title="单列索引&amp;联合索引"></a>单列索引&amp;联合索引</h4><p>单列索引：即一个索引只包含单个列<br>联合索引：即一个索引包含了多个列<br>在业务场景中，如果存在多个查询条件，考虑针对于查询字段建立索引时，建议建立联合索引，而非单列索引。</p>
+<h4 id="6）单列索引-amp-联合索引"><a href="#6）单列索引-amp-联合索引" class="headerlink" title="6）单列索引&amp;联合索引"></a>6）单列索引&amp;联合索引</h4><p>单列索引：即一个索引只包含单个列<br>联合索引：即一个索引包含了多个列<br>在业务场景中，如果存在多个查询条件，考虑针对于查询字段建立索引时，建议建立联合索引，而非单列索引。</p>
 <p>单列索引情况：<br><code>explain select id, phone, name from tb_user where phone = &#39;17799990010&#39; and name = &#39;韩信&#39;;</code><br>这句只会用到phone索引字段，该sql会进行回表查询，因为phone的单列索引中并不包含name列</p>
 <p>所以我们可以根据查询条件构建联合索引（注意顺序——最左前缀法则）</p>
 <p><code>create index idx_user_phone_name on tb_user(phone,name);</code></p>
@@ -797,7 +794,7 @@
 <ul>
 <li>多条件联合查询时，MySQL优化器会评估哪个字段的索引效率更高，会选择该索引完成本次查询</li>
 </ul>
-<h3 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h3><ol>
+<h4 id="7）设计原则"><a href="#7）设计原则" class="headerlink" title="7）设计原则"></a>7）设计原则</h4><ol>
 <li>针对于数据量较大，且查询比较频繁的表建立索引</li>
 <li>针对于常作为查询条件（where）、排序（order by）、分组（group by）操作的字段建立索引</li>
 <li>尽量选择区分度高的列作为索引，尽量建立唯一索引，区分度越高，使用索引的效率越高</li>
@@ -807,7 +804,7 @@
 <li>如果索引列不能存储NULL值，请在创建表时使用NOT NULL约束它。当优化器知道每列是否包含NULL值时，它可以更好地确定哪个索引最有效地用于查询</li>
 </ol>
 <h1 id="四、SQL-优化"><a href="#四、SQL-优化" class="headerlink" title="四、SQL 优化"></a>四、SQL 优化</h1><p><img src="https://s2.loli.net/2022/05/04/TgKzdrDO5u6Mxf2.png" alt="image-20220503171504262"></p>
-<h2 id="插入数据（insert，load）"><a href="#插入数据（insert，load）" class="headerlink" title="插入数据（insert，load）"></a>插入数据（insert，load）</h2><p>普通插入：</p>
+<h2 id="1-插入数据（insert，load）"><a href="#1-插入数据（insert，load）" class="headerlink" title="1.插入数据（insert，load）"></a>1.插入数据（insert，load）</h2><p>普通插入：</p>
 <ol>
 <li>采用批量插入（一次插入的数据不建议超过1000条）</li>
 <li>手动提交事务（mysql默认自动提交事务，执行3条insert就会有三次事务，可以直接start transaction (3条insert) commit）</li>
@@ -819,7 +816,7 @@
 <p><code>set global local_infile = 1;</code><br><code>select @@local_infile;</code></p>
 <p>③执行load指令将准备好的数据，加载到表结构中</p>
 <p><code>load data local infile &#39;/root/sql1.log&#39; into table &#39;tb_user&#39; fields terminated by &#39;,&#39; lines terminated by &#39;\n&#39;;</code></p>
-<h2 id="主键优化"><a href="#主键优化" class="headerlink" title="主键优化"></a>主键优化</h2><p>数据组织方式：在InnoDB存储引擎中，表数据都是根据主键顺序组织存放的，这种存储方式的表称为索引组织表（Index organized table, IOT）</p>
+<h2 id="2-主键优化"><a href="#2-主键优化" class="headerlink" title="2.主键优化"></a>2.主键优化</h2><p>数据组织方式：在InnoDB存储引擎中，表数据都是根据主键顺序组织存放的，这种存储方式的表称为索引组织表（Index organized table, IOT）</p>
 <p>a. 页分裂：</p>
 <p><img src="https://s2.loli.net/2022/05/03/ivgQnFRIlw8AuPS.png" alt="image-20220501184608187"></p>
 <p><img src="https://s2.loli.net/2022/05/03/8NQSBUeDgXZ5Apy.png" alt="image-20220501184715525"></p>
@@ -849,7 +846,7 @@
 <li><p>业务操作时，避免对主键的修改</p>
 </li>
 </ul>
-<h2 id="order-by优化"><a href="#order-by优化" class="headerlink" title="order by优化"></a>order by优化</h2><ol>
+<h2 id="3-order-by优化"><a href="#3-order-by优化" class="headerlink" title="3.order by优化"></a>3.order by优化</h2><ol>
 <li>Using filesort：通过表的索引或全表扫描，读取满足条件的数据行，然后在排序缓冲区 sort buffer 中完成排序操作，所有不是通过索引直接返回排序结果的排序都叫 FileSort 排序</li>
 <li>Using index：通过有序索引顺序扫描直接返回有序数据，这种情况即为 using index，不需要额外排序，操作效率高</li>
 </ol>
@@ -868,7 +865,7 @@
 <li><p>如果不可避免出现filesort，大数据量排序时，可以适当增大排序缓冲区大小 sort_buffer_size（默认256k）</p>
 </li>
 </ul>
-<h2 id="group-by优化"><a href="#group-by优化" class="headerlink" title="group by优化"></a>group by优化</h2><ul>
+<h2 id="4-group-by优化"><a href="#4-group-by优化" class="headerlink" title="4.group by优化"></a>4.group by优化</h2><ul>
 <li>在分组操作时，可以通过索引来提高效率</li>
 <li>分组操作时，索引的使用也是满足最左前缀法则的</li>
 </ul>
@@ -879,16 +876,16 @@
 <p>注意：</p>
 <p><code>explain select age,count(age) from tb_user group by age;</code></p>
 <p>虽然也用到了索引，但是也用到了临时表，其实效率并不高</p>
-<h2 id="limit优化"><a href="#limit优化" class="headerlink" title="limit优化"></a>limit优化</h2><p>常见的问题如<code>limit 2000000, 10</code>，此时需要 MySQL 排序前2000000条记录，但仅仅返回2000000 - 2000010的记录，其他记录丢弃，查询排序的代价非常大。<br>优化方案：一般分页查询时，通过创建覆盖索引能够比较好地提高性能，可以通过<code>覆盖索引</code>加<code>子查询</code>形式进行优化</p>
+<h2 id="5-limit优化"><a href="#5-limit优化" class="headerlink" title="5.limit优化"></a>5.limit优化</h2><p>常见的问题如<code>limit 2000000, 10</code>，此时需要 MySQL 排序前2000000条记录，但仅仅返回2000000 - 2000010的记录，其他记录丢弃，查询排序的代价非常大。<br>优化方案：一般分页查询时，通过创建覆盖索引能够比较好地提高性能，可以通过<code>覆盖索引</code>加<code>子查询</code>形式进行优化</p>
 <p>例如：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-- 此语句耗时很长</span><br><span class="line">select * from tb_sku limit 9000000, 10;</span><br><span class="line">-- 通过覆盖索引加快速度，直接通过主键索引进行排序及查询</span><br><span class="line">select id from tb_sku order by id limit 9000000, 10;</span><br><span class="line">-- 下面的语句是错误的，因为 MySQL 不支持 in 里面使用 limit</span><br><span class="line">-- select * from tb_sku where id in (select id from tb_sku order by id limit 9000000, 10);</span><br><span class="line">-- 通过连表查询即可实现第一句的效果，并且能达到第二句的速度</span><br><span class="line">select * from tb_sku as s, (select id from tb_sku order by id limit 9000000, 10) as a where s.id = a.id;</span><br></pre></td></tr></table></figure>
 
 
 
-<h2 id="count优化"><a href="#count优化" class="headerlink" title="count优化"></a>count优化</h2><p>MyISAM 引擎把一个表的总行数存在了磁盘上，因此执行 count(*) 的时候会直接返回这个数，效率很高（前提是不适用where）；<br>InnoDB 在执行 count(*) 时，需要把数据一行一行地从引擎里面读出来，然后累计计数。<br>优化方案：自己计数，如创建key-value表存储在内存或硬盘，或者是用redis</p>
+<h2 id="6-count优化"><a href="#6-count优化" class="headerlink" title="6.count优化"></a>6.count优化</h2><p>MyISAM 引擎把一个表的总行数存在了磁盘上，因此执行 count(*) 的时候会直接返回这个数，效率很高（前提是不适用where）；<br>InnoDB 在执行 count(*) 时，需要把数据一行一行地从引擎里面读出来，然后累计计数。<br>优化方案：自己计数，如创建key-value表存储在内存或硬盘，或者是用redis</p>
 <p><img src="https://s2.loli.net/2022/05/04/PxhtBiqX7AenEkU.png" alt="image-20220503163840118"></p>
 <p>​	从上面可以看出，count(1)和count(*)是没有取值的过程，所以小</p>
-<h2 id="update优化（避免行锁升级为表锁）"><a href="#update优化（避免行锁升级为表锁）" class="headerlink" title="update优化（避免行锁升级为表锁）"></a>update优化（避免行锁升级为表锁）</h2><p>InnoDB 的<code>行锁是针对索引加的锁</code>，不是针对记录加的锁，并且该索引不能失效，否则会从行锁升级为表锁。</p>
+<h2 id="7-update优化（避免行锁升级为表锁）"><a href="#7-update优化（避免行锁升级为表锁）" class="headerlink" title="7.update优化（避免行锁升级为表锁）"></a>7.update优化（避免行锁升级为表锁）</h2><p>InnoDB 的<code>行锁是针对索引加的锁</code>，不是针对记录加的锁，并且该索引不能失效，否则会从行锁升级为表锁。</p>
 <p>如以下两条语句：<br><code>update student set no = &#39;123&#39; where id = 1;</code>，这句由于id有主键索引，所以只会锁这一行；<br><code>update student set no = &#39;123&#39; where name = &#39;test&#39;;</code>，这句由于name没有索引，所以会把整张表都锁住进行数据更新，解决方法是给name字段添加索引</p>
 <h1 id="五、视图-x2F-存储过程-x2F-触发器"><a href="#五、视图-x2F-存储过程-x2F-触发器" class="headerlink" title="五、视图&#x2F;存储过程&#x2F;触发器"></a>五、视图&#x2F;存储过程&#x2F;触发器</h1><p><img src="https://s2.loli.net/2022/05/06/VwHtZGLrs3XCBof.png" alt="image-20220506163730446"></p>
 <h2 id="1-视图"><a href="#1-视图" class="headerlink" title="1. 视图"></a>1. 视图</h2><p>①语法</p>
@@ -915,7 +912,7 @@
 <p><img src="https://s2.loli.net/2022/05/04/qWYeCaVbirOBp5U.png" alt="image-20220504164219294"></p>
 <p>​	三表联查：</p>
 <p>​	<img src="https://s2.loli.net/2022/05/04/6NOkcM4nKSljq2P.png" alt="image-20220504165031609"></p>
-<h2 id="2-存储过程"><a href="#2-存储过程" class="headerlink" title="2. 存储过程"></a>2. 存储过程</h2><h3 id="2-1-变量"><a href="#2-1-变量" class="headerlink" title="2.1 变量"></a>2.1 变量</h3><p>1）系统变量（@@）</p>
+<h2 id="2-存储过程"><a href="#2-存储过程" class="headerlink" title="2. 存储过程"></a>2. 存储过程</h2><h3 id="1）变量"><a href="#1）变量" class="headerlink" title="1）变量"></a>1）变量</h3><p>1）系统变量（@@）</p>
 <p>​	session：会话变量，在另外一个会话中则不存在，未指定默认是session</p>
 <p>​	global：全局变量，在所有会话中都存在，但是在restart mysql后还是不会改变（持久改变需要在配置文件中配置）</p>
 <p><img src="https://s2.loli.net/2022/05/04/O56V1xY4XIUQKdC.png" alt="image-20220504205411850"></p>
@@ -924,25 +921,25 @@
 <p>3）局部变量</p>
 <p>​	只在存储过程中生效</p>
 <p><img src="https://s2.loli.net/2022/05/05/PRMQ3GcIDke2JT8.png" alt="image-20220505210448969"></p>
-<h3 id="2-2-存储过程中的语法"><a href="#2-2-存储过程中的语法" class="headerlink" title="2.2 存储过程中的语法"></a>2.2 存储过程中的语法</h3><h4 id="2-2-1-if"><a href="#2-2-1-if" class="headerlink" title="2.2.1 if"></a>2.2.1 if</h4><p><img src="https://s2.loli.net/2022/05/05/FkjyDKNR7I3vOJp.png" alt="image-20220505154639503"></p>
+<h3 id="2）存储过程中的语法"><a href="#2）存储过程中的语法" class="headerlink" title="2）存储过程中的语法"></a>2）存储过程中的语法</h3><h4 id="①if"><a href="#①if" class="headerlink" title="①if"></a>①if</h4><p><img src="https://s2.loli.net/2022/05/05/FkjyDKNR7I3vOJp.png" alt="image-20220505154639503"></p>
 <p>​	</p>
-<h4 id="2-2-2-case"><a href="#2-2-2-case" class="headerlink" title="2.2.2 case"></a>2.2.2 case</h4><p><img src="https://s2.loli.net/2022/05/05/OWcUtonTPCm1AIz.png" alt="image-20220505154816329"></p>
+<h4 id="②case"><a href="#②case" class="headerlink" title="②case"></a>②case</h4><p><img src="https://s2.loli.net/2022/05/05/OWcUtonTPCm1AIz.png" alt="image-20220505154816329"></p>
 <p>​	<img src="https://s2.loli.net/2022/05/05/sdyktMcIi34x7Yf.png" alt="image-20220505155327524"></p>
-<h4 id="2-2-3-while"><a href="#2-2-3-while" class="headerlink" title="2.2.3 while"></a>2.2.3 while</h4><p><img src="https://s2.loli.net/2022/05/05/om9e35AVERQkFtp.png" alt="image-20220505164543557"></p>
-<h4 id="2-2-4-repeat"><a href="#2-2-4-repeat" class="headerlink" title="2.2.4 repeat"></a>2.2.4 repeat</h4><p><img src="https://s2.loli.net/2022/05/05/nvBiLafzYgQoTdE.png" alt="image-20220505164840620"></p>
-<h4 id="2-2-5-loop"><a href="#2-2-5-loop" class="headerlink" title="2.2.5 loop"></a>2.2.5 loop</h4><p><img src="https://s2.loli.net/2022/05/05/sGodEcNFX4xguPp.png" alt="image-20220505164923239"></p>
+<h4 id="③while"><a href="#③while" class="headerlink" title="③while"></a>③while</h4><p><img src="https://s2.loli.net/2022/05/05/om9e35AVERQkFtp.png" alt="image-20220505164543557"></p>
+<h4 id="④repeat"><a href="#④repeat" class="headerlink" title="④repeat"></a>④repeat</h4><p><img src="https://s2.loli.net/2022/05/05/nvBiLafzYgQoTdE.png" alt="image-20220505164840620"></p>
+<h4 id="⑤loop"><a href="#⑤loop" class="headerlink" title="⑤loop"></a>⑤loop</h4><p><img src="https://s2.loli.net/2022/05/05/sGodEcNFX4xguPp.png" alt="image-20220505164923239"></p>
 <p><img src="https://s2.loli.net/2022/05/05/6iQB9kvRUHuPTaF.png" alt="image-20220505165923716"></p>
-<h4 id="2-2-6-cursor-游标"><a href="#2-2-6-cursor-游标" class="headerlink" title="2.2.6 cursor 游标"></a>2.2.6 cursor 游标</h4><p>游标类似于一个集合、迭代器，每次从游标中取一行数据</p>
+<h4 id="⑥cursor-游标"><a href="#⑥cursor-游标" class="headerlink" title="⑥cursor 游标"></a>⑥cursor 游标</h4><p>游标类似于一个集合、迭代器，每次从游标中取一行数据</p>
 <p>​	<img src="https://s2.loli.net/2022/05/05/OfSv69jIyRxr2ZU.png" alt="image-20220505172302719"></p>
 <p>eg：</p>
 <p><img src="https://s2.loli.net/2022/05/05/1YSkTZX36dUajbK.png" alt="image-20220505172434324"></p>
-<h4 id="2-2-7-handler-条件处理程序"><a href="#2-2-7-handler-条件处理程序" class="headerlink" title="2.2.7 handler 条件处理程序"></a>2.2.7 handler 条件处理程序</h4><p>类似于异常处理，根据捕获的异常码来处理</p>
+<h4 id="⑦handler-条件处理程序"><a href="#⑦handler-条件处理程序" class="headerlink" title="⑦handler 条件处理程序"></a>⑦handler 条件处理程序</h4><p>类似于异常处理，根据捕获的异常码来处理</p>
 <p><img src="https://s2.loli.net/2022/05/05/6sTWjenSC1rkZJK.png" alt="image-20220505211156206"></p>
 <p>eg：</p>
 <p><img src="https://s2.loli.net/2022/05/05/Q7jpROgLsWVGa8F.png" alt="image-20220505172652900"></p>
 <p><img src="https://s2.loli.net/2022/05/05/oVfsBG8Y5zRk9g2.png" alt="image-20220505211219491"></p>
 <p>这个对游标的改进就是在，游标抛出异常02000（not found）后关闭cursor</p>
-<h3 id="2-3-存储函数"><a href="#2-3-存储函数" class="headerlink" title="2.3 存储函数"></a>2.3 存储函数</h3><p><img src="https://s2.loli.net/2022/05/05/Kqopg7ycnHTEiJA.png" alt="image-20220505211335765"></p>
+<h3 id="3）存储函数"><a href="#3）存储函数" class="headerlink" title="3）存储函数"></a>3）存储函数</h3><p><img src="https://s2.loli.net/2022/05/05/Kqopg7ycnHTEiJA.png" alt="image-20220505211335765"></p>
 <p><img src="https://s2.loli.net/2022/05/05/5tnMHfhJiLPN8zA.png" alt="image-20220505173415696"></p>
 <h2 id="3-触发器"><a href="#3-触发器" class="headerlink" title="3. 触发器"></a>3. 触发器</h2><p>触发器可以在insert&#x2F;update&#x2F;delete 语句执行之后，执行触发器中定义的sql，可以完成日志记录、数据校验等工作</p>
 <p>触发器目前只支持 <code>行级触发</code>：如一条语句影响了5行数据，那么触发器会被执行5次</p>
@@ -1160,7 +1157,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-06-05 17:29:40" itemprop="dateModified" datetime="2022-06-05T17:29:40+08:00">2022-06-05</time>
+                <time title="修改时间：2022-06-06 11:32:17" itemprop="dateModified" datetime="2022-06-06T11:32:17+08:00">2022-06-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1296,6 +1293,10 @@
 
 
       </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
 
     </div>
   </aside>

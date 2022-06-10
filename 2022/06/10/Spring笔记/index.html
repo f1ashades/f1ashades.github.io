@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一些Spring的笔记.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring笔记">
+<meta property="og:url" content="http://example.com/2022/06/10/Spring%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="f1ashades&#39; blogs">
+<meta property="og:description" content="一些Spring的笔记.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/VgSNZ9MDaeIUJm1.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/2wDgiEOexAlVuPJ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/oEm8Yy715OeKlwr.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/jJFi8psD3Y1gchn.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/7wQnFEUm6R9WuV1.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/7DlTbISyGF61XqQ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/9j7yHO6QmGSPvs5.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/4w2CnJloQeXFTVi.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/Yw3RBa2VyZDThdo.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/hOgE3oAF6MTN17d.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/BRx4KSvAL3QYFoM.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/iEAxjwKNa8BpUP7.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/HLG5xY1ip8WzOKu.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/kSbcnzVsKug4YRe.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/C3BsyjpXIKNYlhd.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/vGgZPFnTVhzqdcJ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/ONQzcDHl3h69L84.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/eksc6lhY54RO3PF.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/o6mFSyu3nUNTL1E.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/923kEhrQSVityWg.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/CpThcy3lQWKw6Fs.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/Efa6DySYmW3x8GU.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/tL1rcDpo5gQETCJ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/QPCgivD5xcVjnm8.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/f6MuCPiKvz1m7xd.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/nzE83WNpOKZTMio.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/wdIsnox7i8XmNgt.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/S8KVJshWoDxOT72.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/2PoCGVhv4mlDKyU.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/A8nBrRyi6hOdTGt.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/bTZmWzNkgRBrxsh.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/z8TbVmLwgvNIQtu.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/vcswNlSB8Ea1f6p.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/xUqwfmlsKORJ2iB.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/9y3eWPiBFldN1J8.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/wgKIFoJh9qjTkfr.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/JVTm357bsac1xMR.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/xjw9mOBTX8EGq6I.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/1FDUCOeXdnKVT9z.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/oZt5nw27igf1PNA.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/J1TqDhzmgVnWN8A.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/Qciq7D5oMNTUYsA.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/nlYJiHm3uKdqR5e.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/as2DXVlHwmzG5Ex.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/DQh9gp7lXRqKf1F.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/D5SxjTrpafoRGVH.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/Xca2WQMRVLAKPs6.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/z2AMVYa8GTQOJdn.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/vFsGOa8PdQilkWL.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/265hOUSipKwZk4d.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/NTiGrQMhXO3E4lj.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/dMGHpOK6FRJlqWi.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/n7ubY94JzGvswxP.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/viBG8mTpsdX51VR.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/9tyUMP3KD6ozVRh.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/bUtuOVP2olJmRew.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/F5xSn9BRyOsIMlf.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/O615f2yFCcEMiTD.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/qdUPoxi9rgfOHkQ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/zctSnDdFhGfxBsa.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/itLEVOwFBDbdTzQ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/j9i3xTJVELOXRqt.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/9mC8v4VfXawSAoJ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/R3xdbDXzjqFngWP.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/w7HImx8JrDdMcF6.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/1GBJo9uXv3IlZfi.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/v3bG5tAqFTMIkNs.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/TRSq7LDyb2OcKJ6.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/YbqMgOipS1kj6ZE.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/CGrdVf4DALscuRX.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/83Q5mAHZiGjRs9d.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/z1greMh8WQLCiOK.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/TZuizFJAVKLHUwg.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/uURVJ8Iyla4TFCe.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/e16MOPDEu9oyIJ3.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/w4oNvVcRqArPpTt.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/YQyLEmUMgfGu2ct.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/fzuXjyvRPdWgaFY.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/qvueMX8FOArYZJl.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/vjGNJehEymFxVSK.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/GH6fxgYvoF9LB1a.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/w7um6CnKpEUg92I.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/xNhYapQP4I9mXCV.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/MB4EvYw7xZrOJmc.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/GTZX793ik41xKo5.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/NIxDEjLS1k392ao.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/Qd3tK8EvTVlURFk.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/uhlpCqJsAItTzEg.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/ZTPpn9GaJlrtszj.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/Q8CFqHSLZiyldME.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/M8B7JZH5Twl1fcI.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/ZjHo8CgAq4BmakP.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/6oAOL1GnYBspKXk.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/gcYxL4lbK2TitJy.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/N9DUzJOgoZYyG76.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/ObfmI1naxX8VYBR.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/NkKbotGw59SBZ8l.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/vEWYz8FqKUhyBbx.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/betx3Fq1SgIJ5Lm.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/VFqdMWJDO8ePI4p.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/1epgHoUfA6Muidq.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/NIz6wZ2b7mVJuqe.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/WOCn7Ih3bExQXrz.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/mDwN2hajZuGoHOU.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/MDLhb3SpwKtJNjo.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/PHfC91cAwdFxK2X.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/L7IVp3GZcsrj9Co.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/y2TdevRVODFX7xq.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/P3SUgzV159eaF68.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/gXhRtWiNwHe3LM6.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/o3H5ifqS6FpuXvl.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/GRWyJB17NOdVYnQ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/soHSPutW4ndlX9q.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/e9hxXHGvPYR3j8d.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/98CSRBTWnZKyPcI.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/23/cvH5RdrDXhTGEtF.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/PaEmXwQJo9S36cT.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/Aq38M7QFWivh2Pe.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/a5CLMUc7iSWOwY8.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/pYrjf2uoVvMCgzT.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/6Y3SZVrMA79EiBD.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/yU2cSLOnJdo8TW7.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/H1IjPrLVu9soMOT.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/RBnO4lStfaPYhUI.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/8flqIaDUwB9kvOA.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/MigR92C7wtaVpr6.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/slUOZvoFREI94nH.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/u2idLbozD9NHpRh.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/ZmLltMezxyAYCUu.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/tAjgEa9knSUsNbJ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/k4RtHVmp9r2McqY.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/image-20220610154424482.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/QeZbfmOFKUBAG2T.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/EgsScz3k7GIlrCO.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/IoVYWXdlnQEihJb.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/6tUXTgAyZcpulB5.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/HvlkPXzJ7DETYVS.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/LX6nuWG1zdgPUi4.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/TZimyvuArjol6YV.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/10/5Y9m2x3eMFIOcfa.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/image-20220610162457289.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/image-20220610162617557.png">
+<meta property="article:published_time" content="2022-06-10T10:31:31.000Z">
+<meta property="article:modified_time" content="2022-06-10T10:35:01.565Z">
+<meta property="article:author" content="f1ashades">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/05/23/VgSNZ9MDaeIUJm1.png">
+
+<link rel="canonical" href="http://example.com/2022/06/10/Spring%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Spring笔记 | f1ashades' blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">f1ashades' blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/10/Spring%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/mine.jpg">
+      <meta itemprop="name" content="f1ashades">
+      <meta itemprop="description" content="once again I am a child">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="f1ashades' blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spring笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-06-10 18:31:31 / 修改时间：18:35:01" itemprop="dateCreated datePublished" datetime="2022-06-10T18:31:31+08:00">2022-06-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>一些Spring的笔记<del>.</del></p>
+<span id="more"></span>
+
+<h1 id="一-xml配置相关"><a href="#一-xml配置相关" class="headerlink" title="一.xml配置相关"></a>一.xml配置相关</h1><h2 id="1-bean标签中的scope"><a href="#1-bean标签中的scope" class="headerlink" title="1. bean标签中的scope"></a>1. bean标签中的scope</h2><p><img src="https://s2.loli.net/2022/05/23/VgSNZ9MDaeIUJm1.png" alt="image-20220517213130446"></p>
+<img src="https://s2.loli.net/2022/06/10/2wDgiEOexAlVuPJ.png" alt="image-20220517213150873" style="zoom:80%;" />
+
+<p>spring bean 线程安全问题：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1743283">https://cloud.tencent.com/developer/article/1743283</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012843361/article/details/84023869">https://blog.csdn.net/u012843361/article/details/84023869</a></li>
+</ul>
+<img src="https://s2.loli.net/2022/06/10/oEm8Yy715OeKlwr.png" alt="image-20220517213405384" style="zoom:80%;" />
+
+
+
+<h2 id="2-bean的三种实例方式"><a href="#2-bean的三种实例方式" class="headerlink" title="2.bean的三种实例方式"></a>2.bean的三种实例方式</h2><h3 id="1）无参构造方法"><a href="#1）无参构造方法" class="headerlink" title="1）无参构造方法"></a><strong>1）无参构造方法</strong></h3><p><img src="https://s2.loli.net/2022/06/10/jJFi8psD3Y1gchn.png" alt="image-20220518085434638"></p>
+<p><img src="https://s2.loli.net/2022/06/10/7wQnFEUm6R9WuV1.png" alt="image-20220518091825625"></p>
+<p>​				<img src="https://s2.loli.net/2022/06/10/7DlTbISyGF61XqQ.png" alt="image-20220518085558295">	</p>
+<p>​	这样就是通过无参的构造来完成的，并且方法如果是private也能够实例化，说明底层用的是反射（暴力反射）</p>
+<ul>
+<li>反射及暴力反射：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000037432381">https://segmentfault.com/a/1190000037432381</a></li>
+</ul>
+<h3 id="2）静态工厂实例化"><a href="#2）静态工厂实例化" class="headerlink" title="2）静态工厂实例化"></a><strong>2）静态工厂实例化</strong></h3><p><img src="https://s2.loli.net/2022/05/23/9j7yHO6QmGSPvs5.png" alt="image-20220518085658123"></p>
+<p><img src="https://s2.loli.net/2022/05/23/4w2CnJloQeXFTVi.png" alt="image-20220518085713689"></p>
+<p>以上为静态工厂创建对象，以下为spring的静态工厂方式：</p>
+<p><img src="https://s2.loli.net/2022/05/23/Yw3RBa2VyZDThdo.png" alt="image-20220518085846437"></p>
+<p><img src="https://s2.loli.net/2022/05/23/hOgE3oAF6MTN17d.png" alt="image-20220518085915177"></p>
+<p>这样可以在new对象前进行一些必要操作，同时也是为了兼容一些老的系统：</p>
+<p><img src="https://s2.loli.net/2022/05/23/BRx4KSvAL3QYFoM.png" alt="image-20220518090047357"></p>
+<p><img src="https://s2.loli.net/2022/06/10/iEAxjwKNa8BpUP7.png" alt="image-20220518090058743"></p>
+<p>​	spring bean 线程安全问题：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1743283">https://cloud.tencent.com/developer/article/1743283</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012843361/article/details/84023869">https://blog.csdn.net/u012843361/article/details/84023869</a></li>
+</ul>
+<h3 id="3）实例工厂实例化"><a href="#3）实例工厂实例化" class="headerlink" title="3）实例工厂实例化"></a><strong>3）实例工厂实例化</strong></h3><p><img src="https://s2.loli.net/2022/05/23/HLG5xY1ip8WzOKu.png" alt="image-20220518090525360"></p>
+<p><img src="https://s2.loli.net/2022/05/23/kSbcnzVsKug4YRe.png" alt="image-20220518090551232"></p>
+<p>可以看出，实例工厂中return对应对象的方法不是static，所以我们在使用的时候需要先new工厂类再使用其方法实例化bean</p>
+<p>以下为spring的实例化工厂方式：</p>
+<p><img src="https://s2.loli.net/2022/05/23/C3BsyjpXIKNYlhd.png" alt="image-20220518090727600"></p>
+<p>因为实例工厂类的方法并不是static的，所以我们需要先有一个工厂类，所以需要先配置一个userFactory</p>
+<p>静态工厂和实例工厂对比：</p>
+<p><strong>静态工厂：</strong></p>
+<img src="https://s2.loli.net/2022/05/23/vGgZPFnTVhzqdcJ.png" alt="image-20220518090959317" style="zoom:80%;" />
+
+<p><strong>实例工厂：</strong></p>
+<img src="https://s2.loli.net/2022/05/23/ONQzcDHl3h69L84.png" alt="image-20220518091016538" style="zoom:80%;" />
+
+<p>这种方式有一个简化的配置方法：</p>
+<img src="https://s2.loli.net/2022/05/23/eksc6lhY54RO3PF.png" alt="image-20220518091329843" style="zoom:80%;" />
+
+<p>首先实现BeanFactory接口，并实现两个方法，一个是return对应的bean，另一个是return对应的bean.class</p>
+<p><img src="https://s2.loli.net/2022/06/10/o6mFSyu3nUNTL1E.png" alt="image-20220610175149862"></p>
+<h2 id="3-bean的生存周期"><a href="#3-bean的生存周期" class="headerlink" title="3.bean的生存周期"></a>3.bean的生存周期</h2><h3 id="1）标签中配置init-method和destroy-method"><a href="#1）标签中配置init-method和destroy-method" class="headerlink" title="1）标签中配置init-method和destroy-method"></a>1）标签中配置<code>init-method</code>和<code>destroy-method</code></h3><img src="https://s2.loli.net/2022/05/23/923kEhrQSVityWg.png" alt="image-20220519105851947" style="zoom:80%;" />
+
+<p><img src="https://s2.loli.net/2022/05/23/CpThcy3lQWKw6Fs.png" alt="image-20220519105900101"></p>
+<img src="https://s2.loli.net/2022/05/23/Efa6DySYmW3x8GU.png" alt="image-20220519105923041" style="zoom:80%;" />
+
+
+
+
+
+<h4 id="①close方式关闭容器"><a href="#①close方式关闭容器" class="headerlink" title="①close方式关闭容器"></a>①close方式关闭容器</h4><img src="https://s2.loli.net/2022/05/23/tL1rcDpo5gQETCJ.png" alt="image-20220519110023807" style="zoom:80%;" />
+
+
+
+<h4 id="②钩子函数方式关闭容器"><a href="#②钩子函数方式关闭容器" class="headerlink" title="②钩子函数方式关闭容器"></a>②钩子函数方式关闭容器</h4><img src="https://s2.loli.net/2022/05/23/QPCgivD5xcVjnm8.png" alt="image-20220519110255983" style="zoom:80%;" />
+
+<p>​	close()后马上关闭容器，而使用钩子函数并不会立刻关闭容器，而是在JVM退出前调用destroy函数</p>
+<h3 id="2）implement接口来替代标签"><a href="#2）implement接口来替代标签" class="headerlink" title="2）implement接口来替代标签"></a>2）implement接口来替代标签</h3><p><img src="https://s2.loli.net/2022/06/10/f6MuCPiKvz1m7xd.png" alt="image-20220610175657091"></p>
+<p>eg：</p>
+<p><img src="https://s2.loli.net/2022/06/10/nzE83WNpOKZTMio.png" alt="image-20220610175832724"></p>
+<h2 id="4-依赖注入-set-property"><a href="#4-依赖注入-set-property" class="headerlink" title="4.依赖注入(set property)"></a>4.依赖注入(set property)</h2><h3 id="1）setter注入"><a href="#1）setter注入" class="headerlink" title="1）setter注入"></a>1）setter注入</h3><p><strong>引用类型：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/10/wdIsnox7i8XmNgt.png" alt="image-20220610180216415"></p>
+<p><strong>简单基本类型</strong>：</p>
+<p><img src="https://s2.loli.net/2022/05/23/S8KVJshWoDxOT72.png" alt="image-20220519213024085"></p>
+<p><img src="https://s2.loli.net/2022/06/10/2PoCGVhv4mlDKyU.png" alt="image-20220610180324995"></p>
+<p><strong>总结：</strong></p>
+<p><img src="https://s2.loli.net/2022/05/23/A8nBrRyi6hOdTGt.png" alt="image-20220519213303447"></p>
+<h3 id="2）构造器注入"><a href="#2）构造器注入" class="headerlink" title="2）构造器注入"></a>2）构造器注入</h3><p><strong>引用类型：</strong></p>
+<p><img src="https://s2.loli.net/2022/05/23/bTZmWzNkgRBrxsh.png" alt="image-20220519213503906"></p>
+<p><img src="https://s2.loli.net/2022/05/23/z8TbVmLwgvNIQtu.png" alt="image-20220519213526293"></p>
+<p><strong>简单基本类型：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/10/vcswNlSB8Ea1f6p.png" alt="image-20220610180657949"></p>
+<p><img src="https://s2.loli.net/2022/06/10/xUqwfmlsKORJ2iB.png" alt="image-20220610180723710"></p>
+<p>除此之外还有两种方法：</p>
+<p><img src="https://s2.loli.net/2022/06/10/9y3eWPiBFldN1J8.png" alt="image-20220610180852059"></p>
+<h3 id="3）自动注入"><a href="#3）自动注入" class="headerlink" title="3）自动注入"></a>3）自动注入</h3><p><img src="https://s2.loli.net/2022/05/23/wgKIFoJh9qjTkfr.png" alt="image-20220519214014797"></p>
+<p><img src="https://s2.loli.net/2022/05/23/JVTm357bsac1xMR.png" alt="image-20220519214140745"></p>
+<h3 id="4）集合注入"><a href="#4）集合注入" class="headerlink" title="4）集合注入"></a>4）集合注入</h3><p><img src="https://s2.loli.net/2022/06/10/xjw9mOBTX8EGq6I.png" alt="image-20220610182022992"></p>
+<p><img src="https://s2.loli.net/2022/06/10/1FDUCOeXdnKVT9z.png" alt="image-20220610182036495"></p>
+<p><img src="https://s2.loli.net/2022/06/10/oZt5nw27igf1PNA.png" alt="image-20220610182122622"></p>
+<h2 id="5-spring加载properties"><a href="#5-spring加载properties" class="headerlink" title="5.spring加载properties"></a>5.spring加载properties</h2><h4 id="1）优先加载环境变量问题"><a href="#1）优先加载环境变量问题" class="headerlink" title="1）优先加载环境变量问题"></a>1）优先加载环境变量问题</h4><p><img src="https://s2.loli.net/2022/06/10/J1TqDhzmgVnWN8A.png" alt="image-20220610182631806"></p>
+<p>​	&lt; context:property-placeholder&#x2F; &gt;标签会加载系统的环境变量，而且环境 变量的值会被优先加载</p>
+<p>​	电脑中就有一个变量是username，prop中也有，这时候优先加载的就是电脑中的username</p>
+<p>​	解决方法：</p>
+<p><img src="https://s2.loli.net/2022/06/10/Qciq7D5oMNTUYsA.png" alt="image-20220610182824467"></p>
+<p><img src="https://s2.loli.net/2022/06/10/nlYJiHm3uKdqR5e.png" alt="image-20220610182838437"></p>
+<h4 id="2）加载多个properties"><a href="#2）加载多个properties" class="headerlink" title="2）加载多个properties"></a>2）加载多个properties</h4><p><img src="https://s2.loli.net/2022/06/10/as2DXVlHwmzG5Ex.png" alt="image-20220610182435465"></p>
+<p><img src="https://s2.loli.net/2022/05/23/DQh9gp7lXRqKf1F.png" alt="image-20220520101646400"></p>
+<p>class* 是加载当前项目的根路径</p>
+<p>classpath* 还会加载当前项目所依赖的所有项目的根路径</p>
+<h2 id="6-容器相关"><a href="#6-容器相关" class="headerlink" title="6.容器相关"></a>6.容器相关</h2><p><img src="https://s2.loli.net/2022/05/23/D5SxjTrpafoRGVH.png" alt="image-20220520102618058"></p>
+<p>ApplicationContext的延迟加载：</p>
+<p><img src="https://s2.loli.net/2022/05/23/Xca2WQMRVLAKPs6.png" alt="image-20220520102711428"></p>
+<p>bean相关标签：</p>
+<p><img src="https://s2.loli.net/2022/05/23/z2AMVYa8GTQOJdn.png" alt="image-20220520102816686"></p>
+<p>依赖注入相关标签：</p>
+<p><img src="https://s2.loli.net/2022/05/23/vFsGOa8PdQilkWL.png" alt="image-20220520102919833"></p>
+<h1 id="二、注解配置相关"><a href="#二、注解配置相关" class="headerlink" title="二、注解配置相关"></a>二、注解配置相关</h1><h2 id="1-注解配置相关"><a href="#1-注解配置相关" class="headerlink" title="1.注解配置相关"></a>1.注解配置相关</h2><h3 id="1）-componentScan"><a href="#1）-componentScan" class="headerlink" title="1）@componentScan"></a>1）@componentScan</h3><p><img src="https://s2.loli.net/2022/05/23/265hOUSipKwZk4d.png" alt="image-20220520110755949"></p>
+<h3 id="2）-Configuration和-ComponentScan"><a href="#2）-Configuration和-ComponentScan" class="headerlink" title="2）@Configuration和@ComponentScan"></a>2）@Configuration和@ComponentScan</h3><p><img src="https://s2.loli.net/2022/06/10/NTiGrQMhXO3E4lj.png" alt="image-20220520110840076"></p>
+<p>​	<img src="https://s2.loli.net/2022/05/23/dMGHpOK6FRJlqWi.png" alt="image-20220520111015122"><img src="https://s2.loli.net/2022/05/23/n7ubY94JzGvswxP.png" alt="image-20220520110959339"></p>
+<p><img src="https://s2.loli.net/2022/05/23/viBG8mTpsdX51VR.png" alt="image-20220520110950658">	</p>
+<p><img src="https://s2.loli.net/2022/05/23/9tyUMP3KD6ozVRh.png" alt="image-20220520111044032"></p>
+<h3 id="3）-scope和-PostConstruct、-PreDestroy"><a href="#3）-scope和-PostConstruct、-PreDestroy" class="headerlink" title="3）@scope和@PostConstruct、@PreDestroy"></a>3）@scope和@PostConstruct、@PreDestroy</h3><p><img src="https://s2.loli.net/2022/05/23/bUtuOVP2olJmRew.png" alt="image-20220520111120675"></p>
+<p><img src="https://s2.loli.net/2022/06/10/F5xSn9BRyOsIMlf.png" alt="image-20220520111130979"></p>
+<p><img src="https://s2.loli.net/2022/05/23/O615f2yFCcEMiTD.png" alt="image-20220520111155586"></p>
+<p><img src="https://s2.loli.net/2022/05/23/qdUPoxi9rgfOHkQ.png" alt="image-20220520111246532"></p>
+<p><img src="https://s2.loli.net/2022/05/23/zctSnDdFhGfxBsa.png" alt="image-20220520111304393"></p>
+<h3 id="4）-PropertySource和-Value"><a href="#4）-PropertySource和-Value" class="headerlink" title="4）@PropertySource和@Value"></a>4）@PropertySource和@Value</h3><p><img src="https://s2.loli.net/2022/05/23/itLEVOwFBDbdTzQ.png" alt="image-20220520111609570"></p>
+<p><img src="https://s2.loli.net/2022/06/10/j9i3xTJVELOXRqt.png" alt="image-20220520111621659"></p>
+<p><img src="https://s2.loli.net/2022/05/23/9mC8v4VfXawSAoJ.png" alt="image-20220520111641778"></p>
+<p><img src="https://s2.loli.net/2022/05/23/R3xdbDXzjqFngWP.png" alt="image-20220520111502931"></p>
+<p><img src="https://s2.loli.net/2022/05/23/w7HImx8JrDdMcF6.png" alt="image-20220520111519941"></p>
+<p>PropertySource详解：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43849277/article/details/120728182">https://blog.csdn.net/weixin_43849277/article/details/120728182</a></li>
+</ul>
+<h3 id="5）-AutoWired、-Qualifier"><a href="#5）-AutoWired、-Qualifier" class="headerlink" title="5）@AutoWired、@Qualifier"></a>5）@AutoWired、@Qualifier</h3><p><img src="https://s2.loli.net/2022/05/23/1GBJo9uXv3IlZfi.png" alt="image-20220520111659964"></p>
+<p><img src="https://s2.loli.net/2022/05/23/v3bG5tAqFTMIkNs.png" alt="image-20220520111756361"></p>
+<p><img src="https://s2.loli.net/2022/05/23/TRSq7LDyb2OcKJ6.png" alt="image-20220520111811003"></p>
+<p><img src="https://s2.loli.net/2022/05/23/YbqMgOipS1kj6ZE.png" alt="image-20220520111834738"></p>
+<ul>
+<li>反射及暴力反射：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000037432381">https://segmentfault.com/a/1190000037432381</a></li>
+</ul>
+<h3 id="6）-Bean和-Import"><a href="#6）-Bean和-Import" class="headerlink" title="6）@Bean和@Import"></a>6）@Bean和@Import</h3><p><img src="https://s2.loli.net/2022/05/23/CGrdVf4DALscuRX.png" alt="image-20220522102640894"></p>
+<h4 id="①-ComponentScan方式"><a href="#①-ComponentScan方式" class="headerlink" title="①@ComponentScan方式"></a>①@ComponentScan方式</h4><p><img src="https://s2.loli.net/2022/06/10/83Q5mAHZiGjRs9d.png" alt="image-20220522102842277"></p>
+<p><img src="https://s2.loli.net/2022/06/10/z1greMh8WQLCiOK.png" alt="image-20220522102905188"></p>
+<p><img src="https://s2.loli.net/2022/06/10/TZuizFJAVKLHUwg.png" alt="image-20220522102913624"></p>
+<p>但是这种方法不能立刻知道引入的是哪一个，不推荐</p>
+<h4 id="②-Import"><a href="#②-Import" class="headerlink" title="②@Import"></a>②@Import</h4><p><img src="https://s2.loli.net/2022/06/10/uURVJ8Iyla4TFCe.png" alt="image-20220522103214349"></p>
+<p><img src="https://s2.loli.net/2022/06/10/e16MOPDEu9oyIJ3.png" alt="image-20220522103223098"></p>
+<h3 id="7）注解方式注入第三方bean"><a href="#7）注解方式注入第三方bean" class="headerlink" title="7）注解方式注入第三方bean"></a>7）注解方式注入第三方bean</h3><h4 id="①简单数据类型注入"><a href="#①简单数据类型注入" class="headerlink" title="①简单数据类型注入"></a>①简单数据类型注入</h4><p><img src="https://s2.loli.net/2022/06/10/w4oNvVcRqArPpTt.png" alt="image-20220522103634433"></p>
+<p><img src="https://s2.loli.net/2022/06/10/YQyLEmUMgfGu2ct.png" alt="image-20220522103646964"></p>
+<h4 id="②引用类型注入"><a href="#②引用类型注入" class="headerlink" title="②引用类型注入"></a>②引用类型注入</h4><p><img src="https://s2.loli.net/2022/06/10/fzuXjyvRPdWgaFY.png" alt="image-20220522104011896"></p>
+<p><img src="https://s2.loli.net/2022/06/10/qvueMX8FOArYZJl.png" alt="image-20220522104017035"></p>
+<p><img src="https://s2.loli.net/2022/06/10/vjGNJehEymFxVSK.png" alt="image-20220522104030745"></p>
+<p><strong>引用类型注入只需要为bean定义方法设置形参即可，容器会根据类型自动装配对象。</strong>	</p>
+<p>这样dataSource在初始化的时候就会按照类型自动装入（类似AutoWired）。</p>
+<h3 id="8）XML和注解配置比较"><a href="#8）XML和注解配置比较" class="headerlink" title="8）XML和注解配置比较"></a>8）XML和注解配置比较</h3><p><img src="https://s2.loli.net/2022/06/10/GH6fxgYvoF9LB1a.png" alt="image-20220522104053708"></p>
+<h2 id="2-spring整合mybatis"><a href="#2-spring整合mybatis" class="headerlink" title="2.spring整合mybatis"></a>2.spring整合mybatis</h2><h3 id="1）xml配置方式"><a href="#1）xml配置方式" class="headerlink" title="1）xml配置方式"></a>1）xml配置方式</h3><h4 id="①spring-mybatis-xml"><a href="#①spring-mybatis-xml" class="headerlink" title="①spring-mybatis.xml"></a>①spring-mybatis.xml</h4><p><img src="https://s2.loli.net/2022/06/10/w7um6CnKpEUg92I.png" alt="image-20220610140342005"></p>
+<h4 id="②在xml中写sql"><a href="#②在xml中写sql" class="headerlink" title="②在xml中写sql"></a>②在xml中写sql</h4><p><img src="https://s2.loli.net/2022/06/10/xNhYapQP4I9mXCV.png" alt="image-20220610140719175"></p>
+<p><img src="https://s2.loli.net/2022/06/10/MB4EvYw7xZrOJmc.png" alt="image-20220610140809004"></p>
+<p><img src="https://s2.loli.net/2022/06/10/GTZX793ik41xKo5.png" alt="image-20220610140749660"></p>
+<p><img src="https://s2.loli.net/2022/06/10/NIxDEjLS1k392ao.png" alt="image-20220610140854408"></p>
+<h3 id="2）注解配置方式"><a href="#2）注解配置方式" class="headerlink" title="2）注解配置方式"></a>2）注解配置方式</h3><h4 id="①springConfig"><a href="#①springConfig" class="headerlink" title="①springConfig"></a>①springConfig</h4><p><img src="https://s2.loli.net/2022/06/10/Qd3tK8EvTVlURFk.png" alt="image-20220610140957414"></p>
+<h4 id="②jdbcConfig"><a href="#②jdbcConfig" class="headerlink" title="②jdbcConfig"></a>②jdbcConfig</h4><p><img src="https://s2.loli.net/2022/05/23/uhlpCqJsAItTzEg.png" alt="image-20220522105400174"></p>
+<h4 id="③MybatisConfig"><a href="#③MybatisConfig" class="headerlink" title="③MybatisConfig"></a>③MybatisConfig</h4><p><img src="https://s2.loli.net/2022/05/23/ZTPpn9GaJlrtszj.png" alt="image-20220522105115706"></p>
+<h2 id="3-spring整合junit"><a href="#3-spring整合junit" class="headerlink" title="3.spring整合junit"></a>3.spring整合junit</h2><h3 id="1）依赖"><a href="#1）依赖" class="headerlink" title="1）依赖"></a>1）依赖</h3><p><img src="https://s2.loli.net/2022/06/10/Q8CFqHSLZiyldME.png" alt="image-20220610141149965"></p>
+<h3 id="2）Test类"><a href="#2）Test类" class="headerlink" title="2）Test类"></a>2）Test类</h3><p><img src="https://s2.loli.net/2022/06/10/M8B7JZH5Twl1fcI.png" alt="image-20220610141233581"></p>
+<p><img src="https://s2.loli.net/2022/06/10/ZjHo8CgAq4BmakP.png" alt="image-20220610141248072"></p>
+<p><img src="https://s2.loli.net/2022/05/23/6oAOL1GnYBspKXk.png" alt="image-20220522195550121"></p>
+<p><img src="https://s2.loli.net/2022/05/23/gcYxL4lbK2TitJy.png" alt="image-20220522195608733"></p>
+<p><img src="https://s2.loli.net/2022/05/23/N9DUzJOgoZYyG76.png" alt="image-20220522195616037"></p>
+<h1 id="三、AOP"><a href="#三、AOP" class="headerlink" title="三、AOP"></a>三、AOP</h1><h2 id="1-相关标签"><a href="#1-相关标签" class="headerlink" title="1.相关标签"></a>1.相关标签</h2><p><img src="https://s2.loli.net/2022/06/10/ObfmI1naxX8VYBR.png" alt="image-20220610142042305"></p>
+<h2 id="2-AOP基本知识"><a href="#2-AOP基本知识" class="headerlink" title="2.AOP基本知识"></a>2.AOP基本知识</h2><h3 id="1）工作流程"><a href="#1）工作流程" class="headerlink" title="1）工作流程"></a>1）工作流程</h3><p><img src="https://s2.loli.net/2022/06/10/NkKbotGw59SBZ8l.png" alt="image-20220610141808637"></p>
+<p><img src="https://s2.loli.net/2022/06/10/vEWYz8FqKUhyBbx.png" alt="image-20220610141951430"></p>
+<h3 id="2）实现原理"><a href="#2）实现原理" class="headerlink" title="2）实现原理"></a>2）实现原理</h3><p><img src="https://s2.loli.net/2022/06/10/betx3Fq1SgIJ5Lm.png" alt="image-20220522201058937"></p>
+<p><img src="https://s2.loli.net/2022/05/23/VFqdMWJDO8ePI4p.png" alt="image-20220522201151922"></p>
+<p>bookDao已经被AOP增强，但是打印出来的还是同一个对象地址，这是因为AOP重写了toString方法，现在的对象实际上是代理对象</p>
+<p><img src="https://s2.loli.net/2022/06/10/1epgHoUfA6Muidq.png" alt="image-20220610142337995"></p>
+<p><img src="https://s2.loli.net/2022/05/23/NIz6wZ2b7mVJuqe.png" alt="image-20220522201252893"></p>
+<h2 id="3-通知Advice"><a href="#3-通知Advice" class="headerlink" title="3.通知Advice"></a>3.通知Advice</h2><h3 id="1）通知类型"><a href="#1）通知类型" class="headerlink" title="1）通知类型"></a>1）通知类型</h3><p><img src="https://s2.loli.net/2022/05/23/WOCn7Ih3bExQXrz.png" alt="image-20220522201734400"></p>
+<p><img src="https://s2.loli.net/2022/05/23/mDwN2hajZuGoHOU.png" alt="image-20220522202325434"></p>
+<p><img src="https://s2.loli.net/2022/06/10/MDLhb3SpwKtJNjo.png" alt="image-20220522202339480"></p>
+<p><img src="https://s2.loli.net/2022/06/10/PHfC91cAwdFxK2X.png" alt="image-20220610142820700"></p>
+<p><img src="https://s2.loli.net/2022/06/10/L7IVp3GZcsrj9Co.png" alt="image-20220610142920396"></p>
+<h3 id="2）AOP获取切入点信息"><a href="#2）AOP获取切入点信息" class="headerlink" title="2）AOP获取切入点信息"></a>2）AOP获取切入点信息</h3><p><img src="https://s2.loli.net/2022/05/23/y2TdevRVODFX7xq.png" alt="image-20220522214016008"></p>
+<h4 id="①非环绕通知：JoinPoint"><a href="#①非环绕通知：JoinPoint" class="headerlink" title="①非环绕通知：JoinPoint"></a>①非环绕通知：JoinPoint</h4><p><strong>非环绕通知通过JoinPoint获得参数、返回值、异常</strong></p>
+<p><strong>参数：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/10/P3SUgzV159eaF68.png" alt="image-20220523205505658"></p>
+<p><img src="https://s2.loli.net/2022/06/10/gXhRtWiNwHe3LM6.png" alt="image-20220523205902259"></p>
+<p>​		</p>
+<p>环绕通知中也是一样的：</p>
+<p><img src="https://s2.loli.net/2022/06/10/o3H5ifqS6FpuXvl.png" alt="image-20220523205845097"></p>
+<p><strong>返回值：</strong></p>
+<img src="https://s2.loli.net/2022/05/23/GRWyJB17NOdVYnQ.png" alt="image-20220523210335394"  />
+
+<p>​					<img src="https://s2.loli.net/2022/06/10/soHSPutW4ndlX9q.png" alt="image-20220523210352043" style="zoom:80%;" /></p>
+<p><strong>异常：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/10/e9hxXHGvPYR3j8d.png" alt="image-20220523211144673"></p>
+<p><img src="https://s2.loli.net/2022/06/10/98CSRBTWnZKyPcI.png" alt="image-20220523211156965"></p>
+<h4 id="②环绕通知：ProceedingJoinPoint"><a href="#②环绕通知：ProceedingJoinPoint" class="headerlink" title="②环绕通知：ProceedingJoinPoint"></a>②环绕通知：ProceedingJoinPoint</h4><p><strong>环绕通知通过ProceedingJoinPoint获得参数、返回值、异常</strong></p>
+<p><strong>参数：</strong></p>
+<p><img src="https://s2.loli.net/2022/05/23/cvH5RdrDXhTGEtF.png" alt="image-20220523205639524"></p>
+<p><strong>返回值</strong></p>
+<p><img src="https://s2.loli.net/2022/06/10/PaEmXwQJo9S36cT.png" alt="image-20220523210155123"></p>
+<p><strong>异常：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/10/Aq38M7QFWivh2Pe.png" alt="image-20220523211126456"></p>
+<h4 id="③注意"><a href="#③注意" class="headerlink" title="③注意"></a>③注意</h4><p><strong>Target：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/10/a5CLMUc7iSWOwY8.png" alt="image-20220610145309624"></p>
+<p>target方法的返回值类型是int，不是null</p>
+<p><strong>MyAdvice类：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/10/pYrjf2uoVvMCgzT.png" alt="image-20220610145541205"></p>
+<p>原始target方法select的返回值是一个int，说明在调用这个方法的时候，我们是需要返回值的</p>
+<p>但是在advice中的around</p>
+<p><strong>修改：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/10/6Y3SZVrMA79EiBD.png" alt="image-20220610150113146"></p>
+<h2 id="4-AOP事务管理"><a href="#4-AOP事务管理" class="headerlink" title="4.AOP事务管理"></a>4.AOP事务管理</h2><h3 id="1）基本知识"><a href="#1）基本知识" class="headerlink" title="1）基本知识"></a>1）基本知识</h3><p><img src="https://s2.loli.net/2022/06/10/yU2cSLOnJdo8TW7.png" alt="image-20220610150408518"></p>
+<p><img src="https://s2.loli.net/2022/06/10/H1IjPrLVu9soMOT.png" alt="image-20220610150428656"></p>
+<p><strong>eg：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/10/RBnO4lStfaPYhUI.png" alt="image-20220610152622828"></p>
+<p>如图，①执行完，1&#x2F;0报错，②就不会执行，这样transfer事务就失去了原子性</p>
+<h3 id="2）相关注解"><a href="#2）相关注解" class="headerlink" title="2）相关注解"></a>2）相关注解</h3><p><img src="https://s2.loli.net/2022/06/10/8flqIaDUwB9kvOA.png" alt="image-20220610154030729"></p>
+<h3 id="3）实现"><a href="#3）实现" class="headerlink" title="3）实现"></a>3）实现</h3><h4 id="①在需要被事务管理的方法上添加注解"><a href="#①在需要被事务管理的方法上添加注解" class="headerlink" title="①在需要被事务管理的方法上添加注解"></a>①在需要被事务管理的方法上添加注解</h4><p><img src="https://s2.loli.net/2022/06/10/MigR92C7wtaVpr6.png" alt="image-20220610153031534"></p>
+<h4 id="②在JdbcConfig类中配置事务管理器"><a href="#②在JdbcConfig类中配置事务管理器" class="headerlink" title="②在JdbcConfig类中配置事务管理器"></a>②在JdbcConfig类中配置事务管理器</h4><p><img src="https://s2.loli.net/2022/06/10/slUOZvoFREI94nH.png" alt="image-20220610153405102"></p>
+<p><strong>这和xml配置类似，都是要在config中配置一个transactionManager的bean：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/10/u2idLbozD9NHpRh.png" alt="image-20220610153637080"></p>
+<h4 id="③开启事务注解"><a href="#③开启事务注解" class="headerlink" title="③开启事务注解"></a>③开启事务注解</h4><p><img src="https://s2.loli.net/2022/06/10/ZmLltMezxyAYCUu.png" alt="image-20220610153829733"></p>
+<p><strong>xml方式：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/10/tAjgEa9knSUsNbJ.png" alt="image-20220610153917409"></p>
+<h3 id="4）原理"><a href="#4）原理" class="headerlink" title="4）原理"></a>4）原理</h3><p><img src="https://s2.loli.net/2022/06/10/k4RtHVmp9r2McqY.png" alt="image-20220610154222451"></p>
+<p><strong>事务管理员和事务协调员：</strong></p>
+<p><img src="D:/Typora/TyporaPictureBed/image-20220610154424482.png" alt="image-20220610154424482"></p>
+<p><strong>即spring事务管理的数据源和mybatis的数据源是同一个数据源！！！</strong></p>
+<h3 id="5）事务属性"><a href="#5）事务属性" class="headerlink" title="5）事务属性"></a>5）事务属性</h3><p><img src="https://s2.loli.net/2022/06/10/QeZbfmOFKUBAG2T.png" alt="image-20220610154559399"></p>
+<p><img src="https://s2.loli.net/2022/06/10/EgsScz3k7GIlrCO.png" alt="image-20220610161134917"></p>
+<p>注意：</p>
+<p>​	spring并不会对所有异常都进行回滚，只会对RuntimeException和Error及其子类回滚，其它异常类型不会回滚</p>
+<p><img src="https://s2.loli.net/2022/06/10/IoVYWXdlnQEihJb.png" alt="image-20220610161231339"></p>
+<p><img src="https://s2.loli.net/2022/06/10/6tUXTgAyZcpulB5.png" alt="image-20220610161223169"></p>
+<h3 id="6）事务的传播属性"><a href="#6）事务的传播属性" class="headerlink" title="6）事务的传播属性"></a>6）事务的传播属性</h3><h4 id="①例子"><a href="#①例子" class="headerlink" title="①例子"></a>①例子</h4><p><img src="https://s2.loli.net/2022/06/10/HvlkPXzJ7DETYVS.png" alt="image-20220610162220955"></p>
+<p><strong>log方法是在logService中开启了自己的事务的：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/10/LX6nuWG1zdgPUi4.png" alt="image-20220610162251635"></p>
+<p><img src="https://s2.loli.net/2022/06/10/TZimyvuArjol6YV.png" alt="image-20220610162314467"></p>
+<p><strong>这是因为log事务加入了transfer事务中：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/10/5Y9m2x3eMFIOcfa.png" alt="image-20220610162411268"></p>
+<p><strong>解决办法（修改log事务传播属性）：</strong></p>
+<p><img src="D:/Typora/TyporaPictureBed/image-20220610162457289.png" alt="image-20220610162457289"></p>
+<p>​	本例中logService.log作为事务协调员有一个自己的事务T2，transfer作为事务管理员有一个自己的事务T1，但是在配置事务传播属性propagation&#x3D;Propagation.REQUIRES_NEW后，T2不会加入T1事务，T1是否失败不会影响到T2。</p>
+<h4 id="②事务传播属性可选值"><a href="#②事务传播属性可选值" class="headerlink" title="②事务传播属性可选值"></a>②事务传播属性可选值</h4><p><img src="D:/Typora/TyporaPictureBed/image-20220610162617557.png" alt="image-20220610162617557"></p>
+<ul>
+<li>REQUIRED：<ul>
+<li>当事务管理员开启一个事务T时，事务协调员不管是否有事务都加入T</li>
+<li>事务管理员没有事务，事务协调员就会开启一个自己的事务T2</li>
+</ul>
+</li>
+<li>REQUIRES_NEW：<ul>
+<li>当事务管理员开启一个事务T时，事务协调员不会加入T，而是开启一个自己的事务T2</li>
+<li>事务管理员没有事务，事务协调员就会开启一个自己的事务T2</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Spring/" rel="tag"># Spring</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/06/06/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="prev" title="操作系统笔记">
+      <i class="fa fa-chevron-left"></i> 操作系统笔记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80-xml%E9%85%8D%E7%BD%AE%E7%9B%B8%E5%85%B3"><span class="nav-text">一.xml配置相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-bean%E6%A0%87%E7%AD%BE%E4%B8%AD%E7%9A%84scope"><span class="nav-text">1. bean标签中的scope</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-bean%E7%9A%84%E4%B8%89%E7%A7%8D%E5%AE%9E%E4%BE%8B%E6%96%B9%E5%BC%8F"><span class="nav-text">2.bean的三种实例方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E6%97%A0%E5%8F%82%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="nav-text">1）无参构造方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E9%9D%99%E6%80%81%E5%B7%A5%E5%8E%82%E5%AE%9E%E4%BE%8B%E5%8C%96"><span class="nav-text">2）静态工厂实例化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E5%AE%9E%E4%BE%8B%E5%B7%A5%E5%8E%82%E5%AE%9E%E4%BE%8B%E5%8C%96"><span class="nav-text">3）实例工厂实例化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-bean%E7%9A%84%E7%94%9F%E5%AD%98%E5%91%A8%E6%9C%9F"><span class="nav-text">3.bean的生存周期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E6%A0%87%E7%AD%BE%E4%B8%AD%E9%85%8D%E7%BD%AEinit-method%E5%92%8Cdestroy-method"><span class="nav-text">1）标签中配置init-method和destroy-method</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0close%E6%96%B9%E5%BC%8F%E5%85%B3%E9%97%AD%E5%AE%B9%E5%99%A8"><span class="nav-text">①close方式关闭容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E9%92%A9%E5%AD%90%E5%87%BD%E6%95%B0%E6%96%B9%E5%BC%8F%E5%85%B3%E9%97%AD%E5%AE%B9%E5%99%A8"><span class="nav-text">②钩子函数方式关闭容器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89implement%E6%8E%A5%E5%8F%A3%E6%9D%A5%E6%9B%BF%E4%BB%A3%E6%A0%87%E7%AD%BE"><span class="nav-text">2）implement接口来替代标签</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-set-property"><span class="nav-text">4.依赖注入(set property)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89setter%E6%B3%A8%E5%85%A5"><span class="nav-text">1）setter注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E6%9E%84%E9%80%A0%E5%99%A8%E6%B3%A8%E5%85%A5"><span class="nav-text">2）构造器注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%85%A5"><span class="nav-text">3）自动注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89%E9%9B%86%E5%90%88%E6%B3%A8%E5%85%A5"><span class="nav-text">4）集合注入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-spring%E5%8A%A0%E8%BD%BDproperties"><span class="nav-text">5.spring加载properties</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E4%BC%98%E5%85%88%E5%8A%A0%E8%BD%BD%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%97%AE%E9%A2%98"><span class="nav-text">1）优先加载环境变量问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89%E5%8A%A0%E8%BD%BD%E5%A4%9A%E4%B8%AAproperties"><span class="nav-text">2）加载多个properties</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%AE%B9%E5%99%A8%E7%9B%B8%E5%85%B3"><span class="nav-text">6.容器相关</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE%E7%9B%B8%E5%85%B3"><span class="nav-text">二、注解配置相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE%E7%9B%B8%E5%85%B3"><span class="nav-text">1.注解配置相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89-componentScan"><span class="nav-text">1）@componentScan</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89-Configuration%E5%92%8C-ComponentScan"><span class="nav-text">2）@Configuration和@ComponentScan</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89-scope%E5%92%8C-PostConstruct%E3%80%81-PreDestroy"><span class="nav-text">3）@scope和@PostConstruct、@PreDestroy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89-PropertySource%E5%92%8C-Value"><span class="nav-text">4）@PropertySource和@Value</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%89-AutoWired%E3%80%81-Qualifier"><span class="nav-text">5）@AutoWired、@Qualifier</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%EF%BC%89-Bean%E5%92%8C-Import"><span class="nav-text">6）@Bean和@Import</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0-ComponentScan%E6%96%B9%E5%BC%8F"><span class="nav-text">①@ComponentScan方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1-Import"><span class="nav-text">②@Import</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7%EF%BC%89%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F%E6%B3%A8%E5%85%A5%E7%AC%AC%E4%B8%89%E6%96%B9bean"><span class="nav-text">7）注解方式注入第三方bean</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E7%AE%80%E5%8D%95%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-text">①简单数据类型注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-text">②引用类型注入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8%EF%BC%89XML%E5%92%8C%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE%E6%AF%94%E8%BE%83"><span class="nav-text">8）XML和注解配置比较</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-spring%E6%95%B4%E5%90%88mybatis"><span class="nav-text">2.spring整合mybatis</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89xml%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F"><span class="nav-text">1）xml配置方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0spring-mybatis-xml"><span class="nav-text">①spring-mybatis.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E5%9C%A8xml%E4%B8%AD%E5%86%99sql"><span class="nav-text">②在xml中写sql</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F"><span class="nav-text">2）注解配置方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0springConfig"><span class="nav-text">①springConfig</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1jdbcConfig"><span class="nav-text">②jdbcConfig</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2MybatisConfig"><span class="nav-text">③MybatisConfig</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-spring%E6%95%B4%E5%90%88junit"><span class="nav-text">3.spring整合junit</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E4%BE%9D%E8%B5%96"><span class="nav-text">1）依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89Test%E7%B1%BB"><span class="nav-text">2）Test类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81AOP"><span class="nav-text">三、AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%9B%B8%E5%85%B3%E6%A0%87%E7%AD%BE"><span class="nav-text">1.相关标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-AOP%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86"><span class="nav-text">2.AOP基本知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-text">1）工作流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-text">2）实现原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E9%80%9A%E7%9F%A5Advice"><span class="nav-text">3.通知Advice</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E9%80%9A%E7%9F%A5%E7%B1%BB%E5%9E%8B"><span class="nav-text">1）通知类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89AOP%E8%8E%B7%E5%8F%96%E5%88%87%E5%85%A5%E7%82%B9%E4%BF%A1%E6%81%AF"><span class="nav-text">2）AOP获取切入点信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E9%9D%9E%E7%8E%AF%E7%BB%95%E9%80%9A%E7%9F%A5%EF%BC%9AJoinPoint"><span class="nav-text">①非环绕通知：JoinPoint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E7%8E%AF%E7%BB%95%E9%80%9A%E7%9F%A5%EF%BC%9AProceedingJoinPoint"><span class="nav-text">②环绕通知：ProceedingJoinPoint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E6%B3%A8%E6%84%8F"><span class="nav-text">③注意</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-AOP%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="nav-text">4.AOP事务管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86"><span class="nav-text">1）基本知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E7%9B%B8%E5%85%B3%E6%B3%A8%E8%A7%A3"><span class="nav-text">2）相关注解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E5%AE%9E%E7%8E%B0"><span class="nav-text">3）实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%9C%A8%E9%9C%80%E8%A6%81%E8%A2%AB%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%E7%9A%84%E6%96%B9%E6%B3%95%E4%B8%8A%E6%B7%BB%E5%8A%A0%E6%B3%A8%E8%A7%A3"><span class="nav-text">①在需要被事务管理的方法上添加注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E5%9C%A8JdbcConfig%E7%B1%BB%E4%B8%AD%E9%85%8D%E7%BD%AE%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%E5%99%A8"><span class="nav-text">②在JdbcConfig类中配置事务管理器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E5%BC%80%E5%90%AF%E4%BA%8B%E5%8A%A1%E6%B3%A8%E8%A7%A3"><span class="nav-text">③开启事务注解</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89%E5%8E%9F%E7%90%86"><span class="nav-text">4）原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%89%E4%BA%8B%E5%8A%A1%E5%B1%9E%E6%80%A7"><span class="nav-text">5）事务属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%EF%BC%89%E4%BA%8B%E5%8A%A1%E7%9A%84%E4%BC%A0%E6%92%AD%E5%B1%9E%E6%80%A7"><span class="nav-text">6）事务的传播属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E4%BE%8B%E5%AD%90"><span class="nav-text">①例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E5%B1%9E%E6%80%A7%E5%8F%AF%E9%80%89%E5%80%BC"><span class="nav-text">②事务传播属性可选值</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="f1ashades"
+      src="/images/mine.jpg">
+  <p class="site-author-name" itemprop="name">f1ashades</p>
+  <div class="site-description" itemprop="description">once again I am a child</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">f1ashades</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="计算机网络&#x3D; . &#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统笔记-文件和磁盘">
+<meta property="og:url" content="http://example.com/2022/06/15/3.%E8%AE%A1%E7%BD%91-%E7%BD%91%E7%BB%9C%E5%B1%82/index.html">
+<meta property="og:site_name" content="f1ashades&#39; blogs">
+<meta property="og:description" content="计算机网络&#x3D; . &#x3D;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/xUVlfkgTSBFWuJM.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/d1W6bK3qLNwnPJm.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/SpFzjXAw7Bgx8fo.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/E1Y8i5cDItXwh23.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/vrKEYF1bjBpCko4.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/TERFd4UpK7vIboA.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/ehJCVnKWD5zsTtp.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/d6A5UhyCLjgXZvN.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/Vd1iwbCZ4kNYjp7.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/no3FWQgCVqhI8wE.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/Gpntcq9KloCZhF2.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/TBwoQyWuAPnlraN.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/dchJB5SMCnyIbK9.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/mV3KTEh62FbH7q9.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/SXVOt83oYUsRv2j.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/gZedOfmFXGDos2I.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/cHdNDoeiPvATxta.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/tYJIdQAMmzcy8UX.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/Ah9nKIikHmJDy1v.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/olVGMCkYBcxuzse.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/XrSbIuUEBcKzRh8.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/LIQ1BKuSyGcRWXT.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/4eiCxPuaFotvk5z.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/AZ6iKSHLR1PBJMT.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/8HZdDlrUwXSuj2O.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/rRnieZlsdWKw6PT.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/fY7AgQ9MsCVzBtO.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/VNz7qjdWMJnDhHQ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/siePp4tD3S6YurH.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/5DISoyeMvY9Cpc4.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/dlTktvCMDFzVjmh.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/6pdnAOk9VGjtWDZ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/d1QRTveb6o74Dtj.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/J4TIfhAmy1iQVKS.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/XB3uo9ZAk5l4cCf.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/w7q6p9dY5bLAhsN.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/BoAKziVbldXS14N.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/MW746QGKiEFtcCx.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/8mSABh2NZuaPzY3.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/oQy1N5cHIrlxP6M.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/rd8gxavbwE97cjT.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/jwxto94FIzb8qBX.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/TPUb3WtndIOXekK.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/B76ws8ZojnlIFHE.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/HNGZ6tsyPXQUghW.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/rs5i6oY7QImvuet.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/MbcmZ57vRgqxDXo.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/image-20220614172105767.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/uBwmJjvqCg39WDf.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210208020457607.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2022-06-15T03:36:48.000Z">
+<meta property="article:modified_time" content="2022-06-15T03:37:00.341Z">
+<meta property="article:author" content="f1ashades">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/06/14/xUVlfkgTSBFWuJM.png">
+
+<link rel="canonical" href="http://example.com/2022/06/15/3.%E8%AE%A1%E7%BD%91-%E7%BD%91%E7%BB%9C%E5%B1%82/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>操作系统笔记-文件和磁盘 | f1ashades' blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">f1ashades' blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/15/3.%E8%AE%A1%E7%BD%91-%E7%BD%91%E7%BB%9C%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/mine.jpg">
+      <meta itemprop="name" content="f1ashades">
+      <meta itemprop="description" content="once again I am a child">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="f1ashades' blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统笔记-文件和磁盘
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-06-15 11:36:48 / 修改时间：11:37:00" itemprop="dateCreated datePublished" datetime="2022-06-15T11:36:48+08:00">2022-06-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>计算机网络&#x3D; . &#x3D;</p>
+<span id="more"></span>
+
+<h1 id="三、net-work"><a href="#三、net-work" class="headerlink" title="三、net-work"></a>三、net-work</h1><h2 id="1-IPv4地址"><a href="#1-IPv4地址" class="headerlink" title="1.IPv4地址"></a>1.IPv4地址</h2><h3 id="1）分类编址"><a href="#1）分类编址" class="headerlink" title="1）分类编址"></a>1）分类编址</h3><h4 id="①A类地址"><a href="#①A类地址" class="headerlink" title="①A类地址"></a>①A类地址</h4><p><img src="https://s2.loli.net/2022/06/14/xUVlfkgTSBFWuJM.png" alt="image-20220614152035361"></p>
+<ul>
+<li>A类地址网络号占8比特，主机号占24比特</li>
+<li>网络号最高位固定为0</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/06/14/d1W6bK3qLNwnPJm.png" alt="image-20220614153809833"></p>
+<p>注意：</p>
+<ul>
+<li><p>最小网络号是全0，保留不指派</p>
+</li>
+<li><p>最小可分配网络号：00000001 ——&gt; 1</p>
+</li>
+<li><p>最大可分配网络号：01111110 ——&gt; 126</p>
+</li>
+<li><p>最小本地环回测试地址主机号为1，因为全0就是127.0.0.0代表网络号</p>
+</li>
+<li><p>最大本地环回测试地址主机号为255-1（最后一位为0），因为全1就是127.255.255.255代表广播地址了</p>
+</li>
+</ul>
+<h4 id="②B类地址"><a href="#②B类地址" class="headerlink" title="②B类地址"></a>②B类地址</h4><p><img src="https://s2.loli.net/2022/06/14/SpFzjXAw7Bgx8fo.png" alt="image-20220614153516411"></p>
+<ul>
+<li>B类地址网络号和主机号分别占16比特</li>
+<li>B类地址网络号前两位固定为10</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/06/14/E1Y8i5cDItXwh23.png" alt="image-20220614153905970"></p>
+<p>注意：</p>
+<ul>
+<li>最小可分配网络号：10000000 . 00000000 ——&gt; 127.0</li>
+<li>最大网可分配络号：10111111 . 11111111 ——&gt; 191(2^7+2^6-1).255</li>
+</ul>
+<h4 id="③C类地址"><a href="#③C类地址" class="headerlink" title="③C类地址"></a>③C类地址</h4><p><img src="https://s2.loli.net/2022/06/14/vrKEYF1bjBpCko4.png" alt="C类地址"></p>
+<ul>
+<li>C类地址网络号占24位，主机号占8位</li>
+<li>C类地址网络号前三位固定为110</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/06/14/TERFd4UpK7vIboA.png" alt="image-20220614154900800"></p>
+<p>注意：</p>
+<ul>
+<li>最小可分配网络号：11000000.00000000.00000000 ——&gt; 192.0.0</li>
+<li>最大可分配网络号：11011111 . 11111111.11111111 ——&gt; 223(2^7+2^6+2^5-1).255.255</li>
+</ul>
+<h3 id="2）划分子网编址"><a href="#2）划分子网编址" class="headerlink" title="2）划分子网编址"></a>2）划分子网编址</h3><p><img src="https://s2.loli.net/2022/06/14/ehJCVnKWD5zsTtp.png" alt="image-20220614155832232"></p>
+<h4 id="①子网掩码"><a href="#①子网掩码" class="headerlink" title="①子网掩码"></a>①子网掩码</h4><p><img src="https://s2.loli.net/2022/06/14/d6A5UhyCLjgXZvN.png" alt="image-20220614160106854"></p>
+<h4 id="②eg1"><a href="#②eg1" class="headerlink" title="②eg1"></a>②eg1</h4><p><img src="https://s2.loli.net/2022/06/14/Vd1iwbCZ4kNYjp7.png" alt="image-20220614160626488">	</p>
+<p><img src="https://s2.loli.net/2022/06/14/no3FWQgCVqhI8wE.png" alt="image-20220614161259939"></p>
+<p>218开头是110，所以这是一个C类地址，其子网掩码255.255.255.128（前三部分为C类网络号，最后从主机号借用的地址）</p>
+<p>可以看出从主机号中借用了1位，1位可以划分出两个子网（0,1），每个子网有7位可以来编码</p>
+<h4 id="②eg2"><a href="#②eg2" class="headerlink" title="②eg2"></a>②eg2</h4><p><img src="https://s2.loli.net/2022/06/14/Gpntcq9KloCZhF2.png" alt="image-20220614161429856"></p>
+<h4 id="③eg3"><a href="#③eg3" class="headerlink" title="③eg3"></a>③eg3</h4><p><img src="https://s2.loli.net/2022/06/14/TBwoQyWuAPnlraN.png" alt="image-20220614161538999"></p>
+<h3 id="3）无分类编址"><a href="#3）无分类编址" class="headerlink" title="3）无分类编址"></a>3）无分类编址</h3><p><img src="https://s2.loli.net/2022/06/14/dchJB5SMCnyIbK9.png" alt="image-20220614162054964"></p>
+<h4 id="①eg1"><a href="#①eg1" class="headerlink" title="①eg1"></a>①eg1<img src="https://s2.loli.net/2022/06/14/mV3KTEh62FbH7q9.png" alt="image-20220614162504683"></h4><h4 id="②eg2-1"><a href="#②eg2-1" class="headerlink" title="②eg2"></a>②eg2</h4><p><img src="https://s2.loli.net/2022/06/14/SXVOt83oYUsRv2j.png" alt="image-20220614162530920"></p>
+<h4 id="③路由聚合（构建超网）"><a href="#③路由聚合（构建超网）" class="headerlink" title="③路由聚合（构建超网）"></a>③路由聚合（构建超网）</h4><p><img src="https://s2.loli.net/2022/06/14/gZedOfmFXGDos2I.png" alt="image-20220614163231519"></p>
+<p>对于图中R1连接了5个网络，若R1要将这五个网络信息发送给R2，就需要发送5个路由信息给R2（也就是需要5个网络编号）：</p>
+<p><img src="https://s2.loli.net/2022/06/14/cHdNDoeiPvATxta.png" alt="image-20220614163306724"></p>
+<p>很显然，这五个网络网络号中由很多部分是共同前缀的，那么这部分能不能<strong>采用CIDR路由聚合成一个网络再发送给R2来降低路由表大小</strong>呢，显然是可以的：</p>
+<p><img src="https://s2.loli.net/2022/06/14/tYJIdQAMmzcy8UX.png" alt="image-20220614163345512"></p>
+<p>因此其聚合地址块为：</p>
+<p><img src="https://s2.loli.net/2022/06/14/Ah9nKIikHmJDy1v.png" alt="image-20220614163413264"></p>
+<p>这样就把5条记录缩小到一条记录，当R2的目的网络是该聚合地址块就会跳R1</p>
+<p>在路由过程中，我们可以得出两个结论：</p>
+<ul>
+<li>网络前缀越长，地址块越小（主机号），路由约具体。</li>
+<li>若地址块转发分组时发现由多条路由可选，则选择网络前缀最长的那条，这样子的路由更具体（网络号越长，说明再继续聚合的可能性越低，也就越具体）</li>
+</ul>
+<h4 id="④eg3"><a href="#④eg3" class="headerlink" title="④eg3"></a>④eg3</h4><p><img src="https://s2.loli.net/2022/06/14/olVGMCkYBcxuzse.png" alt="image-20220614163714834"></p>
+<h4 id="⑤eg4"><a href="#⑤eg4" class="headerlink" title="⑤eg4"></a>⑤eg4</h4><p><img src="https://s2.loli.net/2022/06/14/XrSbIuUEBcKzRh8.png" alt="image-20220614163748158"></p>
+<h2 id="2-IP首部格式"><a href="#2-IP首部格式" class="headerlink" title="2.IP首部格式"></a>2.IP首部格式</h2><p><img src="https://s2.loli.net/2022/06/14/LIQ1BKuSyGcRWXT.png" alt="image-20220614164029786"></p>
+<h3 id="1）版本"><a href="#1）版本" class="headerlink" title="1）版本"></a>1）版本</h3><p><img src="https://s2.loli.net/2022/06/14/4eiCxPuaFotvk5z.png" alt="image-20220614164421771"></p>
+<h3 id="2）首部长度"><a href="#2）首部长度" class="headerlink" title="2）首部长度"></a>2）首部长度</h3><p><img src="https://s2.loli.net/2022/06/14/AZ6iKSHLR1PBJMT.png" alt="image-20220614164441470"></p>
+<h3 id="3）可选字段"><a href="#3）可选字段" class="headerlink" title="3）可选字段"></a>3）可选字段</h3><p><img src="https://s2.loli.net/2022/06/14/8HZdDlrUwXSuj2O.png" alt="image-20220614164524615"></p>
+<h3 id="4）填充字段"><a href="#4）填充字段" class="headerlink" title="4）填充字段"></a>4）填充字段</h3><p><img src="https://s2.loli.net/2022/06/14/rRnieZlsdWKw6PT.png" alt="image-20220614164556906"></p>
+<h3 id="5）区分服务字段"><a href="#5）区分服务字段" class="headerlink" title="5）区分服务字段"></a>5）区分服务字段</h3><p><img src="https://s2.loli.net/2022/06/14/fY7AgQ9MsCVzBtO.png" alt="image-20220614164640580"></p>
+<h3 id="6）总长度字段"><a href="#6）总长度字段" class="headerlink" title="6）总长度字段"></a>6）总长度字段</h3><p><img src="https://s2.loli.net/2022/06/14/VNz7qjdWMJnDhHQ.png" alt="image-20220614164749843"></p>
+<p>eg：</p>
+<p><img src="https://s2.loli.net/2022/06/14/siePp4tD3S6YurH.png" alt="image-20220614164826984"></p>
+<p><img src="https://s2.loli.net/2022/06/14/5DISoyeMvY9Cpc4.png" alt="数据载荷长度计算"></p>
+<h3 id="7）标识、标志、片偏移字段"><a href="#7）标识、标志、片偏移字段" class="headerlink" title="7）标识、标志、片偏移字段"></a>7）标识、标志、片偏移字段</h3><p><img src="https://s2.loli.net/2022/06/14/dlTktvCMDFzVjmh.png" alt="image-20220614165015729"></p>
+<p><img src="https://s2.loli.net/2022/06/14/6pdnAOk9VGjtWDZ.png" alt="image-20220614165030855"></p>
+<h4 id="①数据报分片"><a href="#①数据报分片" class="headerlink" title="①数据报分片"></a>①数据报分片</h4><p><img src="https://s2.loli.net/2022/06/14/d1QRTveb6o74Dtj.png" alt="image-20220614165119021"></p>
+<h4 id="②eg"><a href="#②eg" class="headerlink" title="②eg"></a>②eg</h4><p><img src="https://s2.loli.net/2022/06/14/J4TIfhAmy1iQVKS.png" alt="image-20220614165150657"></p>
+<p><img src="https://s2.loli.net/2022/06/14/XB3uo9ZAk5l4cCf.png" alt="image-20220614165224296"></p>
+<h3 id="8）生存时间"><a href="#8）生存时间" class="headerlink" title="8）生存时间"></a>8）生存时间</h3><p><img src="https://s2.loli.net/2022/06/14/w7q6p9dY5bLAhsN.png" alt="image-20220614165403552"></p>
+<h3 id="9）协议字段"><a href="#9）协议字段" class="headerlink" title="9）协议字段"></a>9）协议字段</h3><p><img src="https://s2.loli.net/2022/06/14/BoAKziVbldXS14N.png" alt="image-20220614165435910"></p>
+<h3 id="10）首部检验和"><a href="#10）首部检验和" class="headerlink" title="10）首部检验和"></a>10）首部检验和</h3><p><img src="https://s2.loli.net/2022/06/14/MW746QGKiEFtcCx.png" alt="image-20220614165548093"></p>
+<h3 id="11）源IP地址、目的IP地址字段"><a href="#11）源IP地址、目的IP地址字段" class="headerlink" title="11）源IP地址、目的IP地址字段"></a>11）源IP地址、目的IP地址字段</h3><p><img src="https://s2.loli.net/2022/06/14/8mSABh2NZuaPzY3.png" alt="image-20220614165643534"></p>
+<h2 id="3-ICMP"><a href="#3-ICMP" class="headerlink" title="3.ICMP"></a>3.ICMP</h2><h3 id="1）差错报文"><a href="#1）差错报文" class="headerlink" title="1）差错报文"></a>1）差错报文</h3><p><img src="https://s2.loli.net/2022/06/14/oQy1N5cHIrlxP6M.png" alt="image-20220614171934632"></p>
+<h4 id="①终点不可达"><a href="#①终点不可达" class="headerlink" title="①终点不可达"></a>①终点不可达</h4><p><img src="https://s2.loli.net/2022/06/14/rd8gxavbwE97cjT.png" alt="image-20220614170631385"></p>
+<h4 id="②源点抑制"><a href="#②源点抑制" class="headerlink" title="②源点抑制"></a>②源点抑制</h4><p><img src="https://s2.loli.net/2022/06/14/jwxto94FIzb8qBX.png" alt="image-20220614170716681"></p>
+<h4 id="③时间超过"><a href="#③时间超过" class="headerlink" title="③时间超过"></a>③时间超过</h4><p><img src="https://s2.loli.net/2022/06/14/TPUb3WtndIOXekK.png" alt="image-20220614170928213"></p>
+<h4 id="④参数问题"><a href="#④参数问题" class="headerlink" title="④参数问题"></a>④参数问题</h4><p><img src="https://s2.loli.net/2022/06/14/B76ws8ZojnlIFHE.png" alt="image-20220614171129906"></p>
+<h4 id="⑤改变路由"><a href="#⑤改变路由" class="headerlink" title="⑤改变路由"></a>⑤改变路由</h4><p><img src="https://s2.loli.net/2022/06/14/HNGZ6tsyPXQUghW.png" alt="image-20220614171157679"></p>
+<p><img src="https://s2.loli.net/2022/06/14/rs5i6oY7QImvuet.png" alt="image-20220614171223774"></p>
+<h4 id="⑥不发送给ICMP差错报告报文情况"><a href="#⑥不发送给ICMP差错报告报文情况" class="headerlink" title="⑥不发送给ICMP差错报告报文情况"></a>⑥不发送给ICMP差错报告报文情况</h4><p><img src="https://s2.loli.net/2022/06/14/MbcmZ57vRgqxDXo.png" alt="image-20220614171345707"></p>
+<h3 id="2）ICMP询问报文"><a href="#2）ICMP询问报文" class="headerlink" title="2）ICMP询问报文"></a>2）ICMP询问报文</h3><p>回送回答和回答报文：</p>
+<ul>
+<li><p>ICMP回送回答报文是由主机和路由向一个特定的目的主机发出的询问</p>
+</li>
+<li><p>收到此报文的主机必须给源主机或路由器发送ICMP回送回答报文</p>
+</li>
+<li><p><strong>主要用来测试目的站是否可达以及了解其有关状态</strong></p>
+</li>
+</ul>
+<p>时间戳请求和回答：</p>
+<ul>
+<li>ICMP时间戳请求报文时请某个主机或路由器回答当前的日期和时间</li>
+<li>ICMP时间戳回答报文中有一个32位的字段，写入的整数代表从1900年1月1日到当前时刻一共有多少秒</li>
+<li>主要用来进行时钟同步和测量时间</li>
+</ul>
+<h3 id="3）应用"><a href="#3）应用" class="headerlink" title="3）应用"></a>3）应用</h3><h4 id="①PING"><a href="#①PING" class="headerlink" title="①PING"></a>①PING</h4><ul>
+<li>用来<strong>测试主机或路由器之间的连通性</strong></li>
+<li>应用层<strong>直接使用网际层的ICMP</strong>(没有经过运输层的TCP或UDP)</li>
+<li>使用ICMP<strong>回送请求和回答报文</strong></li>
+</ul>
+<h3 id="②traceroute"><a href="#②traceroute" class="headerlink" title="②traceroute"></a>②traceroute</h3><p><img src="D:/Typora/TyporaPictureBed/image-20220614172105767.png" alt="image-20220614172105767"></p>
+<p>跟踪路由traceroute实现原理：</p>
+<p>​	简单来说，就是先发送一个TTL &#x3D; 1的报文，当TTL到达第一个主机后TTL变为0，此时路由器会回送时间超过差错报文，此时就能知道第一个路由位置。此时源主机再发送TTL &#x3D; 2 的报文，当TTL到达第二个主机后TTL变为0，此时路由器会回送时间超过差错报文，此时就能够知道第二个路由的地址。如此反复，直到到达最后一个路由。<br><img src="https://s2.loli.net/2022/06/14/uBwmJjvqCg39WDf.png" alt="traceroute第三步"></p>
+<p><img src="https://img-blog.csdnimg.cn/20210208020457607.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="修改时间过期并且有修改"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"># 计算机网络</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/06/10/Spring%E7%AC%94%E8%AE%B0/" rel="prev" title="Spring笔记">
+      <i class="fa fa-chevron-left"></i> Spring笔记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81net-work"><span class="nav-text">三、net-work</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-IPv4%E5%9C%B0%E5%9D%80"><span class="nav-text">1.IPv4地址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%88%86%E7%B1%BB%E7%BC%96%E5%9D%80"><span class="nav-text">1）分类编址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0A%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="nav-text">①A类地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1B%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="nav-text">②B类地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2C%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="nav-text">③C类地址</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E5%88%92%E5%88%86%E5%AD%90%E7%BD%91%E7%BC%96%E5%9D%80"><span class="nav-text">2）划分子网编址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81"><span class="nav-text">①子网掩码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1eg1"><span class="nav-text">②eg1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1eg2"><span class="nav-text">②eg2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2eg3"><span class="nav-text">③eg3</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E6%97%A0%E5%88%86%E7%B1%BB%E7%BC%96%E5%9D%80"><span class="nav-text">3）无分类编址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0eg1"><span class="nav-text">①eg1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1eg2-1"><span class="nav-text">②eg2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E8%B7%AF%E7%94%B1%E8%81%9A%E5%90%88%EF%BC%88%E6%9E%84%E5%BB%BA%E8%B6%85%E7%BD%91%EF%BC%89"><span class="nav-text">③路由聚合（构建超网）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3eg3"><span class="nav-text">④eg3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4eg4"><span class="nav-text">⑤eg4</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-IP%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F"><span class="nav-text">2.IP首部格式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E7%89%88%E6%9C%AC"><span class="nav-text">1）版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E9%A6%96%E9%83%A8%E9%95%BF%E5%BA%A6"><span class="nav-text">2）首部长度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E5%8F%AF%E9%80%89%E5%AD%97%E6%AE%B5"><span class="nav-text">3）可选字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89%E5%A1%AB%E5%85%85%E5%AD%97%E6%AE%B5"><span class="nav-text">4）填充字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%89%E5%8C%BA%E5%88%86%E6%9C%8D%E5%8A%A1%E5%AD%97%E6%AE%B5"><span class="nav-text">5）区分服务字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%EF%BC%89%E6%80%BB%E9%95%BF%E5%BA%A6%E5%AD%97%E6%AE%B5"><span class="nav-text">6）总长度字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7%EF%BC%89%E6%A0%87%E8%AF%86%E3%80%81%E6%A0%87%E5%BF%97%E3%80%81%E7%89%87%E5%81%8F%E7%A7%BB%E5%AD%97%E6%AE%B5"><span class="nav-text">7）标识、标志、片偏移字段</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%88%86%E7%89%87"><span class="nav-text">①数据报分片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1eg"><span class="nav-text">②eg</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8%EF%BC%89%E7%94%9F%E5%AD%98%E6%97%B6%E9%97%B4"><span class="nav-text">8）生存时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9%EF%BC%89%E5%8D%8F%E8%AE%AE%E5%AD%97%E6%AE%B5"><span class="nav-text">9）协议字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10%EF%BC%89%E9%A6%96%E9%83%A8%E6%A3%80%E9%AA%8C%E5%92%8C"><span class="nav-text">10）首部检验和</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11%EF%BC%89%E6%BA%90IP%E5%9C%B0%E5%9D%80%E3%80%81%E7%9B%AE%E7%9A%84IP%E5%9C%B0%E5%9D%80%E5%AD%97%E6%AE%B5"><span class="nav-text">11）源IP地址、目的IP地址字段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-ICMP"><span class="nav-text">3.ICMP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%B7%AE%E9%94%99%E6%8A%A5%E6%96%87"><span class="nav-text">1）差错报文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E7%BB%88%E7%82%B9%E4%B8%8D%E5%8F%AF%E8%BE%BE"><span class="nav-text">①终点不可达</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E6%BA%90%E7%82%B9%E6%8A%91%E5%88%B6"><span class="nav-text">②源点抑制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E6%97%B6%E9%97%B4%E8%B6%85%E8%BF%87"><span class="nav-text">③时间超过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3%E5%8F%82%E6%95%B0%E9%97%AE%E9%A2%98"><span class="nav-text">④参数问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4%E6%94%B9%E5%8F%98%E8%B7%AF%E7%94%B1"><span class="nav-text">⑤改变路由</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A5%E4%B8%8D%E5%8F%91%E9%80%81%E7%BB%99ICMP%E5%B7%AE%E9%94%99%E6%8A%A5%E5%91%8A%E6%8A%A5%E6%96%87%E6%83%85%E5%86%B5"><span class="nav-text">⑥不发送给ICMP差错报告报文情况</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89ICMP%E8%AF%A2%E9%97%AE%E6%8A%A5%E6%96%87"><span class="nav-text">2）ICMP询问报文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E5%BA%94%E7%94%A8"><span class="nav-text">3）应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0PING"><span class="nav-text">①PING</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%91%A1traceroute"><span class="nav-text">②traceroute</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="f1ashades"
+      src="/images/mine.jpg">
+  <p class="site-author-name" itemprop="name">f1ashades</p>
+  <div class="site-description" itemprop="description">once again I am a child</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">f1ashades</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

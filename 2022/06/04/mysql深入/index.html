@@ -121,7 +121,7 @@
 <meta property="og:image" content="https://s2.loli.net/2022/05/09/6bDL1dOAgfG9ev4.png">
 <meta property="og:image" content="https://s2.loli.net/2022/06/04/ecoGstjKThgfPar.png">
 <meta property="article:published_time" content="2022-06-04T07:29:48.000Z">
-<meta property="article:modified_time" content="2022-06-09T10:57:37.890Z">
+<meta property="article:modified_time" content="2022-06-22T14:58:52.884Z">
 <meta property="article:author" content="f1ashades">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary">
@@ -285,7 +285,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-06-09 18:57:37" itemprop="dateModified" datetime="2022-06-09T18:57:37+08:00">2022-06-09</time>
+                <time title="修改时间：2022-06-22 22:58:52" itemprop="dateModified" datetime="2022-06-22T22:58:52+08:00">2022-06-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -349,11 +349,11 @@
 </tr>
 </tbody></table>
 <p>①脏读（Dirty read）：</p>
-<p>​	数据库中A&#x3D;200，事务1中修改了A&#x3D;100，但是这时候事务1还没有commit，而此时事务2要读取A的值，事务2读取A&#x3D;100，这是事务A修改了但是还没有commit的数据，这种数据就称为’脏数据’，此时就发生了’脏读’。</p>
+<p>​	数据库中A&#x3D;200，事务1中修改了A&#x3D;100，但是这时候事务1还没有commit，而此时事务2要读取A的值，事务2读取A&#x3D;100，这是事务A修改了但是还没有commit的数据，这种数据就称为’脏数据’，此时就发生了<code>脏读</code>。</p>
 <p>②不可重复读（Unrepeatable read）</p>
-<p>​	数据库中id&#x3D;1的数据有一个值为A&#x3D;200，事务A第一次select<code>id=1</code>的数据查询出A&#x3D;200，此时事务2修改update<code>id=1</code>的数据使A&#x3D;100并且commit了，此时数据库中的<code>id=1</code>的数据A&#x3D;100，然后事务1第二次读取select<code>id=1</code>的数据查询出A&#x3D;100和第一次查询出的A&#x3D;200不一致，此时就发生了’不可重复读现象’。</p>
+<p>​	数据库中id&#x3D;1的数据有一个值为A&#x3D;200，事务A第一次select<code>id=1</code>的数据查询出A&#x3D;200，此时事务2修改update<code>id=1</code>的数据使A&#x3D;100并且commit了，此时数据库中的<code>id=1</code>的数据A&#x3D;100，然后事务1第二次读取select<code>id=1</code>的数据查询出A&#x3D;100和第一次查询出的A&#x3D;200不一致，此时就发生了<code>不可重复读现象</code>。</p>
 <p>③幻读（Phantom read）</p>
-<p>​	幻读与不可重复读类似，事务1第一步select查询id&#x3D;1的数据，此时数据库为空没有查到，刚好此时事务2向数据库中插入了id&#x3D;1的数据，此时事务1第二步要插入id&#x3D;1的数据的时候就会报错，当事务1再次查询数据库的时候发现id为1的数据还是没有（因为已经解决了不可重复读的问题，两次查询的结果一致），这时候就发生了’幻读’。因为在插入数据的时候会因为事务2插入的数据失败，事务1会发现已经有了插入的数据，但是查询的时候又看见，就像幻觉一样’Phantom’</p>
+<p>​	幻读与不可重复读类似，事务1第一步select查询id&#x3D;1的数据，此时数据库为空没有查到，刚好此时事务2向数据库中插入了id&#x3D;1的数据，此时事务1第二步要插入id&#x3D;1的数据的时候就会报错，当事务1再次查询数据库的时候发现id为1的数据还是没有（因为已经解决了不可重复读的问题，两次查询的结果一致），这时候就发生了’幻读’。因为在插入数据的时候会因为事务2插入的数据失败，事务1会发现已经有了插入的数据，但是查询的时候又看见，就像幻觉一样<code>Phantom</code>。</p>
 <p>④丢失更新（Lost to modify）</p>
 <p>事务1想要修改A&#x3D;20并且读取到了A&#x3D;20数据（此时事务2页读取到了A&#x3D;20），使A&#x3D;A-1，修改的结果为19；事务2读取到A&#x3D;20数据后也要进行修改，使A&#x3D;A-3，得到的结果为17；最终结果为17，看起来就是事务1的结果丢失了。</p>
 <p>注：</p>
@@ -707,7 +707,7 @@
 <p>聚集索引选取规则：</p>
 <ul>
 <li>如果存在主键，主键索引就是聚集索引</li>
-<li>如果不存在主键，将使用第一个唯一(UNIQUE)索引作为聚集索引</li>
+<li>如果不存在主键，将使用第一个唯一(UNIQUE)列作为聚集索引</li>
 <li>如果表没有主键或没有合适的唯一索引，则 InnoDB 会自动生成一个 rowid 作为隐藏的聚集索引</li>
 </ul>
 <p>思考题</p>

@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一些springMVC的使用$.$">
+<meta property="og:type" content="article">
+<meta property="og:title" content="springMVC的使用">
+<meta property="og:url" content="http://example.com/2022/04/04/springMVC/index.html">
+<meta property="og:site_name" content="f1ashades&#39; blogs">
+<meta property="og:description" content="一些springMVC的使用$.$">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/9XYsG6kyPxmgFIo.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/Cuk5WQbZJhLKdvp.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/tUFHczOJan3BNCS.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/19/73YC9wzPqaGxMIH.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/86RyHnK3IQSxtMU.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/8s1VAc6hnavmuyR.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/JSiz93fcvFAE6qX.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/DPv7ZGAE6KH8c3u.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/I2quzNrVZQsb6PD.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/XUzEh4WbwfxrOZk.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/TmpHofUEvL4MgeF.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/iHROtmFSCp5A6rl.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/mjDVs5yQvn9ukrF.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/6AJN53jep1PLBkz.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/Dn4vTCNQwRkWiYE.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/JiZludb5qyeCUTm.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/vLYIF75sEobalzD.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/gixHb3hREPC6vFc.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/qPDE56KTnA2NXuv.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/opNY356WtGhjk8T.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/iX5Rfon18L6jWQY.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/681JLw7oEtDRHUp.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/7d6sblKNcMpwf52.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/xW8hUFDcfulSnXj.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/YrnvHZkQdq4KC1z.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/rZ9gMcxbEV7SiWn.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/nOxrcYd5NauJBeg.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/8RehUmzYvQfCAKI.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/E4zv35dyosT9wr8.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/S2wiNxaOM1XIjQk.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/WHPKaRxlkvByJmF.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/jnI1Z3italW6yzK.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/EVmIlti4yzeqBAK.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/OinfRbBvQa8UJMj.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/vgQyaNi73PdfBGZ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/TWQNV64Pyz83OIF.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/i1gznaqdrH8I6e2.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/oBKiTAnC4yJLFcX.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/wXDHL7Ab3Qq8tUk.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/p87gJu3TohbkSG9.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/fk8xNsV9oQ5Jzdu.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/eFXQGO67cDmYzKI.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/xNoHJjm6CFhpr1K.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/lSWYGhKIM4DsPVk.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/3hgktxowF2a8O1d.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/YcwV2MD1rT8ePSF.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/vqwo2pWlFbLHGAP.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/rISFz1atvf3UAxe.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/vuyEmWRA4Ti7Lxc.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/gdcFwBvOprfTJhG.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/PQsKA8ymbELko3J.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/uJlUIrmWpbGLdaC.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/GecTz4pJnbr6UvE.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/9DVpEaT3NOGXKUd.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/cHFrGWhfktiEODS.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/gPF3o6YLGfTvxiA.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/CreUmSKVntqp65O.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/3WChAN5vjOparLP.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/Qidc6h2kf4VzNry.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/LoVUKmY7tF1d32b.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/CA6hiwWf7OZzGpt.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/pTCroJXPeL81vSx.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/19/Wbg5iy1kFYtm7cV.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/19/GKFgpcj73B98Lzr.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/KPZsG8HSyCcYT4f.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/64XIpqxit2yzjnQ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/16/6fQFT5CoXv1jMqI.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/18/BCOMTlkWGA794hs.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/19/QG7zLlkUA6aYbMW.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/18/LZrBh9EPdxFlgvG.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/18/D56HBtzYKmR8Qpb.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/18/BWZlNjQmoTYGM7t.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/18/zbCJfwQNHTsgDot.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/18/Imdvr69LKOWScYo.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/18/ouFfmzh9c1AyPgn.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/18/dxDj6BlhwXTg487.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/18/ESHkWxB7QdbDioT.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/18/d5b2hQUZXTofgYq.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/18/Io8hjbApKuflYO9.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/18/ckvhCZdTQpjAB3r.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/18/capdDreHszj8Y6O.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/18/I9m67htYuvWL8BC.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/18/FEOsmDGKLAu4Z9X.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/18/61YbHptvJfO2nWx.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/19/cOxCplBvhN5r9Tg.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/19/mDaA5PSZR62QXOW.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/19/JxEQHWTwUDzSYOL.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/19/FSmx7JlCKwnZoOR.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/19/8cun7AMzo5rhF9X.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/19/7fuHyUMPl2Avrag.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/19/mMHXTRDodEcpu6n.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/19/BVxzE7ZdH5FImlf.png">
+<meta property="article:published_time" content="2022-04-04T07:29:48.000Z">
+<meta property="article:modified_time" content="2022-06-25T13:29:53.735Z">
+<meta property="article:author" content="f1ashades">
+<meta property="article:tag" content="Spring MVC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/06/16/9XYsG6kyPxmgFIo.png">
+
+<link rel="canonical" href="http://example.com/2022/04/04/springMVC/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>springMVC的使用 | f1ashades' blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">f1ashades' blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/04/springMVC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/mine.jpg">
+      <meta itemprop="name" content="f1ashades">
+      <meta itemprop="description" content="once again I am a child">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="f1ashades' blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          springMVC的使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-04 15:29:48" itemprop="dateCreated datePublished" datetime="2022-04-04T15:29:48+08:00">2022-04-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-06-25 21:29:53" itemprop="dateModified" datetime="2022-06-25T21:29:53+08:00">2022-06-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring-MVC/" itemprop="url" rel="index"><span itemprop="name">Spring MVC</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>一些springMVC的使用$.$</p>
+<span id="more"></span>
+
+
+
+<h2 id="1-springMVC执行过程"><a href="#1-springMVC执行过程" class="headerlink" title="1.springMVC执行过程"></a>1.springMVC执行过程</h2><p><img src="https://s2.loli.net/2022/06/16/9XYsG6kyPxmgFIo.png" alt="image-20220616145714069"></p>
+<h3 id="1）启动服务器的初始化"><a href="#1）启动服务器的初始化" class="headerlink" title="1）启动服务器的初始化"></a>1）启动服务器的初始化</h3><p>​	<strong>①服务器启动会找到ServletContainersInitConfig类（继承了MVC所规定的AbstractDispatcherServletInitializer）</strong><img src="https://s2.loli.net/2022/06/16/Cuk5WQbZJhLKdvp.png" alt="image-20220616151203715"></p>
+<p><img src="https://s2.loli.net/2022/06/16/tUFHczOJan3BNCS.png" alt="image-20220616150052800"></p>
+<p>该类的作用其实是和web.xml中的dispatcherServlet作用是一样的：</p>
+<ul>
+<li><p>记载了springMVC的配置类</p>
+</li>
+<li><p>定义了拦截的请求</p>
+</li>
+</ul>
+<p><strong>②执行createServletApplicationContext方法</strong></p>
+<p>​	创建了WebApplicationContext对象，并使用regist加载SpringMVC的配置类SpringMvcConfig来初始化SpringMVC的容器</p>
+<p><img src="https://s2.loli.net/2022/06/19/73YC9wzPqaGxMIH.png" alt="image-20220616150544343"></p>
+<p><strong>③加载springMvcConfig</strong></p>
+<p><strong>④执行@ComponentScan加载对应的bean</strong></p>
+<p><img src="https://s2.loli.net/2022/06/16/86RyHnK3IQSxtMU.png" alt="image-20220616150744206"></p>
+<p>这里仅仅扫描了controller，目的是让springMvc的容器来管理web相关的controller，</p>
+<p>至于service和dao中的bean则交给spring来进行管理</p>
+<p><strong>⑤加载UserController，每个@RequestMapping的名称对应一个具体的方法</strong></p>
+<p><img src="https://s2.loli.net/2022/06/16/8s1VAc6hnavmuyR.png" alt="image-20220616151033932"></p>
+<p>此时就建立起了 <code>/save</code> 和 <code>save</code> 方法的对应关系</p>
+<p>⑥执行getServletMappings方法，设定SpringMVC拦截请求的路径规则</p>
+<p><img src="https://s2.loli.net/2022/06/16/JSiz93fcvFAE6qX.png" alt="image-20220616152002324"></p>
+<p>拦截规则补充：</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/chenmz1995/p/10367199.html">https://www.cnblogs.com/chenmz1995/p/10367199.html</a>	</p>
+<p><a target="_blank" rel="noopener" href="https://liuxingchang.blog.csdn.net/article/details/109016430?spm=1001.2101.3001.6661.1&amp;utm_medium=distribute.pc_relevant_t0.none-task-blog-2~default~CTRLIST~Rate-1-109016430-blog-105250658.pc_relevant_paycolumn_v3&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2~default~CTRLIST~Rate-1-109016430-blog-105250658.pc_relevant_paycolumn_v3&amp;utm_relevant_index=1">https://liuxingchang.blog.csdn.net/article/details/109016430?spm=1001.2101.3001.6661.1&amp;utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-109016430-blog-105250658.pc_relevant_paycolumn_v3&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-109016430-blog-105250658.pc_relevant_paycolumn_v3&amp;utm_relevant_index=1</a></p>
+<h3 id="2）单次请求过程"><a href="#2）单次请求过程" class="headerlink" title="2）单次请求过程"></a>2）单次请求过程</h3><p><img src="https://s2.loli.net/2022/06/16/DPv7ZGAE6KH8c3u.png" alt="image-20220616152410075"></p>
+<h3 id="3）基本标签"><a href="#3）基本标签" class="headerlink" title="3）基本标签"></a>3）基本标签</h3><h4 id="①-Controller"><a href="#①-Controller" class="headerlink" title="①@Controller"></a>①@Controller</h4><p><img src="https://s2.loli.net/2022/06/16/I2quzNrVZQsb6PD.png" alt="image-20220616163204874"></p>
+<h4 id="②-RequestMapping"><a href="#②-RequestMapping" class="headerlink" title="②@RequestMapping"></a>②@RequestMapping</h4><p><img src="https://s2.loli.net/2022/06/16/XUzEh4WbwfxrOZk.png" alt="image-20220616163235698"></p>
+<h4 id="③-ResposeBody"><a href="#③-ResposeBody" class="headerlink" title="③@ResposeBody"></a>③@ResposeBody</h4><p><img src="https://s2.loli.net/2022/06/16/TmpHofUEvL4MgeF.png" alt="image-20220616163307506">	因为在返回的时候直接返回String的话是根据该值，通过视图解析器找到对应的页面，如果我们想想页面直接返回该结果，就可以添加@ResponseBody注解</p>
+<h2 id="2-bean的加载控制"><a href="#2-bean的加载控制" class="headerlink" title="2.bean的加载控制"></a>2.bean的加载控制</h2><p><img src="https://s2.loli.net/2022/06/16/iHROtmFSCp5A6rl.png" alt="image-20220616152724212"></p>
+<h3 id="1）精确扫描"><a href="#1）精确扫描" class="headerlink" title="1）精确扫描"></a>1）精确扫描</h3><p><img src="https://s2.loli.net/2022/06/16/mjDVs5yQvn9ukrF.png" alt="image-20220616153403399"></p>
+<p>这样springConfig就不会扫描到controller了</p>
+<p>注意：</p>
+<p>​	这里可以不用扫描dao包，因为dao的bean都是通过动态代理的方式生成bean对象，而不是让spring容器生成的</p>
+<p><img src="https://s2.loli.net/2022/06/16/6AJN53jep1PLBkz.png" alt="image-20220616153806273"></p>
+<p>如果这里不扫描也可以，但是通用性会差一些，如果不再使用mybatis技术，而是使用其它技术，dao层的bean就会没有</p>
+<h3 id="2）排除"><a href="#2）排除" class="headerlink" title="2）排除"></a>2）排除<img src="https://s2.loli.net/2022/06/16/Dn4vTCNQwRkWiYE.png" alt="image-20220616154249495"></h3><p><img src="https://s2.loli.net/2022/06/16/JiZludb5qyeCUTm.png" alt="image-20220616154227381"></p>
+<h2 id="3-url参数传递"><a href="#3-url参数传递" class="headerlink" title="3.url参数传递"></a>3.url参数传递</h2><h3 id="1）基本参数传递"><a href="#1）基本参数传递" class="headerlink" title="1）基本参数传递"></a>1）基本参数传递</h3><h4 id="①普通参数-名称匹配"><a href="#①普通参数-名称匹配" class="headerlink" title="①普通参数(名称匹配)"></a>①普通参数(名称匹配)</h4><p><img src="https://s2.loli.net/2022/06/16/vLYIF75sEobalzD.png" alt="image-20220616161316946"></p>
+<h4 id="②普通参数-名称不匹配"><a href="#②普通参数-名称不匹配" class="headerlink" title="②普通参数(名称不匹配)"></a>②普通参数(名称不匹配)</h4><p><img src="https://s2.loli.net/2022/06/16/gixHb3hREPC6vFc.png" alt="image-20220616161426627"></p>
+<h4 id="③-RequestParam注解"><a href="#③-RequestParam注解" class="headerlink" title="③@RequestParam注解"></a>③@RequestParam注解</h4><p><img src="https://s2.loli.net/2022/06/16/qPDE56KTnA2NXuv.png" alt="image-20220616161457897"></p>
+<p>注：</p>
+<ul>
+<li><p>@RequestParam参数和@RequestBody的对比：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_38004638/article/details/99655322">https://blog.csdn.net/weixin_38004638/article/details/99655322</a></p>
+</li>
+<li><p>Content-type的几种常见类型：<a target="_blank" rel="noopener" href="https://blog.csdn.net/duanHaoYu97/article/details/123408852">https://blog.csdn.net/duanHaoYu97/article/details/123408852</a></p>
+</li>
+</ul>
+<h4 id="④pojo参数"><a href="#④pojo参数" class="headerlink" title="④pojo参数"></a>④pojo参数</h4><p><img src="https://s2.loli.net/2022/06/16/opNY356WtGhjk8T.png" alt="image-20220616162245644"></p>
+<p><img src="https://s2.loli.net/2022/06/16/iX5Rfon18L6jWQY.png" alt="image-20220616161804501"></p>
+<h4 id="⑤pojo嵌套参数"><a href="#⑤pojo嵌套参数" class="headerlink" title="⑤pojo嵌套参数"></a>⑤pojo嵌套参数</h4><p><img src="https://s2.loli.net/2022/06/16/681JLw7oEtDRHUp.png" alt="image-20220616161845084"></p>
+<p><img src="https://s2.loli.net/2022/06/16/7d6sblKNcMpwf52.png" alt="image-20220616161934296"></p>
+<h4 id="⑥数组参数"><a href="#⑥数组参数" class="headerlink" title="⑥数组参数"></a>⑥数组参数</h4><p><img src="https://s2.loli.net/2022/06/16/xW8hUFDcfulSnXj.png" alt="image-20220616162005389"></p>
+<h4 id="⑦集合"><a href="#⑦集合" class="headerlink" title="⑦集合"></a>⑦集合</h4><p><img src="https://s2.loli.net/2022/06/16/YrnvHZkQdq4KC1z.png" alt="image-20220616162046157"></p>
+<p>​	集合和数组最大的不同是需要添加@RequestParam参数</p>
+<h3 id="2）json参数传递"><a href="#2）json参数传递" class="headerlink" title="2）json参数传递"></a>2）json参数传递</h3><p><img src="https://s2.loli.net/2022/06/16/rZ9gMcxbEV7SiWn.png" alt="image-20220616164054425"></p>
+<h4 id="①准备"><a href="#①准备" class="headerlink" title="①准备"></a>①准备</h4><p><strong>pom依赖：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/16/nOxrcYd5NauJBeg.png" alt="image-20220616164732410"></p>
+<p><strong>开启自动转换JSON数据的支持（告诉MVC接收数据后进行JSON转换）：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/16/8RehUmzYvQfCAKI.png" alt="image-20220616164834195"></p>
+<p><img src="https://s2.loli.net/2022/06/16/E4zv35dyosT9wr8.png" alt="image-20220616164859124"></p>
+<h4 id="②json普通数组"><a href="#②json普通数组" class="headerlink" title="②json普通数组"></a>②json普通数组</h4><p><img src="https://s2.loli.net/2022/06/16/S2wiNxaOM1XIjQk.png" alt="image-20220616165155928"></p>
+<p><img src="https://s2.loli.net/2022/06/16/WHPKaRxlkvByJmF.png" alt="image-20220616165139107"></p>
+<h4 id="③json对象"><a href="#③json对象" class="headerlink" title="③json对象"></a>③json对象</h4><p><strong>普通pojo：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/16/jnI1Z3italW6yzK.png" alt="image-20220616165352603"></p>
+<p><strong>嵌套pojo：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/16/EVmIlti4yzeqBAK.png" alt="image-20220616165454215"></p>
+<p><img src="https://s2.loli.net/2022/06/16/OinfRbBvQa8UJMj.png" alt="image-20220616165331533"></p>
+<h4 id="④json对象数组"><a href="#④json对象数组" class="headerlink" title="④json对象数组"></a>④json对象数组</h4><p><img src="https://s2.loli.net/2022/06/16/vgQyaNi73PdfBGZ.png" alt="image-20220616165617266"></p>
+<p><img src="https://s2.loli.net/2022/06/16/TWQNV64Pyz83OIF.png" alt="image-20220616165649878"></p>
+<h4 id="⑤-EnableWebMvc"><a href="#⑤-EnableWebMvc" class="headerlink" title="⑤@EnableWebMvc"></a>⑤@EnableWebMvc</h4><p><img src="https://s2.loli.net/2022/06/16/i1gznaqdrH8I6e2.png" alt="image-20220616165749353"></p>
+<h4 id="⑥-RequestBody"><a href="#⑥-RequestBody" class="headerlink" title="⑥@RequestBody"></a>⑥@RequestBody</h4><p><img src="https://s2.loli.net/2022/06/16/oBKiTAnC4yJLFcX.png" alt="image-20220616165812414"></p>
+<p><strong>@RequestParam和@RequestBody对比：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/16/wXDHL7Ab3Qq8tUk.png" alt="image-20220616165920888"></p>
+<p>注：</p>
+<ul>
+<li><p>@RequestParam参数和@RequestBody的对比：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_38004638/article/details/99655322">https://blog.csdn.net/weixin_38004638/article/details/99655322</a></p>
+</li>
+<li><p>Content-type的几种常见类型：<a target="_blank" rel="noopener" href="https://blog.csdn.net/duanHaoYu97/article/details/123408852">https://blog.csdn.net/duanHaoYu97/article/details/123408852</a></p>
+</li>
+</ul>
+<h3 id="3）日期参数传递"><a href="#3）日期参数传递" class="headerlink" title="3）日期参数传递"></a>3）日期参数传递</h3><h4 id="①-DateTimeFormat"><a href="#①-DateTimeFormat" class="headerlink" title="①@DateTimeFormat"></a>①@DateTimeFormat</h4><p><img src="https://s2.loli.net/2022/06/16/p87gJu3TohbkSG9.png" alt="image-20220616171102479"></p>
+<h4 id="②converter接口"><a href="#②converter接口" class="headerlink" title="②converter接口"></a>②converter接口</h4><p><img src="https://s2.loli.net/2022/06/16/fk8xNsV9oQ5Jzdu.png" alt="image-20220616171239099"></p>
+<h4 id="②eg"><a href="#②eg" class="headerlink" title="②eg"></a>②eg</h4><p><img src="https://s2.loli.net/2022/06/16/eFXQGO67cDmYzKI.png" alt="image-20220616171043153"></p>
+<h2 id="4-响应"><a href="#4-响应" class="headerlink" title="4.响应"></a>4.响应</h2><h3 id="1）json数据响应"><a href="#1）json数据响应" class="headerlink" title="1）json数据响应"></a>1）json数据响应</h3><h4 id="①准备-1"><a href="#①准备-1" class="headerlink" title="①准备"></a>①准备</h4><p><strong>pom依赖：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/16/xNoHJjm6CFhpr1K.png" alt="image-20220616164732410"></p>
+<p><strong>开启自动转换JSON数据的支持（告诉MVC接收数据后进行JSON转换）：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/16/lSWYGhKIM4DsPVk.png" alt="image-20220616164834195"></p>
+<p><img src="https://s2.loli.net/2022/06/16/3hgktxowF2a8O1d.png" alt="image-20220616164859124"></p>
+<h4 id="②pojo"><a href="#②pojo" class="headerlink" title="②pojo"></a>②pojo</h4><p><img src="https://s2.loli.net/2022/06/16/YcwV2MD1rT8ePSF.png" alt="image-20220616173213943"></p>
+<p><img src="https://s2.loli.net/2022/06/16/vqwo2pWlFbLHGAP.png" alt="image-20220616173307461"></p>
+<h4 id="③pojo集合"><a href="#③pojo集合" class="headerlink" title="③pojo集合"></a>③pojo集合</h4><p><img src="https://s2.loli.net/2022/06/16/rISFz1atvf3UAxe.png" alt="image-20220616173350884"></p>
+<p><img src="https://s2.loli.net/2022/06/16/vuyEmWRA4Ti7Lxc.png" alt="image-20220616173404596"></p>
+<h3 id="2）json的转换原理"><a href="#2）json的转换原理" class="headerlink" title="2）json的转换原理"></a>2）json的转换原理</h3><h4 id="①-ResponseBody"><a href="#①-ResponseBody" class="headerlink" title="①@ResponseBody"></a>①@ResponseBody</h4><p><img src="https://s2.loli.net/2022/06/16/gdcFwBvOprfTJhG.png" alt="image-20220616173523124"></p>
+<h4 id="②转换过程"><a href="#②转换过程" class="headerlink" title="②转换过程"></a>②转换过程</h4><p><img src="https://s2.loli.net/2022/06/16/PQsKA8ymbELko3J.png" alt="image-20220616174310613"></p>
+<p>①接口下有很多实现类，其中②这个实现类就是Jackson2HttpMessageConverter，这样就会把我们返回的数据转换成json数据</p>
+<h2 id="5-Rest风格"><a href="#5-Rest风格" class="headerlink" title="5.Rest风格"></a>5.Rest风格</h2><h3 id="1）基本概念"><a href="#1）基本概念" class="headerlink" title="1）基本概念"></a>1）基本概念</h3><p><img src="https://s2.loli.net/2022/06/16/uJlUIrmWpbGLdaC.png" alt="image-20220616175738806"></p>
+<p>相较于传统方式，rest风格的书写隐藏了访问资源的行为，我们无法通过地址的值对资源进行了什么操作：</p>
+<ul>
+<li>我们通过地址来指明要访问的模块<code>http://localhost/users</code>，这就代表我们访问了users模块</li>
+<li>具体的操作由方法来决定</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/06/16/GecTz4pJnbr6UvE.png" alt="image-20220616180215910"></p>
+<p>注意：模块名称用复数，这是一个约定俗成的规范</p>
+<h3 id="2）基本实现"><a href="#2）基本实现" class="headerlink" title="2）基本实现"></a>2）基本实现</h3><h4 id="①新增"><a href="#①新增" class="headerlink" title="①新增"></a>①新增</h4><p><img src="https://s2.loli.net/2022/06/16/9DVpEaT3NOGXKUd.png" alt="image-20220616181419261"></p>
+<h4 id="②删除"><a href="#②删除" class="headerlink" title="②删除"></a>②删除</h4><p><img src="https://s2.loli.net/2022/06/16/cHFrGWhfktiEODS.png" alt="image-20220616181505096">阐述</p>
+<p><strong>参数不匹配情况：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/16/gPF3o6YLGfTvxiA.png" alt="image-20220616181545256"></p>
+<p><strong>多个参数情况：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/16/CreUmSKVntqp65O.png" alt="image-20220616181716692"></p>
+<h4 id="③修改"><a href="#③修改" class="headerlink" title="③修改"></a>③修改</h4><p><img src="https://s2.loli.net/2022/06/16/3WChAN5vjOparLP.png" alt="image-20220616181828317"></p>
+<h4 id="④查询单个"><a href="#④查询单个" class="headerlink" title="④查询单个"></a>④查询单个</h4><p><img src="https://s2.loli.net/2022/06/16/Qidc6h2kf4VzNry.png" alt="image-20220616182330762"></p>
+<h4 id="⑤查询所有"><a href="#⑤查询所有" class="headerlink" title="⑤查询所有"></a>⑤查询所有</h4><p><img src="https://s2.loli.net/2022/06/16/LoVUKmY7tF1d32b.png" alt="image-20220616182401502"></p>
+<h4 id="⑥-PathVariable"><a href="#⑥-PathVariable" class="headerlink" title="⑥@PathVariable"></a>⑥@PathVariable</h4><p><img src="https://s2.loli.net/2022/06/16/CA6hiwWf7OZzGpt.png" alt="image-20220616182517159"></p>
+<p>三种参数接收方式的对比：</p>
+<p><img src="https://s2.loli.net/2022/06/16/pTCroJXPeL81vSx.png" alt="image-20220616182624014"></p>
+<h3 id="3）RestFul快速开发"><a href="#3）RestFul快速开发" class="headerlink" title="3）RestFul快速开发"></a>3）RestFul快速开发</h3><h4 id="①-RestController"><a href="#①-RestController" class="headerlink" title="①@RestController"></a>①@RestController</h4><p><img src="https://s2.loli.net/2022/06/19/Wbg5iy1kFYtm7cV.png" alt="image-20220616184736686"></p>
+<h4 id="②xxxMapping"><a href="#②xxxMapping" class="headerlink" title="②xxxMapping"></a>②xxxMapping</h4><p><img src="https://s2.loli.net/2022/06/19/GKFgpcj73B98Lzr.png" alt="image-20220616184830119"></p>
+<h2 id="6-静态资源的放行"><a href="#6-静态资源的放行" class="headerlink" title="6.静态资源的放行"></a>6.静态资源的放行</h2><p><img src="https://s2.loli.net/2022/06/16/KPZsG8HSyCcYT4f.png" alt="image-20220616190622036"></p>
+<p>在进行这样的配置后，mvc就会拦截掉页面请求从而把他当成一个mapping，所以我们需要放行该请求让tomcat做这件事</p>
+<p><strong>解决方法：</strong></p>
+<p>1）编写SpringMvcSupport继承WebMvcConfigurationSupport</p>
+<p><img src="https://s2.loli.net/2022/06/16/64XIpqxit2yzjnQ.png" alt="image-20220616191026771">①放行路径 和 ②访问目录 之间的对应关系：如果拦截到了①这样的请求，那么就访问②这个目录下的资源</p>
+<p>2） 保证扫描到该配置类</p>
+<p><img src="https://s2.loli.net/2022/06/16/6fQFT5CoXv1jMqI.png" alt="image-20220616191313917"></p>
+<h2 id="7-基本配置"><a href="#7-基本配置" class="headerlink" title="7.基本配置"></a>7.基本配置</h2><h3 id="1）servletConfig"><a href="#1）servletConfig" class="headerlink" title="1）servletConfig"></a>1）servletConfig</h3><p><strong>类似web.xml</strong></p>
+<h4 id="①基本"><a href="#①基本" class="headerlink" title="①基本"></a>①基本<img src="https://s2.loli.net/2022/06/18/BCOMTlkWGA794hs.png" alt="image-20220618175148257"></h4><h4 id="②过滤器"><a href="#②过滤器" class="headerlink" title="②过滤器"></a>②过滤器</h4><p><img src="https://s2.loli.net/2022/06/19/QG7zLlkUA6aYbMW.png" alt="image-20220618174724524"></p>
+<h3 id="2）web-xml"><a href="#2）web-xml" class="headerlink" title="2）web.xml"></a>2）web.xml</h3><h4 id="①监听器"><a href="#①监听器" class="headerlink" title="①监听器"></a>①监听器</h4><p><strong>读取类路径下的配置applicationContext.xml配置文件</strong></p>
+<p><img src="https://s2.loli.net/2022/06/18/LZrBh9EPdxFlgvG.png" alt="image-20220618174904392"></p>
+<h4 id="②过滤器-1"><a href="#②过滤器-1" class="headerlink" title="②过滤器"></a>②过滤器</h4><p><strong>解决中文乱码</strong></p>
+<p><img src="https://s2.loli.net/2022/06/18/D56HBtzYKmR8Qpb.png" alt="image-20220618174921809"></p>
+<h4 id="③配置前端控制器"><a href="#③配置前端控制器" class="headerlink" title="③配置前端控制器"></a>③配置前端控制器</h4><p><img src="https://s2.loli.net/2022/06/18/BWZlNjQmoTYGM7t.png" alt="image-20220618175018914"></p>
+<h4 id="④欢迎页面"><a href="#④欢迎页面" class="headerlink" title="④欢迎页面"></a>④欢迎页面</h4><p><img src="https://s2.loli.net/2022/06/18/zbCJfwQNHTsgDot.png" alt="image-20220618175037142"></p>
+<h4 id="⑤错误页面"><a href="#⑤错误页面" class="headerlink" title="⑤错误页面"></a>⑤错误页面</h4><p><img src="https://s2.loli.net/2022/06/18/Imdvr69LKOWScYo.png" alt="image-20220618175114750"></p>
+<h3 id="3）springMvcConfig"><a href="#3）springMvcConfig" class="headerlink" title="3）springMvcConfig"></a>3）springMvcConfig</h3><p><img src="https://s2.loli.net/2022/06/18/ouFfmzh9c1AyPgn.png" alt="image-20220618180104605"></p>
+<h2 id="8-SSM整合"><a href="#8-SSM整合" class="headerlink" title="8.SSM整合"></a>8.SSM整合</h2><h3 id="1）依赖"><a href="#1）依赖" class="headerlink" title="1）依赖"></a>1）依赖</h3><p>pom.xml添加SSM所需要的依赖jar包</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fla<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springmvc_08_ssm<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>war<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-webmvc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.2.10.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-jdbc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.2.10.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.2.10.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.5.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-spring<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.47<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>druid<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.1.16<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.servlet<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javax.servlet-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">scope</span>&gt;</span>provided<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-databind<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.tomcat.maven<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>tomcat7-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">port</span>&gt;</span>80<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">path</span>&gt;</span>/<span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="2）SpringConfig配置类"><a href="#2）SpringConfig配置类" class="headerlink" title="2）SpringConfig配置类"></a>2）SpringConfig配置类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan(&#123;&quot;com.fla.service&quot;&#125;)</span></span><br><span class="line"><span class="meta">@PropertySource(&quot;classpath:jdbc.properties&quot;)</span></span><br><span class="line"><span class="meta">@Import(&#123;JdbcConfig.class,MyBatisConfig.class&#125;)</span></span><br><span class="line"><span class="meta">@EnableTransactionManagement</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SpringConfig</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3）JdbcConfig配置类"><a href="#3）JdbcConfig配置类" class="headerlink" title="3）JdbcConfig配置类"></a>3）JdbcConfig配置类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JdbcConfig</span> &#123;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;jdbc.driver&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String driver;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;jdbc.url&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String url;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;jdbc.username&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;jdbc.password&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> DataSource <span class="title function_">dataSource</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="type">DruidDataSource</span> <span class="variable">dataSource</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DruidDataSource</span>();</span><br><span class="line">        dataSource.setDriverClassName(driver);</span><br><span class="line">        dataSource.setUrl(url);</span><br><span class="line">        dataSource.setUsername(username);</span><br><span class="line">        dataSource.setPassword(password);</span><br><span class="line">        <span class="keyword">return</span> dataSource;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> PlatformTransactionManager <span class="title function_">transactionManager</span><span class="params">(DataSource dataSource)</span>&#123;</span><br><span class="line">        <span class="type">DataSourceTransactionManager</span> <span class="variable">ds</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DataSourceTransactionManager</span>();</span><br><span class="line">        ds.setDataSource(dataSource);</span><br><span class="line">        <span class="keyword">return</span> ds;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4）MybatisConfig配置类"><a href="#4）MybatisConfig配置类" class="headerlink" title="4）MybatisConfig配置类"></a>4）MybatisConfig配置类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyBatisConfig</span> &#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> SqlSessionFactoryBean <span class="title function_">sqlSessionFactory</span><span class="params">(DataSource dataSource)</span>&#123;</span><br><span class="line">        <span class="type">SqlSessionFactoryBean</span> <span class="variable">factoryBean</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SqlSessionFactoryBean</span>();</span><br><span class="line">        factoryBean.setDataSource(dataSource);</span><br><span class="line">        factoryBean.setTypeAliasesPackage(<span class="string">&quot;com.fla.domain&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> factoryBean;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> MapperScannerConfigurer <span class="title function_">mapperScannerConfigurer</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="type">MapperScannerConfigurer</span> <span class="variable">msc</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MapperScannerConfigurer</span>();</span><br><span class="line">        msc.setBasePackage(<span class="string">&quot;com.fla.dao&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> msc;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5）SpringMVC配置类"><a href="#5）SpringMVC配置类" class="headerlink" title="5）SpringMVC配置类"></a>5）SpringMVC配置类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan(&quot;com.fla.controller&quot;)</span></span><br><span class="line"><span class="meta">@EnableWebMvc</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SpringMvcConfig</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="6）Web项目入口配置类"><a href="#6）Web项目入口配置类" class="headerlink" title="6）Web项目入口配置类"></a>6）Web项目入口配置类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ServletConfig</span> <span class="keyword">extends</span> <span class="title class_">AbstractAnnotationConfigDispatcherServletInitializer</span> &#123;</span><br><span class="line">    <span class="comment">//加载Spring配置类</span></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt;[] getRootConfigClasses() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;SpringConfig.class&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//加载SpringMVC配置类</span></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt;[] getServletConfigClasses() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;SpringMvcConfig.class&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//设置SpringMVC请求地址拦截规则</span></span><br><span class="line">    <span class="keyword">protected</span> String[] getServletMappings() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">String</span>[]&#123;<span class="string">&quot;/&quot;</span>&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//设置post请求中文乱码过滤器</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Filter[] getServletFilters() &#123;</span><br><span class="line">        <span class="type">CharacterEncodingFilter</span> <span class="variable">filter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CharacterEncodingFilter</span>();</span><br><span class="line">        filter.setEncoding(<span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Filter</span>[]&#123;filter&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>至此SSM整合的环境就已经搭建好了。在这个环境上，我们如何进行功能模块的开发呢?</p>
+<h2 id="9-异常处理"><a href="#9-异常处理" class="headerlink" title="9.异常处理"></a>9.异常处理</h2><h3 id="1）异常处理器"><a href="#1）异常处理器" class="headerlink" title="1）异常处理器"></a>1）异常处理器</h3><h4 id="①-RestControllerAdvice"><a href="#①-RestControllerAdvice" class="headerlink" title="①@RestControllerAdvice"></a>①@RestControllerAdvice</h4><p><img src="https://s2.loli.net/2022/06/18/dxDj6BlhwXTg487.png" alt="image-20220618182629244"></p>
+<h4 id="②-ExceptionHandler"><a href="#②-ExceptionHandler" class="headerlink" title="②@ExceptionHandler"></a>②@ExceptionHandler</h4><p><img src="https://s2.loli.net/2022/06/18/ESHkWxB7QdbDioT.png" alt="image-20220618182733105"></p>
+<h4 id="③eg"><a href="#③eg" class="headerlink" title="③eg"></a>③eg</h4><p><img src="https://s2.loli.net/2022/06/18/d5b2hQUZXTofgYq.png" alt="image-20220618182832005"></p>
+<h3 id="2）异常划分及处理"><a href="#2）异常划分及处理" class="headerlink" title="2）异常划分及处理"></a>2）异常划分及处理</h3><h4 id="①异常分类"><a href="#①异常分类" class="headerlink" title="①异常分类"></a>①异常分类</h4><p><img src="https://s2.loli.net/2022/06/18/Io8hjbApKuflYO9.png" alt="image-20220618184735392"></p>
+<h4 id="②自定义异常"><a href="#②自定义异常" class="headerlink" title="②自定义异常"></a>②自定义异常</h4><p><strong>系统级：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/18/ckvhCZdTQpjAB3r.png" alt="image-20220618184314240"></p>
+<p><strong>业务级：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/18/capdDreHszj8Y6O.png" alt="image-20220618184354287">	</p>
+<h4 id="③自定义异常code"><a href="#③自定义异常code" class="headerlink" title="③自定义异常code"></a>③自定义异常code</h4><p><img src="https://s2.loli.net/2022/06/18/I9m67htYuvWL8BC.png" alt="image-20220618184602659"></p>
+<h4 id="④eg"><a href="#④eg" class="headerlink" title="④eg"></a>④eg</h4><p><strong>模拟异常：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/18/FEOsmDGKLAu4Z9X.png" alt="image-20220618184053071"></p>
+<p><strong>异常处理器：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/18/61YbHptvJfO2nWx.png" alt="image-20220618184010618"></p>
+<h2 id="10-拦截器"><a href="#10-拦截器" class="headerlink" title="10.拦截器"></a>10.拦截器</h2><h3 id="1）基本概念-1"><a href="#1）基本概念-1" class="headerlink" title="1）基本概念"></a>1）基本概念</h3><h4 id="①基本流程"><a href="#①基本流程" class="headerlink" title="①基本流程"></a>①基本流程</h4><p><img src="https://s2.loli.net/2022/06/19/cOxCplBvhN5r9Tg.png" alt="image-20220619152917433"></p>
+<p>(1)浏览器发送一个请求会先到Tomcat的web服务器</p>
+<p>(2)Tomcat服务器接收到请求以后，会去判断请求的是静态资源还是动态资源</p>
+<p>(3)如果是静态资源，会直接到Tomcat的项目部署目录下去直接访问（静态资源的放行）</p>
+<p>(4)如果是动态资源，就需要交给项目的后台代码进行处理</p>
+<p>(5)在找到具体的方法之前，我们可以去配置过滤器(可以配置多个)，按照顺序进行执行过</p>
+<ul>
+<li>滤器是servlet技术，对所有请求有效</li>
+</ul>
+<p>(6)然后进入到中央处理器(SpringMVC中的内容)，MVC会根据配置找到对应操作</p>
+<p>(7)我们需要在每个Controller方法执行的前后添加业务，可以用拦截器实现</p>
+<ul>
+<li>拦截器是mvc技术，仅对mvc处理内容有效</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/06/19/mDaA5PSZR62QXOW.png" alt="image-20220619153813854"></p>
+<h4 id="②作用"><a href="#②作用" class="headerlink" title="②作用"></a>②作用</h4><ul>
+<li>拦截器（Interceptor）是一种动态拦截方法调用的机制，在SpringMVC中动态拦截控制器方法的执行</li>
+<li>作用:<ul>
+<li>在指定的方法调用前后执行预先设定的代码</li>
+<li>阻止原始方法的执行：如权限不够不能执行</li>
+<li>拦截器就是用来做增强</li>
+</ul>
+</li>
+</ul>
+<h4 id="③过滤器和拦截器对比"><a href="#③过滤器和拦截器对比" class="headerlink" title="③过滤器和拦截器对比"></a>③过滤器和拦截器对比</h4><ul>
+<li>归属不同：Filter属于Servlet技术，Interceptor属于SpringMVC技术</li>
+<li>拦截内容不同：Filter对所有访问进行增强，Interceptor仅针对SpringMVC的访问进行增强</li>
+</ul>
+<h3 id="2）eg"><a href="#2）eg" class="headerlink" title="2）eg"></a>2）eg</h3><p><img src="https://s2.loli.net/2022/06/19/JxEQHWTwUDzSYOL.png" alt="image-20220619160909724"></p>
+<h4 id="①创建拦截器类"><a href="#①创建拦截器类" class="headerlink" title="①创建拦截器类"></a>①创建拦截器类</h4><p>让类实现HandlerInterceptor接口，重写接口中的三个方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="comment">//定义拦截器类，实现HandlerInterceptor接口</span></span><br><span class="line"><span class="comment">//注意当前类必须受Spring容器控制</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ProjectInterceptor</span> <span class="keyword">implements</span> <span class="title class_">HandlerInterceptor</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="comment">//原始方法调用前执行的内容</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;preHandle...&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="comment">//原始方法调用后执行的内容</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">postHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;postHandle...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="comment">//原始方法调用完成后执行的内容</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;afterCompletion...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>**注意:**拦截器类要被SpringMVC容器扫描到。</p>
+<h4 id="②创建拦截器配置类"><a href="#②创建拦截器配置类" class="headerlink" title="②创建拦截器配置类"></a>②创建拦截器配置类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SpringMvcSupport</span> <span class="keyword">extends</span> <span class="title class_">WebMvcConfigurationSupport</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ProjectInterceptor projectInterceptor;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//静态资源的放行</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">addResourceHandlers</span><span class="params">(ResourceHandlerRegistry registry)</span> &#123;</span><br><span class="line">        registry.addResourceHandler(<span class="string">&quot;/pages/**&quot;</span>).addResourceLocations(<span class="string">&quot;/pages/&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//配置拦截器</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> &#123;</span><br><span class="line">        registry.addInterceptor(projectInterceptor).addPathPatterns(<span class="string">&quot;/books&quot;</span> );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="③SpringMVC添加SpringMvcSupport包扫描"><a href="#③SpringMVC添加SpringMvcSupport包扫描" class="headerlink" title="③SpringMVC添加SpringMvcSupport包扫描"></a>③SpringMVC添加SpringMvcSupport包扫描</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan(&#123;&quot;com.fla.controller&quot;,&quot;com.fla.config&quot;&#125;)</span></span><br><span class="line"><span class="meta">@EnableWebMvc</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SpringMvcConfig</span>&#123;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="④运行程序测试"><a href="#④运行程序测试" class="headerlink" title="④运行程序测试"></a>④运行程序测试</h4><p>使用PostMan发送<code>http://localhost/books</code></p>
+<p><img src="https://s2.loli.net/2022/06/19/FSmx7JlCKwnZoOR.png" alt="1630678114224"></p>
+<p>如果发送<code>http://localhost/books/100</code>会发现拦截器没有被执行，原因是拦截器的<code>addPathPatterns</code>方法配置的拦截路径是<code>/books</code>,我们现在发送的是<code>/books/100</code>，所以没有匹配上，因此没有拦截，拦截器就不会执行。</p>
+<h4 id="⑤修改拦截器拦截规则"><a href="#⑤修改拦截器拦截规则" class="headerlink" title="⑤修改拦截器拦截规则"></a>⑤修改拦截器拦截规则</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SpringMvcSupport</span> <span class="keyword">extends</span> <span class="title class_">WebMvcConfigurationSupport</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ProjectInterceptor projectInterceptor;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">addResourceHandlers</span><span class="params">(ResourceHandlerRegistry registry)</span> &#123;</span><br><span class="line">        registry.addResourceHandler(<span class="string">&quot;/pages/**&quot;</span>).addResourceLocations(<span class="string">&quot;/pages/&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> &#123;</span><br><span class="line">        <span class="comment">//配置拦截器</span></span><br><span class="line">        registry.addInterceptor(projectInterceptor).addPathPatterns(<span class="string">&quot;/books&quot;</span>,<span class="string">&quot;/books/*&quot;</span> );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个时候，如果再次访问<code>http://localhost/books/100</code>，拦截器就会被执行。</p>
+<p>最后说一件事，就是拦截器中的<code>preHandler</code>方法，如果返回true,则代表放行，会执行原始Controller类中要请求的方法，如果返回false，则代表拦截，后面的就不会再执行了。</p>
+<h4 id="⑥简化SpringMvcSupport的编写"><a href="#⑥简化SpringMvcSupport的编写" class="headerlink" title="⑥简化SpringMvcSupport的编写"></a>⑥简化SpringMvcSupport的编写</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan(&#123;&quot;com.fla.controller&quot;&#125;)</span></span><br><span class="line"><span class="meta">@EnableWebMvc</span></span><br><span class="line"><span class="comment">//实现WebMvcConfigurer接口可以简化开发，但具有一定的侵入性</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SpringMvcConfig</span> <span class="keyword">implements</span> <span class="title class_">WebMvcConfigurer</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ProjectInterceptor projectInterceptor;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> &#123;</span><br><span class="line">        <span class="comment">//配置多拦截器</span></span><br><span class="line">        registry.addInterceptor(projectInterceptor).addPathPatterns(<span class="string">&quot;/books&quot;</span>,<span class="string">&quot;/books/*&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样有一个缺点（侵入式变强），该类已经和spring的api产生了绑定关系</p>
+<h3 id="3）拦截器方法及参数"><a href="#3）拦截器方法及参数" class="headerlink" title="3）拦截器方法及参数"></a>3）拦截器方法及参数</h3><h4 id="①preHandle"><a href="#①preHandle" class="headerlink" title="①preHandle"></a>①preHandle</h4><p>原始方法之前运行preHandle</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">preHandle</span><span class="params">(HttpServletRequest request,HttpServletResponse response,</span></span><br><span class="line"><span class="params">                  Object handler)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;preHandle&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这个方法中可以通过返回值boolean来决定是否要进行放行，我们可以把业务逻辑放在该方法<ul>
+<li>如果满足业务则返回true放行，不满足则返回false拦截</li>
+</ul>
+</li>
+<li>handler:被调用的处理器对象，本质上是一个方法对象，对反射中的Method对象进行了再包装，可以使用Method<ul>
+<li><img src="https://s2.loli.net/2022/06/19/8cun7AMzo5rhF9X.png" alt="image-20220619164600100"></li>
+</ul>
+</li>
+</ul>
+<p>eg：request对象获取请求头的<code>Content-Type</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> </span><br><span class="line">    <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">contentType</span> <span class="operator">=</span> request.getHeader(<span class="string">&quot;Content-Type&quot;</span>);</span><br><span class="line">    System.out.println(<span class="string">&quot;preHandle...&quot;</span>+contentType);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>eg：handler参数获取方法的相关信息，handler的getClass得到的就是HandlerMethod</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> </span><br><span class="line">    <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="type">HandlerMethod</span> <span class="variable">hm</span> <span class="operator">=</span> (HandlerMethod)handler;</span><br><span class="line">    <span class="type">String</span> <span class="variable">methodName</span> <span class="operator">=</span> hm.getMethod().getName();<span class="comment">//可以获取方法的名称</span></span><br><span class="line">    System.out.println(<span class="string">&quot;preHandle...&quot;</span>+methodName);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="②postHandle"><a href="#②postHandle" class="headerlink" title="②postHandle"></a>②postHandle</h4><p>原始方法运行后运行，如果原始方法被拦截，则不执行  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">postHandle</span><span class="params">(HttpServletRequest request,</span></span><br><span class="line"><span class="params">                       HttpServletResponse response,</span></span><br><span class="line"><span class="params">                       Object handler,</span></span><br><span class="line"><span class="params">                       ModelAndView modelAndView)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;postHandle&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ModelAndView</li>
+<li><img src="https://s2.loli.net/2022/06/19/7fuHyUMPl2Avrag.png" alt="image-20220619171043886"></li>
+</ul>
+<h4 id="③afterCompletion"><a href="#③afterCompletion" class="headerlink" title="③afterCompletion"></a>③afterCompletion</h4><p>拦截器最后执行的方法，无论原始方法是否执行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterCompletion</span><span class="params">(HttpServletRequest request,</span></span><br><span class="line"><span class="params">                            HttpServletResponse response,</span></span><br><span class="line"><span class="params">                            Object handler,</span></span><br><span class="line"><span class="params">                            Exception ex)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;afterCompletion&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>前三个参数与上面的是一致的。</p>
+<ul>
+<li>ex:如果处理器执行过程中出现异常对象，可以针对异常情况进行单独处理</li>
+</ul>
+<p>但由于有全局异常处理器类，所以该参数的使用率也不高。</p>
+<h3 id="4）拦截器链"><a href="#4）拦截器链" class="headerlink" title="4）拦截器链"></a>4）拦截器链</h3><p><img src="https://s2.loli.net/2022/06/19/mMHXTRDodEcpu6n.png" alt="image-20220619180313010"></p>
+<p>多个拦截器的顺序就是配置的顺序：</p>
+<p><img src="https://s2.loli.net/2022/06/19/BVxzE7ZdH5FImlf.png" alt="image-20220619180352478"></p>
+<p>eg：</p>
+<p>​	当图中pre2返回false后，会进入after1的方法，并不会进入after2！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Spring-MVC/" rel="tag"># Spring MVC</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/04/mysql%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/" rel="prev" title="mysql基本语法">
+      <i class="fa fa-chevron-left"></i> mysql基本语法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/11/spring%20Boot%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" rel="next" title="Spring Boot基本使用">
+      Spring Boot基本使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-springMVC%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B"><span class="nav-text">1.springMVC执行过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-text">1）启动服务器的初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E5%8D%95%E6%AC%A1%E8%AF%B7%E6%B1%82%E8%BF%87%E7%A8%8B"><span class="nav-text">2）单次请求过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E5%9F%BA%E6%9C%AC%E6%A0%87%E7%AD%BE"><span class="nav-text">3）基本标签</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0-Controller"><span class="nav-text">①@Controller</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1-RequestMapping"><span class="nav-text">②@RequestMapping</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2-ResposeBody"><span class="nav-text">③@ResposeBody</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-bean%E7%9A%84%E5%8A%A0%E8%BD%BD%E6%8E%A7%E5%88%B6"><span class="nav-text">2.bean的加载控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E7%B2%BE%E7%A1%AE%E6%89%AB%E6%8F%8F"><span class="nav-text">1）精确扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E6%8E%92%E9%99%A4"><span class="nav-text">2）排除</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-url%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="nav-text">3.url参数传递</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%9F%BA%E6%9C%AC%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="nav-text">1）基本参数传递</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E6%99%AE%E9%80%9A%E5%8F%82%E6%95%B0-%E5%90%8D%E7%A7%B0%E5%8C%B9%E9%85%8D"><span class="nav-text">①普通参数(名称匹配)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E6%99%AE%E9%80%9A%E5%8F%82%E6%95%B0-%E5%90%8D%E7%A7%B0%E4%B8%8D%E5%8C%B9%E9%85%8D"><span class="nav-text">②普通参数(名称不匹配)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2-RequestParam%E6%B3%A8%E8%A7%A3"><span class="nav-text">③@RequestParam注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3pojo%E5%8F%82%E6%95%B0"><span class="nav-text">④pojo参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4pojo%E5%B5%8C%E5%A5%97%E5%8F%82%E6%95%B0"><span class="nav-text">⑤pojo嵌套参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A5%E6%95%B0%E7%BB%84%E5%8F%82%E6%95%B0"><span class="nav-text">⑥数组参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A6%E9%9B%86%E5%90%88"><span class="nav-text">⑦集合</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89json%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="nav-text">2）json参数传递</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%87%86%E5%A4%87"><span class="nav-text">①准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1json%E6%99%AE%E9%80%9A%E6%95%B0%E7%BB%84"><span class="nav-text">②json普通数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2json%E5%AF%B9%E8%B1%A1"><span class="nav-text">③json对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3json%E5%AF%B9%E8%B1%A1%E6%95%B0%E7%BB%84"><span class="nav-text">④json对象数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4-EnableWebMvc"><span class="nav-text">⑤@EnableWebMvc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A5-RequestBody"><span class="nav-text">⑥@RequestBody</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E6%97%A5%E6%9C%9F%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="nav-text">3）日期参数传递</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0-DateTimeFormat"><span class="nav-text">①@DateTimeFormat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1converter%E6%8E%A5%E5%8F%A3"><span class="nav-text">②converter接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1eg"><span class="nav-text">②eg</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%93%8D%E5%BA%94"><span class="nav-text">4.响应</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89json%E6%95%B0%E6%8D%AE%E5%93%8D%E5%BA%94"><span class="nav-text">1）json数据响应</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%87%86%E5%A4%87-1"><span class="nav-text">①准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1pojo"><span class="nav-text">②pojo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2pojo%E9%9B%86%E5%90%88"><span class="nav-text">③pojo集合</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89json%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%8E%9F%E7%90%86"><span class="nav-text">2）json的转换原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0-ResponseBody"><span class="nav-text">①@ResponseBody</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E8%BD%AC%E6%8D%A2%E8%BF%87%E7%A8%8B"><span class="nav-text">②转换过程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Rest%E9%A3%8E%E6%A0%BC"><span class="nav-text">5.Rest风格</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">1）基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E5%9F%BA%E6%9C%AC%E5%AE%9E%E7%8E%B0"><span class="nav-text">2）基本实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E6%96%B0%E5%A2%9E"><span class="nav-text">①新增</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E5%88%A0%E9%99%A4"><span class="nav-text">②删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E4%BF%AE%E6%94%B9"><span class="nav-text">③修改</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3%E6%9F%A5%E8%AF%A2%E5%8D%95%E4%B8%AA"><span class="nav-text">④查询单个</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4%E6%9F%A5%E8%AF%A2%E6%89%80%E6%9C%89"><span class="nav-text">⑤查询所有</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A5-PathVariable"><span class="nav-text">⑥@PathVariable</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89RestFul%E5%BF%AB%E9%80%9F%E5%BC%80%E5%8F%91"><span class="nav-text">3）RestFul快速开发</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0-RestController"><span class="nav-text">①@RestController</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1xxxMapping"><span class="nav-text">②xxxMapping</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E7%9A%84%E6%94%BE%E8%A1%8C"><span class="nav-text">6.静态资源的放行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE"><span class="nav-text">7.基本配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89servletConfig"><span class="nav-text">1）servletConfig</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%9F%BA%E6%9C%AC"><span class="nav-text">①基本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-text">②过滤器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89web-xml"><span class="nav-text">2）web.xml</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E7%9B%91%E5%90%AC%E5%99%A8"><span class="nav-text">①监听器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E8%BF%87%E6%BB%A4%E5%99%A8-1"><span class="nav-text">②过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E9%85%8D%E7%BD%AE%E5%89%8D%E7%AB%AF%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-text">③配置前端控制器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3%E6%AC%A2%E8%BF%8E%E9%A1%B5%E9%9D%A2"><span class="nav-text">④欢迎页面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4%E9%94%99%E8%AF%AF%E9%A1%B5%E9%9D%A2"><span class="nav-text">⑤错误页面</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89springMvcConfig"><span class="nav-text">3）springMvcConfig</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-SSM%E6%95%B4%E5%90%88"><span class="nav-text">8.SSM整合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E4%BE%9D%E8%B5%96"><span class="nav-text">1）依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89SpringConfig%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="nav-text">2）SpringConfig配置类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89JdbcConfig%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="nav-text">3）JdbcConfig配置类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89MybatisConfig%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="nav-text">4）MybatisConfig配置类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%89SpringMVC%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="nav-text">5）SpringMVC配置类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%EF%BC%89Web%E9%A1%B9%E7%9B%AE%E5%85%A5%E5%8F%A3%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="nav-text">6）Web项目入口配置类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="nav-text">9.异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-text">1）异常处理器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0-RestControllerAdvice"><span class="nav-text">①@RestControllerAdvice</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1-ExceptionHandler"><span class="nav-text">②@ExceptionHandler</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2eg"><span class="nav-text">③eg</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E5%BC%82%E5%B8%B8%E5%88%92%E5%88%86%E5%8F%8A%E5%A4%84%E7%90%86"><span class="nav-text">2）异常划分及处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%BC%82%E5%B8%B8%E5%88%86%E7%B1%BB"><span class="nav-text">①异常分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8"><span class="nav-text">②自定义异常</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8code"><span class="nav-text">③自定义异常code</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3eg"><span class="nav-text">④eg</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="nav-text">10.拦截器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5-1"><span class="nav-text">1）基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B"><span class="nav-text">①基本流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E4%BD%9C%E7%94%A8"><span class="nav-text">②作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E8%BF%87%E6%BB%A4%E5%99%A8%E5%92%8C%E6%8B%A6%E6%88%AA%E5%99%A8%E5%AF%B9%E6%AF%94"><span class="nav-text">③过滤器和拦截器对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89eg"><span class="nav-text">2）eg</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%88%9B%E5%BB%BA%E6%8B%A6%E6%88%AA%E5%99%A8%E7%B1%BB"><span class="nav-text">①创建拦截器类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E5%88%9B%E5%BB%BA%E6%8B%A6%E6%88%AA%E5%99%A8%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="nav-text">②创建拦截器配置类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2SpringMVC%E6%B7%BB%E5%8A%A0SpringMvcSupport%E5%8C%85%E6%89%AB%E6%8F%8F"><span class="nav-text">③SpringMVC添加SpringMvcSupport包扫描</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95"><span class="nav-text">④运行程序测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4%E4%BF%AE%E6%94%B9%E6%8B%A6%E6%88%AA%E5%99%A8%E6%8B%A6%E6%88%AA%E8%A7%84%E5%88%99"><span class="nav-text">⑤修改拦截器拦截规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A5%E7%AE%80%E5%8C%96SpringMvcSupport%E7%9A%84%E7%BC%96%E5%86%99"><span class="nav-text">⑥简化SpringMvcSupport的编写</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E6%8B%A6%E6%88%AA%E5%99%A8%E6%96%B9%E6%B3%95%E5%8F%8A%E5%8F%82%E6%95%B0"><span class="nav-text">3）拦截器方法及参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0preHandle"><span class="nav-text">①preHandle</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1postHandle"><span class="nav-text">②postHandle</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2afterCompletion"><span class="nav-text">③afterCompletion</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89%E6%8B%A6%E6%88%AA%E5%99%A8%E9%93%BE"><span class="nav-text">4）拦截器链</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="f1ashades"
+      src="/images/mine.jpg">
+  <p class="site-author-name" itemprop="name">f1ashades</p>
+  <div class="site-description" itemprop="description">once again I am a child</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">f1ashades</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

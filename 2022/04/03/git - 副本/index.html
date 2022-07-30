@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="git的相关配置及操作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git">
+<meta property="og:url" content="http://example.com/2022/04/03/git%20-%20%E5%89%AF%E6%9C%AC/index.html">
+<meta property="og:site_name" content="f1ashades&#39; blogs">
+<meta property="og:description" content="git的相关配置及操作">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/AHIlWhx2ODUk15a.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/cvbwC97ZfjisIXW.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/TWkBI2cNQdxFVOY.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/tgc8SxeBzKJFOQR.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/DO6M3AzUCZd5Fc7.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/PIX7AnaUZJjSkHu.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/2XaWjCLv7cwdTVz.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/ULTvhQso95r7mWS.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/2XaWjCLv7cwdTVz.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/cnmtR9ZuLqx4eGh.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/qMZlmv4QiBzoDIr.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/1RgdirKhW3ovj2Z.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/85bdfedd2f3c408bb95cc17a7673effc.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/ApEDdftxNiCZ35o.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/z6hrlm7IFicvNCs.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/svUyXZQSdicgLlm.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/5PixbepRGIQ6OYK.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/uUbfLCAhJqYw6dp.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/jGpmQyxaocNWYZE.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/N5XYyn8TBvb7J2U.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/wjm9AixuVGlIhNF.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/RcA3QioG4lhBdJ8.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/Q2XLwGNtlDHRhz1.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/hO2SxKtJb9cnjmy.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/qUkZ98KHJRr5fXO.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/mZIRfwPy7k5oGNX.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/IF8tRHyK9W3jsA7.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/QANVup853PsUgi7.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/FJ3WybvReUXN6rP.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/4y26c3NxEfqG9SX.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/JYImFthNTyfV9Lv.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/DsMjZGKi7Tv5IuR.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/vgNzL6cXn9BOiMm.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/nNkrflCzUcZJOYA.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/6NsvWhlmDYACVy4.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/za1UQwPbri8VSRe.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/FSiPn5GwMfCyZoQ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/mIXol124EbTz6O3.png">
+<meta property="og:image" content="https://s2.loli.net/2022/07/30/mOvxLVENqU7Apta.png">
+<meta property="article:published_time" content="2022-04-03T11:17:48.000Z">
+<meta property="article:modified_time" content="2022-07-30T03:55:38.695Z">
+<meta property="article:author" content="f1ashades">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/07/30/AHIlWhx2ODUk15a.png">
+
+<link rel="canonical" href="http://example.com/2022/04/03/git%20-%20%E5%89%AF%E6%9C%AC/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>git | f1ashades' blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">f1ashades' blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/03/git%20-%20%E5%89%AF%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/mine.jpg">
+      <meta itemprop="name" content="f1ashades">
+      <meta itemprop="description" content="once again I am a child">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="f1ashades' blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          git
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-03 19:17:48" itemprop="dateCreated datePublished" datetime="2022-04-03T19:17:48+08:00">2022-04-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-30 11:55:38" itemprop="dateModified" datetime="2022-07-30T11:55:38+08:00">2022-07-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/git/" itemprop="url" rel="index"><span itemprop="name">git</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>git的相关配置及操作</p>
+<span id="more"></span>
+
+<h2 id="1-为常用指令配置别名"><a href="#1-为常用指令配置别名" class="headerlink" title="1. 为常用指令配置别名"></a>1. 为常用指令配置别名</h2><p>有些常用的指令参数非常多，每次都要输入好多参数，我们可以使用别名。</p>
+<ol>
+<li>打开用户目录，创建 .bashrc 文件</li>
+</ol>
+<p>部分windows系统不允许用户创建点号开头的文件，可以打开gitBash,执行 touch ~&#x2F;.bashrc</p>
+<p><img src="https://s2.loli.net/2022/07/30/AHIlWhx2ODUk15a.png" alt="image-20220730114922625"></p>
+<ol>
+<li>在 .bashrc 文件中输入如下内容：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#用于输出git提交日志 </span><br><span class="line">alias git-log=<span class="string">&#x27;git log --pretty=oneline --all --graph --abbrev-commit&#x27;</span> </span><br><span class="line">#用于输出当前目录所有文件及基本信息 </span><br><span class="line">alias ll=<span class="string">&#x27;ls -al&#x27;</span></span><br><span class="line"><span class="number">1234</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>打开gitBash，执行 source ~&#x2F;.bashrc</li>
+</ol>
+<p><img src="https://s2.loli.net/2022/07/30/cvbwC97ZfjisIXW.png" alt="image-20220730114933011"></p>
+<h2 id="2-解决GitBash乱码问题"><a href="#2-解决GitBash乱码问题" class="headerlink" title="2. 解决GitBash乱码问题"></a>2. 解决GitBash乱码问题</h2><ol>
+<li>打开GitBash执行下面命令</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.quotepath <span class="literal">false</span></span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>${git_home}&#x2F;etc&#x2F;bash.bashrc 文件最后加入下面两行</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export LANG=<span class="string">&quot;zh_CN.UTF-8&quot;</span> </span><br><span class="line">export LC_ALL=<span class="string">&quot;zh_CN.UTF-8&quot;</span></span><br><span class="line"><span class="number">12</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-获取本地仓库"><a href="#3-获取本地仓库" class="headerlink" title="3. 获取本地仓库"></a>3. 获取本地仓库</h2><p>要使用Git对我们的代码进行版本控制，首先需要获得本地仓库</p>
+<p>1）在电脑的任意位置创建一个空目录（例如test）作为我们的本地Git仓库</p>
+<p>2）进入这个目录中，点击右键打开Git bash窗口</p>
+<p>3）执行命令git init</p>
+<p>4）如果创建成功后可在文件夹下看到隐藏的.git目录。</p>
+<p><img src="https://s2.loli.net/2022/07/30/TWkBI2cNQdxFVOY.png" alt="image-20220730115023770"></p>
+<h2 id="4-基础操作指令"><a href="#4-基础操作指令" class="headerlink" title="4. 基础操作指令"></a>4. 基础操作指令</h2><p>Git工作目录下对于文件的<strong>修改</strong>(增加、删除、更新)会存在几个状态，这些<strong>修改</strong>的状态会随着我们执行Git</p>
+<p>的命令而发生变化。</p>
+<p><img src="https://s2.loli.net/2022/07/30/tgc8SxeBzKJFOQR.png" alt="image-20220730115208663"></p>
+<p>工作区，就是平时存放项目代码的地方。</p>
+<ul>
+<li><p>git add (工作区 –&gt; 暂存区) git add .添加所有文件、文件夹和子文件夹，包括.gitignore和以点开头的任何其他内容；</p>
+</li>
+<li><p>git commit (暂存区 –&gt; 本地仓库)</p>
+</li>
+</ul>
+<h3 id="1）git-status"><a href="#1）git-status" class="headerlink" title="1）git status"></a>1）git status</h3><ul>
+<li>作用：查看的修改的状态（暂存区、工作区）</li>
+<li>命令形式：git status</li>
+</ul>
+<img src="https://s2.loli.net/2022/07/30/DO6M3AzUCZd5Fc7.png" alt="img" style="zoom:80%;" />
+
+<p>新创建的文件是未跟踪状态</p>
+<img src="https://s2.loli.net/2022/07/30/PIX7AnaUZJjSkHu.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-AmxBvuQu-1651724767166)(C:\Users\86183\AppData\Roaming\Typora\typora-user-images\image-20220504131011887.png)]" style="zoom:80%;" />
+
+<p>即将被提交的意思</p>
+<img src="https://s2.loli.net/2022/07/30/2XaWjCLv7cwdTVz.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-w3hEJNre-1651724767167)(C:\Users\86183\AppData\Roaming\Typora\typora-user-images\image-20220504131545381.png)]" style="zoom:80%;" />
+
+<p>提交完后显示缓冲区没有东西可以提交了</p>
+<p><strong>新建文件是显示new file 修改文件就是实现modified:</strong></p>
+<h3 id="2）git-add"><a href="#2）git-add" class="headerlink" title="2）git add"></a>2）git add</h3><ul>
+<li>作用：添加工作区一个或多个文件的修改到暂存区</li>
+<li>命令形式：git add 单个文件名|通配符<ul>
+<li>将所有修改加入暂存区：git add .</li>
+</ul>
+</li>
+</ul>
+<h3 id="3）git-commit"><a href="#3）git-commit" class="headerlink" title="3）git commit"></a>3）git commit</h3><ul>
+<li>作用：提交暂存区汇总所有内容到本地仓库的当前分支</li>
+<li>命令形式：git commit -m ‘注释内容’</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/07/30/ULTvhQso95r7mWS.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-JOPCLOND-1651724767168)(C:\Users\86183\AppData\Roaming\Typora\typora-user-images\image-20220504131735398.png)]"><br><img src="https://s2.loli.net/2022/07/30/2XaWjCLv7cwdTVz.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-3aIEDDmM-1651724767168)(C:\Users\86183\AppData\Roaming\Typora\typora-user-images\image-20220504131513934.png)]"></p>
+<p><strong>提交时候添加的备注会被放到日志中</strong></p>
+<p>提交完后显示缓冲区没有东西可以提交了</p>
+<h3 id="4）git-log"><a href="#4）git-log" class="headerlink" title="4）git log"></a>4）git log</h3><p><strong>在3.1.3中配置的别名 git-log 就包含了这些参数，所以后续可以直接使用指令 git-log</strong></p>
+<ul>
+<li>作用:查看提交记录</li>
+<li>命令形式：git log [option]<ul>
+<li>options<ul>
+<li>all 显示所有分支</li>
+<li>pretty&#x3D;oneline 将提交信息显示为一行</li>
+<li>abbrev-commit 使得输出的commitId更简短</li>
+<li>graph 以图的形式显示</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>查看log我们一般都是会加上上面全部的参数的，这样显示更美观有序，我们在上面给这个指令设置了别名</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#用于输出git提交日志 </span><br><span class="line">alias git-log=<span class="string">&#x27;git log --pretty=oneline --all --graph --abbrev-commit&#x27;</span> </span><br><span class="line"><span class="number">12</span></span><br></pre></td></tr></table></figure>
+
+<p>我们只要使用git -log命令就好了 ，简单命令为git log</p>
+<p><img src="https://s2.loli.net/2022/07/30/cnmtR9ZuLqx4eGh.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-kpkAvNzR-1651724767169)(C:\Users\86183\AppData\Roaming\Typora\typora-user-images\image-20220504131823767.png)]"></p>
+<p>提交时候添加的备注会被放到日志中</p>
+<h2 id="5-版本回退"><a href="#5-版本回退" class="headerlink" title="5. 版本回退"></a>5. 版本回退</h2><p>撤回到之前的某个操作，他回去删除我们撤回到位置之后的版本</p>
+<ul>
+<li>作用：版本切换</li>
+<li>命令形式：git reset –hard commitID<ul>
+<li>commitID 可以使用 git-log 或 git log 指令查看</li>
+</ul>
+</li>
+<li>如何查看已经删除的记录？<ul>
+<li>git reflog</li>
+<li>这个指令可以看到已经删除的提交记录</li>
+</ul>
+</li>
+</ul>
+<p>我们可以在reflog里面知道删除文件的id，我们可以直接使用命令git reset –hard commitID 还原</p>
+<p>所以git reset –hard commitID既可以做版本回退，也可以做版本还原</p>
+<h2 id="6-添加文件至忽略列表"><a href="#6-添加文件至忽略列表" class="headerlink" title="6. 添加文件至忽略列表"></a>6. 添加文件至忽略列表</h2><p>一般我们总会有些文件无需纳入Git 的管理，也不希望它们总出现在未跟踪文件列表。 通常都是些自动</p>
+<p>生成的文件，比如日志文件，或者编译过程中创建的临时文件等。 在这种情况下，我们可以在工作目录</p>
+<p>中<strong>创建一个名为 .gitignore 的文件（文件名称固定），列出要忽略的文件模式</strong>。下面是一个示例：</p>
+<p><img src="https://s2.loli.net/2022/07/30/qMZlmv4QiBzoDIr.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-9Y1pZUiP-1651724767169)(C:\Users\86183\AppData\Roaming\Typora\typora-user-images\image-20220504154911267.png)]"></p>
+<p><img src="https://s2.loli.net/2022/07/30/1RgdirKhW3ovj2Z.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-wcsuqiV0-1651724767170)(C:\Users\86183\AppData\Roaming\Typora\typora-user-images\image-20220504154928285.png)]"></p>
+<p>这样后缀为.a的文件就不会被加到缓冲区中，这样git就不会去处理这些文件了，一般.gitignore文件公司会给</p>
+<img src="D:\Typora\TyporaPictureBed\85bdfedd2f3c408bb95cc17a7673effc.png" alt="img" style="zoom:67%;" />
+
+
+
+<h2 id="7-分支"><a href="#7-分支" class="headerlink" title="7. 分支"></a>7. 分支</h2><h3 id="1）基本指令"><a href="#1）基本指令" class="headerlink" title="1）基本指令"></a>1）基本指令</h3><h4 id="查看本地分支"><a href="#查看本地分支" class="headerlink" title="查看本地分支"></a>查看本地分支</h4><ul>
+<li>命令：git branch</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/07/30/ApEDdftxNiCZ35o.png" alt="img"></p>
+<p>*号表示所在的分支</p>
+<h4 id="②创建本地分支"><a href="#②创建本地分支" class="headerlink" title="②创建本地分支"></a>②创建本地分支</h4><ul>
+<li>命令：git branch 分支名</li>
+<li><strong>创建的新分支会建立在当前分支的版本之上，所以新建的分支会有当前分支的内容</strong></li>
+</ul>
+<h4 id="③切换分支-checkout"><a href="#③切换分支-checkout" class="headerlink" title="③切换分支(checkout)"></a>③切换分支(checkout)</h4><ul>
+<li>命令：git checkout 分支名</li>
+</ul>
+<p>我们还可以直接切换到一个不存在的分支（创建并切换）</p>
+<ul>
+<li>命令：git checkout -b 分支名</li>
+</ul>
+<h4 id="④合并分支-merge"><a href="#④合并分支-merge" class="headerlink" title="④合并分支(merge)"></a>④合并分支(merge)</h4><p>注意：分支上的内容必须先提交,才能切换分支</p>
+<p>一个分支上的提交可以合并到另一个分支</p>
+<ul>
+<li>命令：git merge 分支名称</li>
+<li>在每个人都开发完后就将所有的代码汇总到一起，此时就要执行分支的合并操作</li>
+</ul>
+<p>master使我们的主线，我们一般将分支合并到主线上面去</p>
+<p>步骤：切换到master分支，然后执行合并命令，执行完后，分支上的资源、文件就会被合并到主线上面去</p>
+<p><img src="https://s2.loli.net/2022/07/30/z6hrlm7IFicvNCs.png" alt="img"></p>
+<p>第三行是master分支创建了ignore文件，然后第二行执行dev01分支合并到master分支的操作，最后head指向了主分支</p>
+<p>例如将test01分支合并到master分支上，master分支上就会加上test01分支上的内容</p>
+<p><img src="https://s2.loli.net/2022/07/30/svUyXZQSdicgLlm.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-oOgVN0Rm-1651724767172)(C:\Users\86183\AppData\Roaming\Typora\typora-user-images\image-20220504165204065.png)]"><br><img src="https://s2.loli.net/2022/07/30/5PixbepRGIQ6OYK.png" alt="在这里插入图片描述"></p>
+<p>分支岔开表示有多个分支在修改同一个文件</p>
+<h4 id="⑤删除分支"><a href="#⑤删除分支" class="headerlink" title="⑤删除分支"></a>⑤删除分支</h4><p><strong>不能删除当前分支，只能删除其他分支</strong></p>
+<ul>
+<li>git branch -d b1 删除分支时，需要做各种检查</li>
+<li>git branch -D b1 不做任何检查，强制删除</li>
+</ul>
+<p>小d删除了就使用D，一般使用d就够了</p>
+<p>我们去删除没有合并的分支的时候就会出现删除不了的情况，此时就可以使用D</p>
+<h3 id="2）解决冲突"><a href="#2）解决冲突" class="headerlink" title="2）解决冲突"></a>2）解决冲突</h3><p>当我们合并分支后，两个或者多个分支对同一个文件的同一个地方进行修改的时候（不是同一个地方是不会出现冲突的 ），此时git就不知道要取哪个分支修改的值，是取a分支修改的值，还是取b分支修改的值呢，此时就产生了冲突</p>
+<p>冲突的报错</p>
+<p><img src="https://s2.loli.net/2022/07/30/uUbfLCAhJqYw6dp.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-iKSlshVQ-1651724767173)(C:\Users\86183\AppData\Roaming\Typora\typora-user-images\image-20220504170718053.png)]"></p>
+<p>此时的文件样子</p>
+<p><img src="https://s2.loli.net/2022/07/30/jGpmQyxaocNWYZE.png" alt="img"></p>
+<p>第一个count值表示的是当前分支master修改的值</p>
+<p>第二个count值是在dev分支修改的值</p>
+<p>当两个分支上对文件的修改可能会存在冲突，例如同时修改了同一个文件的同一行，这时就需要手动解</p>
+<p>决冲突，<strong>解决冲突步骤如下：</strong></p>
+<p>其实我们就是直接手动去删除文件中的一个分支的代码，留下一个分支，这样就不会冲突了</p>
+<ol>
+<li>处理文件中冲突的地方</li>
+<li>将解决完冲突的文件加入暂存区(add)</li>
+<li>提交到仓库(commit)</li>
+</ol>
+<p>冲突部分的内容处理如下所示：</p>
+<img src="https://s2.loli.net/2022/07/30/N5XYyn8TBvb7J2U.png" alt="img" style="zoom:80%;" />
+
+
+
+<h3 id="3）开发中分支使用原则与流程"><a href="#3）开发中分支使用原则与流程" class="headerlink" title="3）开发中分支使用原则与流程"></a>3）开发中分支使用原则与流程</h3><p>几乎所有的版本控制系统都以某种形式支持分支。 使用分支意味着你可以把你的工作从开发主线上分离</p>
+<p>开来进行重大的Bug修改、开发新的功能，以免影响开发主线。</p>
+<p>在开发中，一般有如下分支使用原则与流程：</p>
+<ul>
+<li>master （生产） 分支</li>
+</ul>
+<p> 线上分支，主分支，中小规模项目作为线上运行的应用对应的分支；</p>
+<ul>
+<li>develop（开发）分支</li>
+</ul>
+<p> 是从master创建的分支，一般作为开发部门的主要开发分支，如果没有其他并行开发不同期上线</p>
+<p> 要求，都可以在此版本进行开发，阶段开发完成后，需要是合并到master分支,准备上线。</p>
+<p> <strong>例如我们要开发新功能，我们要可以在develop分支上在建一个分支，新功能一般叫做feature分支，开发完以后在合并到 develop分支上面去，而不是直接提交到master分支，最后项目做完了develop在合并到master分支上</strong></p>
+<p>develop和master分支是不可删除的</p>
+<ul>
+<li>feature&#x2F;xxxx分支（用完可删）</li>
+</ul>
+<p> 从develop创建的分支，一般是同期并行开发，但不同期上线时创建的分支，分支上的研发任务完</p>
+<p> 成后合并到develop分支，用完后可删除。</p>
+<ul>
+<li>hotfifix&#x2F;xxxx分支，</li>
+</ul>
+<p> 从master派生的分支，一般作为线上bug修复使用，修复测试完成后需要合并到master、test、develop分支。</p>
+<ul>
+<li>还有一些其他分支，在此不再详述，例如test分支（用于代码测试）、pre分支（预上线分支）等等。</li>
+</ul>
+<img src="https://s2.loli.net/2022/07/30/wjm9AixuVGlIhNF.png" alt="img" style="zoom:80%;" />
+
+
+
+<h2 id="8-操作远程仓库"><a href="#8-操作远程仓库" class="headerlink" title="8.操作远程仓库"></a>8.操作远程仓库</h2><h3 id="1）添加远程仓库"><a href="#1）添加远程仓库" class="headerlink" title="1）添加远程仓库"></a>1）添加远程仓库</h3><p><strong>此操作是先初始化本地库，然后与已创建的远程库进行对接</strong>。</p>
+<p>我们要将本地仓库和远程仓库连接起来，一般一个本地仓库对应一个远程仓库远侧，远程仓库默认名为origin</p>
+<ul>
+<li><p>命令： git remote add &lt;远端名称&gt; &lt;仓库路径SSH&gt;</p>
+<ul>
+<li>远端名称，默认是origin，取决于远端服务器设置<ul>
+<li>因为一个本地仓库可能会关联多个远程仓库，所以需要取名字</li>
+</ul>
+</li>
+<li>仓库路径，从远端服务器获取此SSH，</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/07/30/RcA3QioG4lhBdJ8.png" alt="img"></p>
+<ul>
+<li>例如: git remote add origin <a href="mailto:&#x67;&#x69;&#116;&#64;&#x67;&#105;&#116;&#101;&#101;&#x2e;&#x63;&#x6f;&#109;">&#x67;&#x69;&#116;&#64;&#x67;&#105;&#116;&#101;&#101;&#x2e;&#x63;&#x6f;&#109;</a>:czbk_zhang_meng&#x2F;git_test.git</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/07/30/Q2XLwGNtlDHRhz1.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-99orTbIj-1651724767173)(C:\Users\86183\AppData\Roaming\Typora\typora-user-images\image-20220504185006589.png)]"></p>
+</li>
+</ul>
+<h3 id="2）查看远程仓库"><a href="#2）查看远程仓库" class="headerlink" title="2）查看远程仓库"></a>2）查看远程仓库</h3><ul>
+<li>命令：git remote</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/07/30/hO2SxKtJb9cnjmy.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-gd6zu4HK-1651724767173)(C:\Users\86183\AppData\Roaming\Typora\typora-user-images\image-20220504185115441.png)]"></p>
+<h3 id="3）推送到远程仓库"><a href="#3）推送到远程仓库" class="headerlink" title="3）推送到远程仓库"></a>3）推送到远程仓库</h3><ul>
+<li><p>命令：git push [-f] [–set-upstream] [远端名称] [本地分支名]:[远端分支名] ]</p>
+<ul>
+<li><p>如果远程分支名和本地分支名称相同，则可以只写本地分支</p>
+<p> 本来是：git push origin master ：master 表示将本地仓库的master分支提交到远程仓库的master分支</p>
+<ul>
+<li>git push origin master 这里表示将本地仓库当前master分支的内容推到远程仓库上面去</li>
+</ul>
+</li>
+<li><p>-f 表示强制覆盖，远端可能有修改，但是以此次push为准</p>
+</li>
+<li><p>–set-upstream 推送到远端的同时并且建立起和远端分支的关联关系。</p>
+<ul>
+<li>第一次的时候需要建立这种关系，然后就可以直接git push了</li>
+<li>git push –set-upstream origin master</li>
+<li>如果<strong>当前分支已经和远端分支关联</strong>，则可以省略分支名和远端名。</li>
+</ul>
+<img src="https://s2.loli.net/2022/07/30/qUkZ98KHJRr5fXO.png" alt="img" style="zoom:80%;" />
+
+<ul>
+<li><p>git push 将master分支推送到已关联的远端分支。</p>
+</li>
+<li><p>[-f] 表示强制覆盖远程仓库的内容</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4）-本地分支与远程分支的关联关系"><a href="#4）-本地分支与远程分支的关联关系" class="headerlink" title="4） 本地分支与远程分支的关联关系"></a>4） 本地分支与远程分支的关联关系</h3><ul>
+<li>查看关联关系我们可以使用 git branch -vv 命令  <img src="https://s2.loli.net/2022/07/30/mZIRfwPy7k5oGNX.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-ksewOMlZ-1651724767174)(C:\Users\86183\AppData\Roaming\Typora\typora-user-images\image-20220504185354662.png)]"></li>
+</ul>
+<h3 id="5）从远程仓库克隆"><a href="#5）从远程仓库克隆" class="headerlink" title="5）从远程仓库克隆"></a>5）从远程仓库克隆</h3><p>  如果已经有一个远端仓库，我们可以直接clone到本地。</p>
+<ul>
+<li>命令: git clone &lt;仓库路径&gt; [本地目录]<ul>
+<li>本地目录可以省略，会自动生成一个目录，就是SSH后面那部分</li>
+</ul>
+</li>
+</ul>
+<img src="https://s2.loli.net/2022/07/30/IF8tRHyK9W3jsA7.png" alt="img" style="zoom:80%;" />
+
+  <img src="https://s2.loli.net/2022/07/30/QANVup853PsUgi7.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-9xzdJeYH-1651724767174)(C:\Users\86183\AppData\Roaming\Typora\typora-user-images\image-20220504210020895.png)]" style="zoom:80%;" />
+
+<p>​    左边是我们上传的仓库，右边是克隆下来的仓库</p>
+<p>​    不同的主机都把修改完了版本资源放在远程仓库上，然后其他人都是克隆，这样就可以实现不同主机之间的数据同步了，数据都是一样的</p>
+<p>​	克隆一般只会执行一次，就是在你进去公司的时候，别人提交了以后，我们不需要去克隆整个仓库，仓库是很大的，克隆也需要花很多时间，所以要去远程仓库中抓取我们要的版本信息，就是那些别人新增加的提交</p>
+<h3 id="6）从远程仓库中抓取和拉取"><a href="#6）从远程仓库中抓取和拉取" class="headerlink" title="6）从远程仓库中抓取和拉取"></a>6）从远程仓库中抓取和拉取</h3><p>  <strong>远程分支和本地的分支一样</strong>，我们可以进行merge操作，只是需要先<strong>把远端仓库里的更新都下载到本地</strong>，再进行操作。</p>
+<ul>
+<li><p>抓取 命令：git fetch [remote name] [branch name]</p>
+<ul>
+<li><strong>抓取指令就是将仓库里的更新都抓取到本地，不会进行合并</strong>，不合并本地仓库就是没有更新，此时还没有拿到远程仓库的内容，合并后才会拿到更新的内容</li>
+<li>如果不指定远端名称和分支名，则抓取所有分支。</li>
+</ul>
+</li>
+<li><p>拉取 命令：git pull [remote name] [branch name]</p>
+<ul>
+<li><strong>拉取指令就是将远端仓库的修改拉到本地并自动进行合并，等同于fetch+merge</strong></li>
+<li>如果不指定远端名称和分支名，则抓取所有并更新当前分支。</li>
+</ul>
+<p>只去执行抓取命令 git fetch，本地仓库是没有远程仓库来的内容的</p>
+<p><img src="https://s2.loli.net/2022/07/30/FJ3WybvReUXN6rP.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-Y3n6hA1Z-1651724767175)(C:\Users\86183\AppData\Roaming\Typora\typora-user-images\image-20220504212805732.png)]"></p>
+<p><img src="https://s2.loli.net/2022/07/30/4y26c3NxEfqG9SX.png" alt="img"></p>
+<p>此时的test1中没有test06，将origin&#x2F;master合并到本地仓库的master</p>
+<img src="https://s2.loli.net/2022/07/30/JYImFthNTyfV9Lv.png" alt="image-20220729223910313" style="zoom:80%;" />
+
+<p>此时test1中就有test06文件了</p>
+<img src="https://s2.loli.net/2022/07/30/DsMjZGKi7Tv5IuR.png" alt="img" style="zoom:80%;" />
+
+<p>所以我们一般执行拉取命令</p>
+<p>直接执行git pull</p>
+<img src="https://s2.loli.net/2022/07/30/vgNzL6cXn9BOiMm.png" alt="img" style="zoom:80%;" />
+
+<p>此时test1中有直接拿到文件test07</p>
+<img src="https://s2.loli.net/2022/07/30/nNkrflCzUcZJOYA.png" alt="img" style="zoom:80%;" />
+
+<p><strong>为什么将远程仓库更新的资源抓取到本地要合并呢？</strong></p>
+<p><strong>总结：push的时候要使远程仓库的更新是最新的，就是最后一个修改的版本要使远程仓库的，pull要使本地仓库的更新是最新的，就是最后一个修改的版本要使本地仓库的</strong></p>
+<p>因为我们此时我们获取到的是远程仓库的版本更新，但是我们本地的版本不是最新的，也就是说此时我们本地和远程仓库不是同步的，所以我们要将远端拿到的修改合并到本地仓库的master上，使得本地的版本修改变为最新的</p>
+<p><img src="https://s2.loli.net/2022/07/30/6NsvWhlmDYACVy4.png" alt="img"></p>
+</li>
+</ul>
+  <img src="https://s2.loli.net/2022/07/30/za1UQwPbri8VSRe.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-ywkl6KmH-1651724767175)(C:\Users\86183\AppData\Roaming\Typora\typora-user-images\image-20220504212031113.png)]" style="zoom:80%;" />
+
+<p>  发现此时本地的修改和远程仓库的修改同步了</p>
+<ol>
+<li>在test01这个本地仓库进行一次提交并推送到远程仓库</li>
+</ol>
+  <img src="https://s2.loli.net/2022/07/30/FSiPn5GwMfCyZoQ.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-Wxw8t7V4-1651724767176)(C:\Users\86183\AppData\Roaming\Typora\typora-user-images\image-20220504185554703.png)]" style="zoom: 67%;" />
+
+<ol>
+<li>在另一个仓库将远程提交的代码拉取到本地仓库</li>
+</ol>
+  <img src="https://s2.loli.net/2022/07/30/mIXol124EbTz6O3.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-KiqdIAom-1651724767176)(C:\Users\86183\AppData\Roaming\Typora\typora-user-images\image-20220504185612197.png)]" style="zoom:80%;" />
+
+  
+
+<h3 id="7）解决合并冲突"><a href="#7）解决合并冲突" class="headerlink" title="7）解决合并冲突"></a>7）解决合并冲突</h3><p>  <strong>我们要更新远程仓库的资源时，先要获取此时远程仓库的资源后，在合并到自己的master分支中，然后再上传到远程仓库上</strong></p>
+<p>  在一段时间，A、B用户修改了同一个文件，且修改了同一行位置的代码，此时会发生合并冲突。</p>
+<p>  A用户在本地修改代码后优先推送到远程仓库，此时B用户在本地修订代码，提交到本地仓库后，也需要</p>
+<p>  推送到远程仓库，此时B用户晚于A用户，<strong>故需要先拉取远程仓库的提交，经过合并后才能推送到远端分</strong></p>
+<p>  <strong>支</strong>,如下图所示。</p>
+  <img src="https://s2.loli.net/2022/07/30/mOvxLVENqU7Apta.png" alt="img" style="zoom:80%;" />
+
+<p>  在B用户拉取代码时，因为A、B用户同一段时间修改了同一个文件的相同位置代码，故会发生合并冲</p>
+<p>  突。</p>
+<p>  <strong>就是b在更新一个资源之前，有一个a在b之前率先改掉了这个资源，此时就会出现分支冲突的问题，git不知道是要取a修改的值，还是b修改的值，此时就要我们手动去对应文件里去修改，到底要保留哪一个</strong></p>
+<p>  <strong>远程分支也是分支，所以合并时冲突的解决方式也和解决本地分支冲突相同相同</strong></p>
+<blockquote>
+<p>origin：<a target="_blank" rel="noopener" href="https://blog.csdn.net/a18307096730/article/details/124586216?spm=1001.2014.3001.5502">https://blog.csdn.net/a18307096730/article/details/124586216?spm=1001.2014.3001.5502</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/git/" rel="tag"># git</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/15/3.%E8%AE%A1%E7%BD%91-%E7%BD%91%E7%BB%9C%E5%B1%82/" rel="prev" title="计网-网络层">
+      <i class="fa fa-chevron-left"></i> 计网-网络层
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/04/springMVC/" rel="next" title="springMVC的使用">
+      springMVC的使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%B8%BA%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E9%85%8D%E7%BD%AE%E5%88%AB%E5%90%8D"><span class="nav-text">1. 为常用指令配置别名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%A7%A3%E5%86%B3GitBash%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98"><span class="nav-text">2. 解决GitBash乱码问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%8E%B7%E5%8F%96%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93"><span class="nav-text">3. 获取本地仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4"><span class="nav-text">4. 基础操作指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89git-status"><span class="nav-text">1）git status</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89git-add"><span class="nav-text">2）git add</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89git-commit"><span class="nav-text">3）git commit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89git-log"><span class="nav-text">4）git log</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E7%89%88%E6%9C%AC%E5%9B%9E%E9%80%80"><span class="nav-text">5. 版本回退</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E6%B7%BB%E5%8A%A0%E6%96%87%E4%BB%B6%E8%87%B3%E5%BF%BD%E7%95%A5%E5%88%97%E8%A1%A8"><span class="nav-text">6. 添加文件至忽略列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E5%88%86%E6%94%AF"><span class="nav-text">7. 分支</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%9F%BA%E6%9C%AC%E6%8C%87%E4%BB%A4"><span class="nav-text">1）基本指令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%AC%E5%9C%B0%E5%88%86%E6%94%AF"><span class="nav-text">查看本地分支</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E5%88%9B%E5%BB%BA%E6%9C%AC%E5%9C%B0%E5%88%86%E6%94%AF"><span class="nav-text">②创建本地分支</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E5%88%87%E6%8D%A2%E5%88%86%E6%94%AF-checkout"><span class="nav-text">③切换分支(checkout)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3%E5%90%88%E5%B9%B6%E5%88%86%E6%94%AF-merge"><span class="nav-text">④合并分支(merge)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4%E5%88%A0%E9%99%A4%E5%88%86%E6%94%AF"><span class="nav-text">⑤删除分支</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81"><span class="nav-text">2）解决冲突</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E5%BC%80%E5%8F%91%E4%B8%AD%E5%88%86%E6%94%AF%E4%BD%BF%E7%94%A8%E5%8E%9F%E5%88%99%E4%B8%8E%E6%B5%81%E7%A8%8B"><span class="nav-text">3）开发中分支使用原则与流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E6%93%8D%E4%BD%9C%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="nav-text">8.操作远程仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E6%B7%BB%E5%8A%A0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="nav-text">1）添加远程仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E6%9F%A5%E7%9C%8B%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="nav-text">2）查看远程仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E6%8E%A8%E9%80%81%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="nav-text">3）推送到远程仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89-%E6%9C%AC%E5%9C%B0%E5%88%86%E6%94%AF%E4%B8%8E%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF%E7%9A%84%E5%85%B3%E8%81%94%E5%85%B3%E7%B3%BB"><span class="nav-text">4） 本地分支与远程分支的关联关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%89%E4%BB%8E%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E5%85%8B%E9%9A%86"><span class="nav-text">5）从远程仓库克隆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%EF%BC%89%E4%BB%8E%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E4%B8%AD%E6%8A%93%E5%8F%96%E5%92%8C%E6%8B%89%E5%8F%96"><span class="nav-text">6）从远程仓库中抓取和拉取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7%EF%BC%89%E8%A7%A3%E5%86%B3%E5%90%88%E5%B9%B6%E5%86%B2%E7%AA%81"><span class="nav-text">7）解决合并冲突</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="f1ashades"
+      src="/images/mine.jpg">
+  <p class="site-author-name" itemprop="name">f1ashades</p>
+  <div class="site-description" itemprop="description">once again I am a child</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">f1ashades</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

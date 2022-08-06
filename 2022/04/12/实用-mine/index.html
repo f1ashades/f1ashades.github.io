@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/source/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Eureka注册中心、Ribbon负载均衡、Nacos注册中心、Nacos配置管理、Feign远程调用、Gateway服务网关……">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Cloud的基本使用">
+<meta property="og:url" content="http://example.com/2022/04/12/%E5%AE%9E%E7%94%A8-mine/index.html">
+<meta property="og:site_name" content="f1ashades&#39; blogs">
+<meta property="og:description" content="Eureka注册中心、Ribbon负载均衡、Nacos注册中心、Nacos配置管理、Feign远程调用、Gateway服务网关……">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/caLJnt5HWqmf9Su.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/onse7JG5bRCEUPV.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/Vz8AGrdXaBLsWu9.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/wW1MRG2o4pmIsXh.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/5fIE8DzvspwZV4G.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/BExe5gZDq6tRnoy.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/5K4aHxQFf9zsUkR.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/yE4mdSjturI8iHw.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/1wPgHAcJWBdkUv4.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/8YCjqm2Zydk3NuX.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/46GVst7Lw9uJ8Qy.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/YVlzc38CqtnGLMy.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/KwamNxsD4GAuoI6.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/H8CPFpYhmb1rQfj.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/Xczsf3uM57wngqi.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/wAU2MXIBpdCtxnD.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/MPBtdHD9N732maR.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/548pjNroLBWGsOu.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/mFPuv7V9IcEzHoO.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/Vrvc5LU2OeHhxlC.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/AzMDBjgvYVs9fhr.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/TspR5nZXDbGUCkQ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/qOQTDVgpsriBfRe.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/clJBMZsaPGnX5Dt.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/GH5stA78E34BJaf.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/GH5stA78E34BJaf.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/NEIO8H6g7KPsopA.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/DAk7fg3MFXVoztK.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/psGJyuTvzESC6mk.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/HJkVROeNpgnlC1F.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/SkERvKplVNB43qe.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/x1kljyiXEmtD4Wq.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/RqyIE8HemuLf516.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/8OMZH5sjhvAFN3m.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/X9o6Y5JxtKPgNev.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/KusTOM3yDZ6jXWI.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/TFpSs13M4hBb6vm.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/dgzJEXWeFZkCBl6.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/iA1LWC625eh7rkY.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/iPrM9B8zl2w4oGO.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/N8exCA9gM5abZr3.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/B2lDUrZKy1NbCF7.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/BXvdw4NmOS5Aelp.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/wEF4mnVU1piYxG3.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/GtbSp5OhWlwm6Mu.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/ZHj85yuSGB1mhki.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/c1qKl9xta5y32NC.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/2yChXBNVitMSez5.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/ld2g36Sep5XPyTQ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/Av6r2OzwQt5JNWl.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/MuCU4Ged5cKvap3.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/woaV4GdNzL5ZWfl.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/5CPADIOtdYJ61zH.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/aRpDYqI6tCSVjZ9.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/QJvp6zcYRf8mwod.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/vwFsfIGL3pQZ7SP.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/i27kaACfG8pBZdJ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/iXqQ8nkCtb7aWPS.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/KhQHI7fzScBlV4a.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/gtpSXCeGPLDJnfd.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/Jz7uwQHZcOUt21M.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/fRU4PESJTN7c6sD.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/a6igkRGylL2sIDO.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/IzrA9MHjmiSDsEW.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/OkIBrYGvqcza6lD.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/w7KmSsigqxLEubP.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/AJgFtb1yqSZKN5G.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/fjktD7I38Fy6MPC.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/lCfGZN68L7rwP4m.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/hoPzervwC4ZJOsA.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/shrLHYlaNj86tTM.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/EVbxOhjYLiCSUZm.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/CM1uJvdhbs7FD46.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/8JTOuziklbE5QMq.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/vyQ5fJwdis9luIP.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/rAKPVc4vwO7oMl6.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/ZOfBLdIGRr791zH.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/JoHbTz3SE5t6Clg.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/HQRi1Wzm8XntfeN.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/28a1Q4MTFg6o39G.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/HVbZiUkN4Dhcnoe.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/jY7KkHXiIB4Ze3W.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/YcW9spq7HIiDVeB.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/K1dnb2jf6kBxhYs.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/KhmMTZyQqa3EpLr.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/qF7KL5lBYHuroI6.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/7NzMfbnsGVWlvre.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/P2KxX3zGZl5MN4o.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/Lhp4KQ2M19bmjcF.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/C6l8RbQe5kZvti9.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/Say9GsN73UWMfVA.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/06/nHK54Te8CpfgNak.png">
+<meta property="article:published_time" content="2022-04-12T07:29:48.000Z">
+<meta property="article:modified_time" content="2022-08-06T08:21:14.404Z">
+<meta property="article:author" content="f1ashades">
+<meta property="article:tag" content="Spring Cloud">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/08/06/caLJnt5HWqmf9Su.png">
+
+<link rel="canonical" href="http://example.com/2022/04/12/%E5%AE%9E%E7%94%A8-mine/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Spring Cloud的基本使用 | f1ashades' blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">f1ashades' blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/12/%E5%AE%9E%E7%94%A8-mine/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/mine.jpg">
+      <meta itemprop="name" content="f1ashades">
+      <meta itemprop="description" content="once again I am a child">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="f1ashades' blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spring Cloud的基本使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-12 15:29:48" itemprop="dateCreated datePublished" datetime="2022-04-12T15:29:48+08:00">2022-04-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-06 16:21:14" itemprop="dateModified" datetime="2022-08-06T16:21:14+08:00">2022-08-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring-Cloud/" itemprop="url" rel="index"><span itemprop="name">Spring Cloud</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Eureka注册中心、Ribbon负载均衡、Nacos注册中心、Nacos配置管理、Feign远程调用、Gateway服务网关……</p>
+<span id="more"></span>
+
+<h2 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h2><h3 id="1）单体架构"><a href="#1）单体架构" class="headerlink" title="1）单体架构"></a>1）单体架构</h3><p><strong>单体架构</strong>：将业务的所有功能集中在一个项目中开发，打成一个包部署。</p>
+<p><img src="https://s2.loli.net/2022/08/06/caLJnt5HWqmf9Su.png" alt="image-20210713202807818"></p>
+<p>单体架构的优缺点如下：</p>
+<p><strong>优点：</strong></p>
+<ul>
+<li>架构简单</li>
+<li>部署成本低</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>耦合度高（维护困难、升级困难）</li>
+</ul>
+<h3 id="2）分布式架构"><a href="#2）分布式架构" class="headerlink" title="2）分布式架构"></a>2）分布式架构</h3><p><strong>分布式架构</strong>：根据业务功能对系统做拆分，每个业务功能模块作为独立项目开发，称为一个服务。</p>
+<img src="https://s2.loli.net/2022/08/06/onse7JG5bRCEUPV.png" alt="image-20210713203124797" style="zoom:80%;" />
+
+
+
+<p>分布式架构的优缺点：</p>
+<p><strong>优点：</strong></p>
+<ul>
+<li>降低服务耦合</li>
+<li>有利于服务升级和拓展</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>服务调用关系错综复杂</li>
+</ul>
+<p>分布式架构虽然降低了服务耦合，但是服务拆分时也有很多问题需要思考：</p>
+<ul>
+<li>服务拆分的粒度如何界定？</li>
+<li>服务之间如何调用？</li>
+<li>服务的调用关系如何管理？</li>
+</ul>
+<p>人们需要制定一套行之有效的标准来约束分布式架构。</p>
+<h3 id="3）微服务"><a href="#3）微服务" class="headerlink" title="3）微服务"></a>3）微服务</h3><p>微服务的架构特征：</p>
+<ul>
+<li>单一职责：微服务拆分粒度更小，每一个服务都对应唯一的业务能力，做到单一职责</li>
+<li>自治：团队独立、技术独立、数据独立，独立部署和交付</li>
+<li>面向服务：服务提供统一标准的接口，与语言和技术无关</li>
+<li>隔离性强：服务调用做好隔离、容错、降级，避免出现级联问题</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/08/06/Vz8AGrdXaBLsWu9.png" alt="image-20210713203753373"></p>
+<ul>
+<li><p>微服务的上述特性其实是在给分布式架构制定一个标准，进一步降低服务之间的耦合度，提供服务的独立性和灵活性</p>
+</li>
+<li><p>做到高内聚，低耦合</p>
+</li>
+<li><p>可以认为<strong>微服务</strong>是一种经过良好架构设计的<strong>分布式架构方案</strong> </p>
+</li>
+<li><p>对于java，springCloud就是一种非常优秀的微服务方案</p>
+</li>
+</ul>
+<h3 id="4）SpringCloud"><a href="#4）SpringCloud" class="headerlink" title="4）SpringCloud"></a>4）SpringCloud</h3><p>SpringCloud是目前国内使用最广泛的微服务框架。官网地址：<a target="_blank" rel="noopener" href="https://spring.io/projects/spring-cloud%E3%80%82">https://spring.io/projects/spring-cloud。</a></p>
+<p>SpringCloud集成了各种微服务功能组件，并基于SpringBoot实现了这些组件的自动装配，从而提供了良好的开箱即用体验。</p>
+<p>其中常见的组件包括：</p>
+<p><img src="https://s2.loli.net/2022/08/06/wW1MRG2o4pmIsXh.png" alt="image-20210713204155887"></p>
+<p>另外，SpringCloud底层是依赖于SpringBoot的，并且有版本的兼容关系，如下：</p>
+<p><img src="https://s2.loli.net/2022/08/06/5fIE8DzvspwZV4G.png" alt="image-20210713205003790"></p>
+<h3 id="5）总结"><a href="#5）总结" class="headerlink" title="5）总结"></a>5）总结</h3><ul>
+<li><p>单体架构：简单方便，高度耦合，扩展性差，适合小型项目。例如：学生管理系统</p>
+</li>
+<li><p>分布式架构：松耦合，扩展性好，但架构复杂，难度大。适合大型互联网项目，例如：京东、淘宝</p>
+</li>
+<li><p>微服务：一种良好的分布式架构方案</p>
+<p>①优点：拆分粒度更小、服务更独立、耦合度更低</p>
+<p>②缺点：架构非常复杂，运维、监控、部署难度提高</p>
+</li>
+<li><p>SpringCloud是微服务架构的一站式解决方案，集成了各种优秀微服务功能组件</p>
+</li>
+</ul>
+<h2 id="2-服务拆分和远程调用"><a href="#2-服务拆分和远程调用" class="headerlink" title="2. 服务拆分和远程调用"></a>2. 服务拆分和远程调用</h2><h3 id="1）拆分原则"><a href="#1）拆分原则" class="headerlink" title="1）拆分原则"></a>1）拆分原则</h3><ul>
+<li>不同微服务，不要重复开发相同业务</li>
+<li>微服务数据独立，不要访问其它微服务的数据库</li>
+<li>微服务可以将自己的业务暴露为接口，供其它微服务调用</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/08/06/BExe5gZDq6tRnoy.png" alt="image-20210713210800950"></p>
+<p><strong>具体服务拆分示例：</strong></p>
+<p><img src="https://s2.loli.net/2022/08/06/5K4aHxQFf9zsUkR.png" alt="image-20210713211009593"></p>
+<p>cloud-demo：父工程，管理依赖</p>
+<ul>
+<li>order-service：订单微服务，负责订单相关业务</li>
+<li>user-service：用户微服务，负责用户相关业务</li>
+</ul>
+<p>要求：</p>
+<ul>
+<li>订单微服务和用户微服务都必须有各自的数据库，相互独立</li>
+<li>订单服务和用户服务都对外暴露Restful的接口</li>
+<li>订单服务如果需要查询用户信息，只能调用用户服务的Restful接口，不能查询用户数据库</li>
+</ul>
+<h3 id="2）提供者与消费者"><a href="#2）提供者与消费者" class="headerlink" title="2）提供者与消费者"></a>2）提供者与消费者</h3><p>在服务调用关系中，会有两个不同的角色：</p>
+<p><strong>服务提供者</strong>：一次业务中，被其它微服务调用的服务。（提供接口给其它微服务）</p>
+<p><strong>服务消费者</strong>：一次业务中，调用其它微服务的服务。（调用其它微服务提供的接口）</p>
+<p><img src="https://s2.loli.net/2022/08/06/yE4mdSjturI8iHw.png" alt="image-20210713214404481"></p>
+<p>但是，服务提供者与服务消费者的角色并不是绝对的，而是相对于业务而言。</p>
+<p>如果服务A调用了服务B，而服务B又调用了服务C，服务B的角色是什么？</p>
+<ul>
+<li>对于A调用B的业务而言：A是服务消费者，B是服务提供者</li>
+<li>对于B调用C的业务而言：B是服务消费者，C是服务提供者</li>
+</ul>
+<p>因此，服务B既可以是服务提供者，也可以是服务消费者，这是一个相对的概念。</p>
+<h2 id="3-Eureka注册中心"><a href="#3-Eureka注册中心" class="headerlink" title="3. Eureka注册中心"></a>3. Eureka注册中心</h2><h3 id="1）Eureka的结构和作用"><a href="#1）Eureka的结构和作用" class="headerlink" title="1）Eureka的结构和作用"></a>1）Eureka的结构和作用</h3><p>假如我们的服务提供者user-service部署了多个实例，如图：</p>
+<img src="https://s2.loli.net/2022/08/06/1wPgHAcJWBdkUv4.png" alt="image-20220806141816907" style="zoom:67%;" />
+
+<p>有如下几个问题</p>
+<ul>
+<li>问题1：order-service在发起远程调用的时候，该如何得知user-service实例的ip地址和端口？</li>
+<li>问题2：有多个user-service实例地址，order-service调用时该如何选择？</li>
+<li>问题3：order-service如何得知某个user-service实例是否依然健康，是不是已经宕机？</li>
+</ul>
+<p>这些问题都需要利用SpringCloud中的注册中心来解决，其中最广为人知的注册中心就是Eureka</p>
+<img src="https://s2.loli.net/2022/08/06/8YCjqm2Zydk3NuX.png" alt="image-20210713220104956" style="zoom: 67%;" />
+
+<p>问题1：order-service如何得知user-service实例地址？</p>
+<p> 获取地址信息的流程如下：</p>
+<ul>
+<li>user-service服务实例启动后，将自己的信息注册到eureka-server（Eureka服务端）。这个叫服务注册</li>
+<li>eureka-server保存服务名称到服务实例地址列表的映射关系</li>
+<li>order-service根据服务名称，拉取实例地址列表。这个叫服务发现或服务拉取</li>
+</ul>
+<p>问题2：order-service如何从多个user-service实例中选择具体的实例？</p>
+<ul>
+<li>order-service从实例列表中利用负载均衡算法（ribbon）选中一个实例地址</li>
+<li>向该实例地址发起远程调用</li>
+</ul>
+<p>问题3：order-service如何得知某个user-service实例是否依然健康，是不是已经宕机？</p>
+<ul>
+<li>user-service会每隔一段时间（默认30秒）向eureka-server发起请求，报告自己状态，称为心跳</li>
+<li>当超过一定时间没有发送心跳时，eureka-server会认为微服务实例故障，将该实例从服务列表中剔除</li>
+<li>order-service拉取服务时，就能将故障实例排除了</li>
+</ul>
+<blockquote>
+<p>注意：一个微服务，既可以是服务提供者，又可以是服务消费者，因此eureka将服务注册、服务发现等功能统一封装到了eureka-client端</p>
+</blockquote>
+<h3 id="2）搭建eureka-server"><a href="#2）搭建eureka-server" class="headerlink" title="2）搭建eureka-server"></a>2）搭建eureka-server</h3><p>首先大家注册中心服务端：eureka-server，这必须是一个独立的微服务</p>
+<h4 id="①创建eureka-server服务"><a href="#①创建eureka-server服务" class="headerlink" title="①创建eureka-server服务"></a>①创建eureka-server服务</h4><p>在cloud-demo父工程下，创建一个子模块：</p>
+<img src="https://s2.loli.net/2022/08/06/46GVst7Lw9uJ8Qy.png" alt="image-20210713220605881" style="zoom: 67%;" />
+
+<p>填写模块信息：</p>
+<img src="https://s2.loli.net/2022/08/06/YVlzc38CqtnGLMy.png" alt="image-20210713220857396" style="zoom:67%;" />
+
+
+
+<p>然后填写服务信息：</p>
+<img src="https://s2.loli.net/2022/08/06/KwamNxsD4GAuoI6.png" alt="image-20210713221339022" style="zoom:67%;" />
+
+
+
+<h4 id="②引入eureka依赖"><a href="#②引入eureka依赖" class="headerlink" title="②引入eureka依赖"></a>②引入eureka依赖</h4><p>引入SpringCloud为eureka提供的starter依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-eureka-server<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="③编写启动类"><a href="#③编写启动类" class="headerlink" title="③编写启动类"></a>③编写启动类</h4><p>给eureka-server服务编写一个启动类，一定要添加一个@EnableEurekaServer注解，开启eureka的注册中心功能：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.itcast.eureka;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableEurekaServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">EurekaApplication</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        SpringApplication.run(EurekaApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="④编写配置文件"><a href="#④编写配置文件" class="headerlink" title="④编写配置文件"></a>④编写配置文件</h4><p>编写一个application.yml文件，内容如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">10086</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">eureka-server</span></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line">  <span class="attr">client:</span></span><br><span class="line">    <span class="attr">service-url:</span> </span><br><span class="line">      <span class="attr">defaultZone:</span> <span class="string">http://127.0.0.1:10086/eureka</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>eureka本身也是一个服务，所以需要注册到eureka的注册中心中</li>
+</ul>
+<h4 id="⑤启动服务"><a href="#⑤启动服务" class="headerlink" title="⑤启动服务"></a>⑤启动服务</h4><p>启动微服务，然后在浏览器访问：<a target="_blank" rel="noopener" href="http://127.0.0.1:10086/">http://127.0.0.1:10086</a></p>
+<img src="https://s2.loli.net/2022/08/06/H8CPFpYhmb1rQfj.png" alt="image-20210713222157190" style="zoom: 50%;" />
+
+<p>可以看到，eureka自己已经注册了。</p>
+<h3 id="3）服务注册"><a href="#3）服务注册" class="headerlink" title="3）服务注册"></a>3）服务注册</h3><p>下面将user-service注册到eureka-server中去。</p>
+<h4 id="①引入依赖"><a href="#①引入依赖" class="headerlink" title="①引入依赖"></a>①引入依赖</h4><p>在user-service的pom文件中，引入下面的eureka-client依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-eureka-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="②配置文件"><a href="#②配置文件" class="headerlink" title="②配置文件"></a>②配置文件</h4><p>在user-service中，修改application.yml文件，添加服务名称、eureka地址：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">userservice</span> <span class="comment">#服务名</span></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line">  <span class="attr">client:</span></span><br><span class="line">    <span class="attr">service-url:</span></span><br><span class="line">      <span class="attr">defaultZone:</span> <span class="string">http://127.0.0.1:10086/eureka</span> <span class="comment">#eureka地址</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="③启动多个user-service实例"><a href="#③启动多个user-service实例" class="headerlink" title="③启动多个user-service实例"></a>③启动多个user-service实例</h4><p>为了演示一个服务有多个实例的场景，我们添加一个SpringBoot的启动配置，再启动一个user-service。</p>
+<p>首先，复制原来的user-service启动配置：</p>
+<p><img src="https://s2.loli.net/2022/08/06/Xczsf3uM57wngqi.png" alt="image-20210713222656562"></p>
+<p>然后，在弹出的窗口中，填写信息：</p>
+<img src="https://s2.loli.net/2022/08/06/wAU2MXIBpdCtxnD.png" alt="image-20210713222757702" style="zoom:67%;" />
+
+<p>这样就是用VM命令来设置了参数，该参数的优先级高于yml文件</p>
+<p>现在，SpringBoot窗口会出现两个user-service启动配置：</p>
+<p><img src="https://s2.loli.net/2022/08/06/MPBtdHD9N732maR.png" alt="image-20210713222841951"></p>
+<p>不过，第一个是8081端口，第二个是8082端口。</p>
+<p>启动两个user-service实例：</p>
+<p><img src="https://s2.loli.net/2022/08/06/548pjNroLBWGsOu.png" alt="image-20210713223041491"></p>
+<p>查看eureka-server管理页面：</p>
+<p><img src="https://s2.loli.net/2022/08/06/mFPuv7V9IcEzHoO.png" alt="image-20210713223150650"></p>
+<p>可以看到user-service服务已经有了两个具体事例被注册了</p>
+<h3 id="4）服务发现"><a href="#4）服务发现" class="headerlink" title="4）服务发现"></a>4）服务发现</h3><p>下面，我们将order-service的逻辑修改：向eureka-server拉取user-service的信息，实现服务发现。</p>
+<p>服务发现，实际上就是消费者拉取需要的service的信息。</p>
+<h4 id="①引入依赖-1"><a href="#①引入依赖-1" class="headerlink" title="①引入依赖"></a>①引入依赖</h4><p>之前说过，服务发现、服务注册统一都封装在eureka-client依赖，因此这一步与服务注册时一致。</p>
+<p>在order-service的pom文件中，引入下面的eureka-client依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-eureka-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="②配置文件-1"><a href="#②配置文件-1" class="headerlink" title="②配置文件"></a>②配置文件</h4><p>服务发现也需要知道eureka地址，因此第二步与服务注册一致，都是配置eureka信息：</p>
+<p>在order-service中，修改application.yml文件，添加服务名称、eureka地址：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">orderservice</span></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line">  <span class="attr">client:</span></span><br><span class="line">    <span class="attr">service-url:</span></span><br><span class="line">      <span class="attr">defaultZone:</span> <span class="string">http://127.0.0.1:10086/eureka</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>消费者本身也需要作为一个服务注册到eureka中</li>
+</ul>
+<h4 id="③服务拉取和负载均衡"><a href="#③服务拉取和负载均衡" class="headerlink" title="③服务拉取和负载均衡"></a>③服务拉取和负载均衡</h4><p>最后，我们要去eureka-server中拉取user-service服务的实例列表，并且实现负载均衡。</p>
+<p>这里只需要添加一些注解即可（此处是基于restTemplate来进行远程调用的）</p>
+<p>在order-service的OrderApplication中，给RestTemplate这个Bean添加一个<code>@LoadBalanced</code>注解：</p>
+<img src="https://s2.loli.net/2022/08/06/Vrvc5LU2OeHhxlC.png" alt="image-20210713224049419" style="zoom:80%;" />
+
+
+
+<p>修改order-service服务中的cn.itcast.order.service包下的OrderService类中的queryOrderById方法。修改访问的url路径，用服务名代替ip、端口：</p>
+<img src="https://s2.loli.net/2022/08/06/AzMDBjgvYVs9fhr.png" alt="image-20210713224245731" style="zoom: 67%;" />
+
+<p>spring会自动帮助我们从eureka-server端，根据userservice这个服务名称，获取实例列表，而后完成负载均衡。</p>
+<h2 id="4-Ribbon负载均衡"><a href="#4-Ribbon负载均衡" class="headerlink" title="4. Ribbon负载均衡"></a>4. Ribbon负载均衡</h2><h3 id="1）负载均衡原理"><a href="#1）负载均衡原理" class="headerlink" title="1）负载均衡原理"></a>1）负载均衡原理</h3><p>之前在eureka中添加了<code>@LoadBalanced</code>注解，即可实现负载均衡功能，这是什么原理呢？</p>
+<p>SpringCloud底层其实是利用了一个名为Ribbon的组件，来实现负载均衡功能的。</p>
+<p><img src="https://s2.loli.net/2022/08/06/TspR5nZXDbGUCkQ.png" alt="image-20210713224517686"></p>
+<p>那么我们发出的请求明明是<a target="_blank" rel="noopener" href="http://userservice/user/1%EF%BC%8C%E6%80%8E%E4%B9%88%E5%8F%98%E6%88%90%E4%BA%86http://localhost:8081%E7%9A%84%E5%91%A2%EF%BC%9F">http://userservice/user/1，怎么变成了http://localhost:8081的呢？</a></p>
+<h3 id="2）源码跟踪"><a href="#2）源码跟踪" class="headerlink" title="2）源码跟踪"></a>2）源码跟踪</h3><p>为什么我们只输入了service名称就可以访问了呢？ip和端口是怎么获取到的呢？</p>
+<p>显然有人帮我们根据service名称，获取到了服务实例的ip和端口。它就是<code>LoadBalancerInterceptor</code>，这个类会在对RestTemplate的请求进行拦截，然后从Eureka根据服务id获取服务列表，随后利用负载均衡算法得到真实的服务地址信息，替换服务id。</p>
+<p>我们进行源码跟踪：</p>
+<h4 id="①LoadBalancerIntercepor"><a href="#①LoadBalancerIntercepor" class="headerlink" title="①LoadBalancerIntercepor"></a>①LoadBalancerIntercepor</h4><p><img src="https://s2.loli.net/2022/08/06/qOQTDVgpsriBfRe.png" alt="1525620483637"></p>
+<p>可以看到这里的intercept方法，拦截了用户的HttpRequest请求，然后做了几件事：</p>
+<ul>
+<li><code>request.getURI()</code>：获取请求uri，本例中就是 <a target="_blank" rel="noopener" href="http://user-service/user/8">http://user-service/user/8</a></li>
+<li><code>originalUri.getHost()</code>：获取uri路径的主机名，其实就是服务id，<code>user-service</code></li>
+<li><code>this.loadBalancer.execute()</code>：处理服务id，和用户请求。</li>
+</ul>
+<p>这里的<code>this.loadBalancer</code>是<code>LoadBalancerClient</code>类型，我们继续跟入。</p>
+<h4 id="②LoadBalancerClient"><a href="#②LoadBalancerClient" class="headerlink" title="②LoadBalancerClient"></a>②LoadBalancerClient</h4><p>继续跟入execute方法：</p>
+<p><img src="https://s2.loli.net/2022/08/06/clJBMZsaPGnX5Dt.png" alt="1525620787090"></p>
+<p>代码是这样的：</p>
+<ul>
+<li>getLoadBalancer(serviceId)：根据服务id获取ILoadBalancer，而ILoadBalancer会拿着服务id去eureka中获取服务列表并保存起来，这里获取的是一个<strong>dynamicServerLoadBalancer</strong>，它其中就有serveList（服务的列表）</li>
+<li>getServer(loadBalancer)：利用内置的负载均衡算法，从服务列表中选择一个。本例中，可以看到获取了8082端口的服务</li>
+</ul>
+<p>放行后，再次访问并跟踪，发现获取的是8081：</p>
+<p> <img src="https://s2.loli.net/2022/08/06/GH5stA78E34BJaf.png" alt="1525620835911"></p>
+<p>果然实现了负载均衡。</p>
+<h4 id="③负载均衡策略IRule"><a href="#③负载均衡策略IRule" class="headerlink" title="③负载均衡策略IRule"></a>③负载均衡策略IRule</h4><p>在刚才的代码中，可以看到获取服务使通过一个<code>getServer</code>方法来做负载均衡:</p>
+<p> <img src="https://s2.loli.net/2022/08/06/GH5stA78E34BJaf.png" alt="1525620835911"></p>
+<p>我们继续跟入：</p>
+<p><img src="https://s2.loli.net/2022/08/06/NEIO8H6g7KPsopA.png" alt="1544361421671"></p>
+<p>继续跟踪源码chooseServer方法，发现这么一段代码：</p>
+<p> <img src="https://s2.loli.net/2022/08/06/DAk7fg3MFXVoztK.png" alt="1525622652849"></p>
+<p>我们看看这个rule是谁：</p>
+<p> <img src="https://s2.loli.net/2022/08/06/psGJyuTvzESC6mk.png" alt="1525622699666"></p>
+<p>这里的rule默认值是一个<code>RoundRobinRule</code>，看类的介绍：</p>
+<p> <img src="https://s2.loli.net/2022/08/06/HJkVROeNpgnlC1F.png" alt="1525622754316"></p>
+<p>这不就是轮询的意思嘛。</p>
+<p>到这里，整个负载均衡的流程我们就清楚了。</p>
+<h4 id="④总结"><a href="#④总结" class="headerlink" title="④总结"></a>④总结</h4><p>SpringCloudRibbon的底层采用了一个拦截器，拦截了RestTemplate发出的请求，对地址做了修改。用一幅图来总结一下：</p>
+<p><img src="https://s2.loli.net/2022/08/06/SkERvKplVNB43qe.png" alt="image-20210713224724673"></p>
+<p>基本流程如下：</p>
+<ul>
+<li><p>拦截我们的RestTemplate请求<a target="_blank" rel="noopener" href="http://userservice/user/1">http://userservice/user/1</a></p>
+</li>
+<li><p>RibbonLoadBalancerClient会从请求url中获取服务名称(id)，也就是user-service</p>
+<ul>
+<li>然后RibbonLoadBalancerClient中就或取得了DynamicServerListLoadBalancer</li>
+</ul>
+</li>
+<li><p>DynamicServerListLoadBalancer根据user-service到eureka拉取服务列表</p>
+</li>
+<li><p>eureka返回列表，localhost:8081、localhost:8082</p>
+</li>
+<li><p>IRule利用内置负载均衡规则，从列表中选择一个，例如localhost:8081</p>
+</li>
+<li><p>RibbonLoadBalancerClient修改请求地址，用localhost:8081替代userservice，得到<a target="_blank" rel="noopener" href="http://localhost:8081/user/1%EF%BC%8C%E5%8F%91%E8%B5%B7%E7%9C%9F%E5%AE%9E%E8%AF%B7%E6%B1%82">http://localhost:8081/user/1，发起真实请求</a></p>
+</li>
+</ul>
+<p>注意：</p>
+<ul>
+<li>RibbonLoadBalancer<strong>Client</strong>主要工作<ul>
+<li>获取原始url中的userservice</li>
+<li>等到DynamicServerListLoadBalancer负载均衡选择了一个url后，修改请求地址，向具体的地址发送请求</li>
+</ul>
+</li>
+<li>DynamicServerListLoadBalancer主要工作<ul>
+<li>从eureka中拉取服务列表：localhost:8081、localhost:8082</li>
+<li>getServer方法来根据IRule对服务列表实现负载均衡</li>
+</ul>
+</li>
+<li>IRule是一个负载均衡策略接口，它有许多具体的负载均衡实现<ul>
+<li>rule的默认值是<strong>RoundRobinRule轮询</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="3）负载均衡策略"><a href="#3）负载均衡策略" class="headerlink" title="3）负载均衡策略"></a>3）负载均衡策略</h3><h4 id="①负载均衡策略"><a href="#①负载均衡策略" class="headerlink" title="①负载均衡策略"></a>①负载均衡策略</h4><p>负载均衡的规则都定义在IRule接口中，而IRule有很多不同的实现类：</p>
+<p><img src="https://s2.loli.net/2022/08/06/x1kljyiXEmtD4Wq.png" alt="image-20210713225653000"></p>
+<p>不同规则的含义如下：</p>
+<table>
+<thead>
+<tr>
+<th><strong>内置负载均衡规则类</strong></th>
+<th><strong>规则描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RoundRobinRule</td>
+<td>简单轮询服务列表来选择服务器。它是Ribbon默认的负载均衡规则。</td>
+</tr>
+<tr>
+<td>AvailabilityFilteringRule</td>
+<td>对以下两种服务器进行忽略：   （1）在默认情况下，这台服务器如果3次连接失败，这台服务器就会被设置为“短路”状态。短路状态将持续30秒，如果再次连接失败，短路的持续时间就会几何级地增加。  （2）并发数过高的服务器。如果一个服务器的并发连接数过高，配置了AvailabilityFilteringRule规则的客户端也会将其忽略。并发连接数的上限，可以由客户端的&lt; clientName&gt;.&lt; clientConfigNameSpace&gt;.ActiveConnectionsLimit属性进行配置</td>
+</tr>
+<tr>
+<td>WeightedResponseTimeRule</td>
+<td>为每一个服务器赋予一个权重值。服务器响应时间越长，这个服务器的权重就越小。这个规则会随机选择服务器，这个权重值会影响服务器的选择。</td>
+</tr>
+<tr>
+<td><strong>ZoneAvoidanceRule</strong></td>
+<td>以区域可用的服务器为基础进行服务器的选择。使用Zone对服务器进行分类，这个Zone可以理解为一个机房、一个机架等。而后再对Zone内的多个服务做轮询。</td>
+</tr>
+<tr>
+<td>BestAvailableRule</td>
+<td>忽略那些短路的服务器，并选择并发数较低的服务器。</td>
+</tr>
+<tr>
+<td>RandomRule</td>
+<td>随机选择一个可用的服务器。</td>
+</tr>
+<tr>
+<td>RetryRule</td>
+<td>重试机制的选择逻辑</td>
+</tr>
+</tbody></table>
+<p>默认的实现就是ZoneAvoidanceRule，是一种轮询方案</p>
+<h4 id="②自定义负载均衡策略"><a href="#②自定义负载均衡策略" class="headerlink" title="②自定义负载均衡策略"></a>②自定义负载均衡策略</h4><p>通过定义IRule实现可以修改负载均衡规则，有两种方式：</p>
+<ol>
+<li>代码方式：在order-service中的OrderApplication类中，定义一个新的IRule：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> IRule <span class="title function_">randomRule</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RandomRule</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>用自己的bean去代替默认的IRULE的bean</li>
+</ul>
+<ol start="2">
+<li>配置文件方式：在order-service的application.yml文件中，添加新的配置也可以修改规则：</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">userservice:</span> <span class="comment"># 给某个微服务配置负载均衡规则，这里是userservice服务</span></span><br><span class="line">  <span class="attr">ribbon:</span></span><br><span class="line">    <span class="attr">NFLoadBalancerRuleClassName:</span> <span class="string">com.netflix.loadbalancer.RandomRule</span> <span class="comment"># 负载均衡规则 </span></span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p><strong>注意</strong>，一般用默认的负载均衡规则，不做修改。</p>
+</blockquote>
+<h3 id="4）饥饿加载"><a href="#4）饥饿加载" class="headerlink" title="4）饥饿加载"></a>4）饥饿加载</h3><ul>
+<li><p>Ribbon默认是采用懒加载，即第一次访问时才会去创建LoadBalancerClient（ribbon的），请求时间会很长</p>
+<ul>
+<li>因为初始的时候回去拉取服务list（创建dynamicServeLoadBalancer）</li>
+<li>加载以后服务列表就缓存在内存中，后序请求就会很快了</li>
+</ul>
+</li>
+<li><p>而饥饿加载则会在项目启动时创建，降低第一次访问的耗时，通过下面配置开启饥饿加载：</p>
+</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ribbon:</span></span><br><span class="line">  <span class="attr">eager-load:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">clients:</span> <span class="string">userservice</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当然第一次加载的时候还需要做其它事情，比如DispatcherServlet等，饥饿加载只是其中一个因数</li>
+</ul>
+<h2 id="5-Nacos注册中心"><a href="#5-Nacos注册中心" class="headerlink" title="5. Nacos注册中心"></a>5. Nacos注册中心</h2><p>国内公司一般都推崇阿里巴巴的技术，比如注册中心，SpringCloudAlibaba也推出了一个名为Nacos的注册中心。</p>
+<h3 id="1）认识和安装Nacos"><a href="#1）认识和安装Nacos" class="headerlink" title="1）认识和安装Nacos"></a>1）认识和安装Nacos</h3><p><a target="_blank" rel="noopener" href="https://nacos.io/">Nacos</a>是阿里巴巴的产品，现在是<a target="_blank" rel="noopener" href="https://spring.io/projects/spring-cloud">SpringCloud</a>中的一个组件。</p>
+<p>相比<a target="_blank" rel="noopener" href="https://github.com/Netflix/eureka">Eureka</a>功能更加丰富（注册中心、配置中心），国内受欢迎程度较高。</p>
+<p><img src="https://s2.loli.net/2022/08/06/RqyIE8HemuLf516.png" alt="image-20210713230444308"></p>
+<p>nacos安装：<a target="_blank" rel="noopener" href="https://gitee.com/f1ashades/store/tree/master/nacos%E5%AE%89%E8%A3%85">https://gitee.com/f1ashades/store/tree/master/nacos%E5%AE%89%E8%A3%85</a></p>
+<h3 id="2）服务注册到nacos"><a href="#2）服务注册到nacos" class="headerlink" title="2）服务注册到nacos"></a>2）服务注册到nacos</h3><p>Nacos是SpringCloudAlibaba的组件，而SpringCloudAlibaba也遵循SpringCloud中定义的服务注册、服务发现规范。因此使用Nacos和使用Eureka对于微服务来说，并没有太大区别。</p>
+<p>主要差异在于：</p>
+<ul>
+<li>依赖不同</li>
+<li>服务地址不同</li>
+</ul>
+<h4 id="①引入依赖-2"><a href="#①引入依赖-2" class="headerlink" title="①引入依赖"></a>①引入依赖</h4><p>在cloud-demo父工程的pom文件中的<code>&lt;dependencyManagement&gt;</code>中引入SpringCloudAlibaba的依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-alibaba-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.6.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后在user-service和order-service中的pom文件中引入nacos-discovery依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注意</strong>：不要忘了注释掉eureka的依赖。</p>
+</blockquote>
+<h4 id="②配置nacos地址"><a href="#②配置nacos地址" class="headerlink" title="②配置nacos地址"></a>②配置nacos地址</h4><p>在user-service和order-service的application.yml中添加nacos地址：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">server-addr:</span> <span class="string">localhost:8848</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注意</strong>：不要忘了注释掉eureka的地址</p>
+</blockquote>
+<h4 id="③重启"><a href="#③重启" class="headerlink" title="③重启"></a>③重启</h4><p>重启微服务后，登录nacos管理页面，可以看到微服务信息：</p>
+<p><img src="https://s2.loli.net/2022/08/06/8OMZH5sjhvAFN3m.png" alt="image-20210713231439607"></p>
+<h3 id="3）服务分级存储模型"><a href="#3）服务分级存储模型" class="headerlink" title="3）服务分级存储模型"></a>3）服务分级存储模型</h3><h4 id="①基本概念"><a href="#①基本概念" class="headerlink" title="①基本概念"></a>①基本概念</h4><p>一个<strong>服务</strong>可以有多个<strong>实例</strong>，例如我们的user-service，可以有:</p>
+<ul>
+<li>127.0.0.1:8081</li>
+<li>127.0.0.1:8082</li>
+<li>127.0.0.1:8083</li>
+</ul>
+<p>假如这些实例分布于全国各地的不同机房，例如：</p>
+<ul>
+<li>127.0.0.1:8081，在上海机房</li>
+<li>127.0.0.1:8082，在上海机房</li>
+<li>127.0.0.1:8083，在杭州机房</li>
+</ul>
+<p>Nacos就将同一机房内的实例 划分为一个<strong>集群</strong>。</p>
+<p>也就是说，user-service是服务，一个服务可以包含多个集群，如杭州、上海，每个集群下可以有多个实例，形成分级模型，如图：</p>
+<p><img src="https://s2.loli.net/2022/08/06/X9o6Y5JxtKPgNev.png" alt="image-20210713232522531"></p>
+<p>微服务互相访问时，应该尽可能访问同集群实例，因为本地访问速度更快。当本集群内不可用时，才访问其它集群。例如：</p>
+<p><img src="https://s2.loli.net/2022/08/06/KusTOM3yDZ6jXWI.png" alt="image-20210713232658928"></p>
+<p>即：杭州机房内的order-service应该优先访问同机房的user-service。</p>
+<h4 id="①给user-service配置集群"><a href="#①给user-service配置集群" class="headerlink" title="①给user-service配置集群"></a>①给user-service配置集群</h4><p>修改user-service的application.yml文件，添加集群配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">server-addr:</span> <span class="string">localhost:8848</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">cluster-name:</span> <span class="string">HZ</span> <span class="comment"># 集群名称</span></span><br></pre></td></tr></table></figure>
+
+<p>重启两个user-service实例后，我们可以在nacos控制台看到下面结果：</p>
+<p><img src="https://s2.loli.net/2022/08/06/TFpSs13M4hBb6vm.png" alt="image-20210713232916215"></p>
+<p>我们再次复制一个user-service启动配置，添加属性：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-Dserver.port=8083 -Dspring.cloud.nacos.discovery.cluster-name=SH</span><br></pre></td></tr></table></figure>
+
+<p>配置如图所示：</p>
+<img src="https://s2.loli.net/2022/08/06/dgzJEXWeFZkCBl6.png" alt="image-20210713233528982" style="zoom:80%;" />
+
+<p>以上是在修改端口号和机房信息</p>
+<p>启动UserApplication3后再次查看nacos控制台：</p>
+<p><img src="https://s2.loli.net/2022/08/06/iA1LWC625eh7rkY.png" alt="image-20220806150922142"></p>
+<h4 id="②同集群优先的负载均衡"><a href="#②同集群优先的负载均衡" class="headerlink" title="②同集群优先的负载均衡"></a>②同集群优先的负载均衡</h4><p>默认的<code>ZoneAvoidanceRule</code>并不能实现根据同集群优先来实现负载均衡。</p>
+<p>因此Nacos中提供了一个<code>NacosRule</code>的实现，可以优先从同集群中挑选实例。</p>
+<p>1）给order-service配置集群信息</p>
+<p>修改order-service的application.yml文件，添加集群配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">server-addr:</span> <span class="string">localhost:8848</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">cluster-name:</span> <span class="string">HZ</span> <span class="comment"># 集群名称</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>2）修改负载均衡规则</p>
+<p>修改order-service的application.yml文件，修改负载均衡规则：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">userservice:</span></span><br><span class="line">  <span class="attr">ribbon:</span></span><br><span class="line">    <span class="attr">NFLoadBalancerRuleClassName:</span> <span class="string">com.alibaba.cloud.nacos.ribbon.NacosRule</span> <span class="comment"># 负载均衡规则 </span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4）权重配置"><a href="#4）权重配置" class="headerlink" title="4）权重配置"></a>4）权重配置</h3><p>实际部署中会出现这样的场景：</p>
+<p>服务器设备性能有差异，部分实例所在机器性能较好，另一些较差，我们希望性能好的机器承担更多的用户请求。</p>
+<p>但默认情况下NacosRule是同集群内随机挑选，不会考虑机器的性能问题。</p>
+<p>因此，Nacos提供了权重配置来控制访问频率，权重越大则访问频率越高。</p>
+<p><strong>修改：</strong></p>
+<p>在nacos控制台，找到user-service的实例列表，点击编辑，即可修改权重：</p>
+<p><img src="https://s2.loli.net/2022/08/06/iPrM9B8zl2w4oGO.png" alt="image-20210713235133225"></p>
+<p>在弹出的编辑窗口，修改权重：</p>
+<img src="https://s2.loli.net/2022/08/06/N8exCA9gM5abZr3.png" alt="image-20210713235235219" style="zoom:80%;" />
+
+<blockquote>
+<p><strong>注意</strong>：如果权重修改为0，则该实例永远不会被访问</p>
+</blockquote>
+<p>一个应用：</p>
+<ul>
+<li>做升级的时候，我们可以将集群中某一个实例A的权重设置为0，那么实例A就不再接收用户请求了，然后我们对实例A进行升级，然后慢慢调整权重0.1,0.2,0.3…..，当运行中该实例A没有发生问题，那么升级成功，可以调大权重。</li>
+</ul>
+<h3 id="5）环境隔离"><a href="#5）环境隔离" class="headerlink" title="5）环境隔离"></a>5）环境隔离</h3><h4 id="①基本概念-1"><a href="#①基本概念-1" class="headerlink" title="①基本概念"></a>①基本概念</h4><p>Nacos提供了namespace来实现环境隔离功能。</p>
+<ul>
+<li>nacos中可以有多个namespace</li>
+<li>namespace下可以有group、service等</li>
+<li>不同namespace之间相互隔离，例如不同namespace的服务互相不可见<ul>
+<li>虽然之前已经实现了低于隔离、服务隔离，但是还会有一些其它情况<ul>
+<li>生产环境、测试环境、上线环境等不同的环境之间实现隔离</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<img src="https://s2.loli.net/2022/08/06/B2lDUrZKy1NbCF7.png" alt="image-20210714000101516" style="zoom:50%;" />
+
+
+
+<h4 id="②创建namespace"><a href="#②创建namespace" class="headerlink" title="②创建namespace"></a>②创建namespace</h4><p>默认情况下，所有service、data、group都在同一个namespace，名为public：</p>
+<img src="https://s2.loli.net/2022/08/06/BXvdw4NmOS5Aelp.png" alt="image-20210714000414781" style="zoom: 80%;" />
+
+
+
+<p>我们可以点击页面新增按钮，添加一个namespace：</p>
+<img src="https://s2.loli.net/2022/08/06/wEF4mnVU1piYxG3.png" alt="image-20210714000440143" style="zoom:80%;" />
+
+
+
+<p>然后，填写表单：</p>
+<img src="https://s2.loli.net/2022/08/06/GtbSp5OhWlwm6Mu.png" alt="image-20210714000505928" style="zoom:80%;" />
+
+<p>就能在页面看到一个新的namespace：</p>
+<img src="https://s2.loli.net/2022/08/06/ZHj85yuSGB1mhki.png" alt="image-20210714000522913" style="zoom:80%;" />
+
+
+
+<h4 id="③给微服务配置namespace"><a href="#③给微服务配置namespace" class="headerlink" title="③给微服务配置namespace"></a>③给微服务配置namespace</h4><p>给微服务配置namespace只能通过修改配置来实现。</p>
+<p>例如，修改order-service的application.yml文件：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">server-addr:</span> <span class="string">localhost:8848</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">cluster-name:</span> <span class="string">HZ</span></span><br><span class="line">        <span class="attr">namespace:</span> <span class="string">492a7d5d-237b-46a1-a99a-fa8e98e4b0f9</span> <span class="comment"># 命名空间，填ID</span></span><br></pre></td></tr></table></figure>
+
+<p>重启order-service后，访问控制台，可以看到下面的结果：</p>
+<p><img src="https://s2.loli.net/2022/08/06/c1qKl9xta5y32NC.png" alt="image-20210714000830703"></p>
+<p><img src="https://s2.loli.net/2022/08/06/2yChXBNVitMSez5.png" alt="image-20210714000837140"></p>
+<p>此时访问order-service，因为namespace不同，会导致找不到userservice，控制台会报错：</p>
+<img src="https://s2.loli.net/2022/08/06/ld2g36Sep5XPyTQ.png" alt="image-20210714000941256" style="zoom:80%;" />
+
+
+
+<h3 id="6）实例类型"><a href="#6）实例类型" class="headerlink" title="6）实例类型"></a>6）实例类型</h3><p>Nacos的服务实例分为两种类型：</p>
+<ul>
+<li><p>临时实例：如果实例宕机超过一定时间，会从服务列表剔除，默认的类型。</p>
+</li>
+<li><p>非临时实例：如果实例宕机，不会从服务列表剔除，也可以叫永久实例。</p>
+</li>
+</ul>
+<p>配置一个服务实例为永久实例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">ephemeral:</span> <span class="literal">false</span> <span class="comment"># 设置为非临时实例</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="6）Nacos与Eureka的区别"><a href="#6）Nacos与Eureka的区别" class="headerlink" title="6）Nacos与Eureka的区别"></a>6）Nacos与Eureka的区别</h3><p>Nacos和Eureka整体结构类似，服务注册、服务拉取、心跳等待，但是也存在一些差异：</p>
+<img src="https://s2.loli.net/2022/08/06/Av6r2OzwQt5JNWl.png" alt="image-20210714001728017" style="zoom:80%;" />
+
+
+
+<ul>
+<li>Nacos与eureka的共同点<ul>
+<li>都支持服务注册和服务拉取</li>
+<li>都支持服务提供者心跳方式做健康检测</li>
+</ul>
+</li>
+<li>Nacos与Eureka的区别<ul>
+<li>Nacos支持服务端主动检测提供者状态（基于临时实例和非临时实例）：<ul>
+<li>临时实例采用心跳模式：临时实例心跳不正常会被剔除</li>
+<li>非临时实例采用主动检测模式：非临时实例则不会被剔除，只是会标记为不健康，nacos会等待其恢复健康</li>
+</ul>
+</li>
+<li>Nacos支持服务列表变更的消息推送模式，服务列表更新更及时<ul>
+<li>Eureka会定时pull，而nacos会pull+push</li>
+<li>当nacos发现有服务提供者挂掉，会立即push给服务消费者，服务列表更新更及时</li>
+</ul>
+</li>
+<li>集群方式<ul>
+<li>Nacos集群默认采用AP方式，当集群中存在非临时实例时，采用CP模式</li>
+<li>Eureka采用AP方式，不能修改成CP模式</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="6-Nacos配置管理"><a href="#6-Nacos配置管理" class="headerlink" title="6. Nacos配置管理"></a>6. Nacos配置管理</h2><p>Nacos除了可以做注册中心，同样可以做配置管理来使用。</p>
+<h3 id="1）统一配置管理"><a href="#1）统一配置管理" class="headerlink" title="1）统一配置管理"></a>1）统一配置管理</h3><p>当微服务部署的实例越来越多，达到数十、数百时，逐个修改微服务配置就会让人抓狂，而且很容易出错。我们需要一种统一配置管理方案，可以集中管理所有实例的配置。</p>
+<p><img src="https://s2.loli.net/2022/08/06/MuCU4Ged5cKvap3.png" alt="image-20210714164426792"></p>
+<p>Nacos一方面可以将配置集中管理，另一方可以在配置变更时，及时通知微服务，实现配置的热更新。</p>
+<h4 id="①在nacos中添加配置文件"><a href="#①在nacos中添加配置文件" class="headerlink" title="①在nacos中添加配置文件"></a>①在nacos中添加配置文件</h4><p>如何在nacos中管理配置呢？</p>
+<p><img src="https://s2.loli.net/2022/08/06/woaV4GdNzL5ZWfl.png" alt="image-20210714164742924"></p>
+<p>然后在弹出的表单中，填写配置信息：</p>
+<p><img src="https://s2.loli.net/2022/08/06/5CPADIOtdYJ61zH.png" alt="image-20210714164856664"></p>
+<ul>
+<li><p>配置文件ID有三要素：[服务名称]-[profile].[后缀名]</p>
+<ul>
+<li>profile就是缓解：如dev生产环境，test测试环境等</li>
+</ul>
+</li>
+<li><p>注意：</p>
+<ul>
+<li>项目的核心配置，需要热更新的配置才有放到nacos管理的必要。基本不会变更的一些配置还是保存在微服务本地比较好。</li>
+</ul>
+</li>
+</ul>
+<h4 id="②从微服务拉取配置"><a href="#②从微服务拉取配置" class="headerlink" title="②从微服务拉取配置"></a>②从微服务拉取配置</h4><p>微服务要拉取nacos中管理的配置，并且与本地的application.yml配置合并，才能完成项目启动。</p>
+<p>但如果尚未读取application.yml，又如何得知nacos地址呢？</p>
+<p>因此spring引入了一种新的配置文件：bootstrap.yaml文件（更早被读取），会在application.yml之前被读取，流程如下：</p>
+<p><img src="https://s2.loli.net/2022/08/06/aRpDYqI6tCSVjZ9.png" alt="img"></p>
+<p>1）引入nacos-config依赖</p>
+<p>首先，在user-service服务中，引入nacos-config的客户端依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--nacos配置管理依赖--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-config<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>2）添加bootstrap.yaml</p>
+<p>然后，在user-service中添加一个bootstrap.yaml文件（resource下和application.yaml同级），内容如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">userservice</span> <span class="comment"># 服务名称</span></span><br><span class="line">  <span class="attr">profiles:</span></span><br><span class="line">    <span class="attr">active:</span> <span class="string">dev</span> <span class="comment">#开发环境，这里是dev </span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">server-addr:</span> <span class="string">localhost:8848</span> <span class="comment"># Nacos地址</span></span><br><span class="line">      <span class="attr">config:</span></span><br><span class="line">        <span class="attr">file-extension:</span> <span class="string">yaml</span> <span class="comment"># 文件后缀名</span></span><br></pre></td></tr></table></figure>
+
+<p>这里会根据spring.cloud.nacos.server-addr获取nacos地址，再根据</p>
+<p><code>$&#123;spring.application.name&#125;-$&#123;spring.profiles.active&#125;.$&#123;spring.cloud.nacos.config.file-extension&#125;</code>作为文件id，来读取配置。<strong>（其实就是①中定义的文件名三要数）</strong></p>
+<p>本例中，就是去读取<code>userservice-dev.yaml</code>：</p>
+<p><img src="https://s2.loli.net/2022/08/06/QJvp6zcYRf8mwod.png" alt="image-20210714170845901"></p>
+<p>3）读取nacos配置</p>
+<p>在user-service中的UserController中添加业务逻辑，读取pattern.dateformat配置：</p>
+<p><img src="https://s2.loli.net/2022/08/06/vwFsfIGL3pQZ7SP.png" alt="image-20210714170337448"></p>
+<p>完整代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/user&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;pattern.dateformat&#125;&quot;)</span> <span class="comment">//这里就可以获得统一配置中的值了</span></span><br><span class="line">    <span class="keyword">private</span> String dateformat;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@GetMapping(&quot;now&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">now</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateformat));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ...略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在页面访问，可以看到效果：</p>
+<p><img src="https://s2.loli.net/2022/08/06/i27kaACfG8pBZdJ.png" alt="image-20210714170449612"></p>
+<h3 id="2）配置热更新"><a href="#2）配置热更新" class="headerlink" title="2）配置热更新"></a>2）配置热更新</h3><p>我们最终的目的，是修改nacos中的配置后，微服务中无需重启即可让配置生效，也就是<strong>配置热更新</strong>。</p>
+<p>要实现配置热更新，可以使用两种方式：</p>
+<h4 id="①方式一"><a href="#①方式一" class="headerlink" title="①方式一"></a>①方式一</h4><p>在@Value注入的变量所在类上添加注解<code>@RefreshScope</code>注解：</p>
+<p><img src="https://s2.loli.net/2022/08/06/iXqQ8nkCtb7aWPS.png" alt="image-20210714171036335"></p>
+<h4 id="②方式二"><a href="#②方式二" class="headerlink" title="②方式二"></a>②方式二</h4><p>使用<code>@ConfigurationProperties</code>注解代替<code>@Value</code>注解，这种方式不需要<code>@RefreshScope</code></p>
+<p>在user-service服务中，添加一个类，读取patterrn.dateformat属性：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.itcast.user.config;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;pattern&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PatternProperties</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String dateformat;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在UserController中使用这个类代替@Value：</p>
+<img src="https://s2.loli.net/2022/08/06/KhQHI7fzScBlV4a.png" alt="image-20210714171316124" style="zoom:80%;" />
+
+
+
+<p>完整代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.itcast.user.web;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cn.itcast.user.config.PatternProperties;</span><br><span class="line"><span class="keyword">import</span> cn.itcast.user.pojo.User;</span><br><span class="line"><span class="keyword">import</span> cn.itcast.user.service.UserService;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.GetMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.PathVariable;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.time.LocalDateTime;</span><br><span class="line"><span class="keyword">import</span> java.time.format.DateTimeFormatter;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/user&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> PatternProperties patternProperties; <span class="comment">//注入该bean</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;now&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">now</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> LocalDateTime.now().format(DateTimeFormatter.ofPattern(patternProperties.getDateformat()));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="3）配置共享"><a href="#3）配置共享" class="headerlink" title="3）配置共享"></a>3）配置共享</h3><p>其实微服务启动时，会去nacos读取多个配置文件，例如：</p>
+<ul>
+<li><p><code>[spring.application.name]-[spring.profiles.active].yaml</code>，例如：<strong>userservice-dev.yaml</strong></p>
+</li>
+<li><p><code>[spring.application.name].yaml</code>，例如：<strong>userservice.yaml</strong></p>
+</li>
+</ul>
+<p>而<code>[spring.application.name].yaml</code>不包含环境，因此可以被多个环境共享。</p>
+<p>下面我们通过案例来测试配置共享</p>
+<h4 id="①添加一个环境共享配置"><a href="#①添加一个环境共享配置" class="headerlink" title="①添加一个环境共享配置"></a>①添加一个环境共享配置</h4><p>我们在nacos中添加一个userservice.yaml文件：</p>
+<img src="https://s2.loli.net/2022/08/06/gtpSXCeGPLDJnfd.png" alt="image-20210714173233650" style="zoom:80%;" />
+
+
+
+<h4 id="②在user-service中读取共享配置"><a href="#②在user-service中读取共享配置" class="headerlink" title="②在user-service中读取共享配置"></a>②在user-service中读取共享配置</h4><p>在user-service服务中，修改PatternProperties类，读取新添加的属性：</p>
+<p><img src="https://s2.loli.net/2022/08/06/Jz7uwQHZcOUt21M.png" alt="image-20210714173324231"></p>
+<p>在user-service服务中，修改UserController，添加一个方法：</p>
+<img src="https://s2.loli.net/2022/08/06/fRU4PESJTN7c6sD.png" alt="image-20210714173721309" style="zoom:80%;" />
+
+
+
+<h4 id="③运行两个UserApplication，使用不同的profile"><a href="#③运行两个UserApplication，使用不同的profile" class="headerlink" title="③运行两个UserApplication，使用不同的profile"></a>③运行两个UserApplication，使用不同的profile</h4><p>修改UserApplication2这个启动项，改变其profile值：</p>
+<p><img src="https://s2.loli.net/2022/08/06/a6igkRGylL2sIDO.png" alt="image-20210714173538538"></p>
+<img src="https://s2.loli.net/2022/08/06/IzrA9MHjmiSDsEW.png" alt="image-20210714173519963" style="zoom: 67%;" />
+
+<ul>
+<li>这样可以在不修改代码的情况下，设置profiles</li>
+</ul>
+<p>这样，UserApplication(8081)使用的profile是dev，UserApplication2(8082)使用的profile是test。</p>
+<p>启动UserApplication和UserApplication2</p>
+<p>访问<a target="_blank" rel="noopener" href="http://localhost:8081/user/prop%EF%BC%8C%E7%BB%93%E6%9E%9C%EF%BC%9A">http://localhost:8081/user/prop，结果：</a></p>
+<p><img src="https://s2.loli.net/2022/08/06/OkIBrYGvqcza6lD.png" alt="image-20210714174313344"></p>
+<p>访问<a target="_blank" rel="noopener" href="http://localhost:8082/user/prop%EF%BC%8C%E7%BB%93%E6%9E%9C%EF%BC%9A">http://localhost:8082/user/prop，结果：</a></p>
+<p><img src="https://s2.loli.net/2022/08/06/w7KmSsigqxLEubP.png" alt="image-20210714174424818"></p>
+<p>可以看出来，不管是dev，还是test环境，都读取到了envSharedValue这个属性的值。</p>
+<h3 id="4）配置共享的优先级"><a href="#4）配置共享的优先级" class="headerlink" title="4）配置共享的优先级"></a>4）配置共享的优先级</h3><p>当nacos、服务本地同时出现相同属性时，优先级有高低之分：</p>
+<p><img src="https://s2.loli.net/2022/08/06/AJgFtb1yqSZKN5G.png" alt="image-20210714174623557"></p>
+<ul>
+<li>远程配置&gt;本地配置</li>
+<li>远程特定配置&gt;profile共享配置</li>
+</ul>
+<h3 id="5）搭建Nacos集群"><a href="#5）搭建Nacos集群" class="headerlink" title="5）搭建Nacos集群"></a>5）搭建Nacos集群</h3><p>具体：<a target="_blank" rel="noopener" href="https://gitee.com/f1ashades/store/blob/master/nacos%E9%9B%86%E7%BE%A4/nacos%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA.md">https://gitee.com/f1ashades/store/blob/master/nacos%E9%9B%86%E7%BE%A4/nacos%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA.md</a></p>
+<h2 id="7-Feign远程调用"><a href="#7-Feign远程调用" class="headerlink" title="7. Feign远程调用"></a>7. Feign远程调用</h2><h3 id="1）Feign作用"><a href="#1）Feign作用" class="headerlink" title="1）Feign作用"></a>1）Feign作用</h3><p>先来看我们以前利用RestTemplate发起远程调用的代码：</p>
+<p><img src="https://s2.loli.net/2022/08/06/fjktD7I38Fy6MPC.png" alt="image-20210714174814204"></p>
+<p>存在下面的问题：</p>
+<p>•代码可读性差，编程体验不统一</p>
+<p>•参数复杂URL难以维护</p>
+<p>Feign是一个声明式的http客户端，官方地址：<a target="_blank" rel="noopener" href="https://github.com/OpenFeign/feign">https://github.com/OpenFeign/feign</a></p>
+<p>其作用就是帮助我们优雅的实现http请求的发送，解决上面提到的问题。</p>
+<img src="https://s2.loli.net/2022/08/06/lCfGZN68L7rwP4m.png" alt="image-20210714174918088" style="zoom: 67%;" />
+
+<p>Feign能让我们以一种优雅的方式完成远程调用。</p>
+<h3 id="2）Feign替代RestTemplate"><a href="#2）Feign替代RestTemplate" class="headerlink" title="2）Feign替代RestTemplate"></a>2）Feign替代RestTemplate</h3><p>Fegin的使用步骤如下：</p>
+<h4 id="①引入依赖-3"><a href="#①引入依赖-3" class="headerlink" title="①引入依赖"></a>①引入依赖</h4><p>我们在order-service服务的pom文件中引入feign的依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-openfeign<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="②添加注解"><a href="#②添加注解" class="headerlink" title="②添加注解"></a>②添加注解</h4><p>在order-service的启动类添加注解开启Feign的功能：</p>
+<img src="https://s2.loli.net/2022/08/06/hoPzervwC4ZJOsA.png" alt="image-20210714175102524" style="zoom:80%;" />
+
+
+
+<h4 id="③编写Feign的客户端"><a href="#③编写Feign的客户端" class="headerlink" title="③编写Feign的客户端"></a>③编写Feign的客户端</h4><p>在order-service中新建一个接口，内容如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.itcast.order.client;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cn.itcast.order.pojo.User;</span><br><span class="line"><span class="keyword">import</span> org.springframework.cloud.openfeign.FeignClient;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.GetMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.PathVariable;</span><br><span class="line"></span><br><span class="line"><span class="meta">@FeignClient(&quot;userservice&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserClient</span> &#123;</span><br><span class="line">    <span class="meta">@GetMapping(&quot;/user/&#123;id&#125;&quot;)</span></span><br><span class="line">    User <span class="title function_">findById</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> Long id)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>定义的是一个接口interface</li>
+<li>接口上添加注解<code>@FeignClient(&quot;userservice&quot;)</code></li>
+</ul>
+<p>这个客户端主要是基于SpringMVC的注解来声明远程调用的信息，比如：</p>
+<ul>
+<li>服务名称：userservice</li>
+<li>请求方式：GET</li>
+<li>请求路径：&#x2F;user&#x2F;{id}</li>
+<li>请求参数：Long id</li>
+<li>返回值类型：User</li>
+</ul>
+<p>这样，Feign就可以帮助我们发送http请求，无需自己使用RestTemplate来发送了。</p>
+<h4 id="④测试"><a href="#④测试" class="headerlink" title="④测试"></a>④测试</h4><p>修改order-service中的OrderService类中的queryOrderById方法，使用Feign客户端代替RestTemplate：</p>
+<img src="https://s2.loli.net/2022/08/06/shrLHYlaNj86tTM.png" alt="image-20210714175415087" style="zoom:80%;" />
+
+<p>可以看到，我们就是用方法调用的方式来进行远程调用了</p>
+<h4 id="⑤总结"><a href="#⑤总结" class="headerlink" title="⑤总结"></a>⑤总结</h4><p>使用Feign的步骤：</p>
+<p>① 引入依赖</p>
+<p>② 添加<code>@EnableFeignClients</code>注解</p>
+<p>③ 编写FeignClient接口</p>
+<p>④ 使用FeignClient中定义的方法代替RestTemplate</p>
+<h3 id="3）自定义配置"><a href="#3）自定义配置" class="headerlink" title="3）自定义配置"></a>3）自定义配置</h3><p>Feign可以支持很多的自定义配置，如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>作用</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>feign.Logger.Level</strong></td>
+<td>修改日志级别</td>
+<td>包含四种不同的级别：NONE、BASIC、HEADERS、FULL</td>
+</tr>
+<tr>
+<td>feign.codec.Decoder</td>
+<td>响应结果的解析器</td>
+<td>http远程调用的结果做解析，例如解析json字符串为java对象</td>
+</tr>
+<tr>
+<td>feign.codec.Encoder</td>
+<td>请求参数编码</td>
+<td>将请求参数编码，便于通过http请求发送</td>
+</tr>
+<tr>
+<td>feign. Contract</td>
+<td>支持的注解格式</td>
+<td>默认是SpringMVC的注解</td>
+</tr>
+<tr>
+<td>feign. Retryer</td>
+<td>失败重试机制</td>
+<td>请求失败的重试机制，默认是没有，不过会使用Ribbon的重试</td>
+</tr>
+</tbody></table>
+<p>一般情况下，默认值就能满足我们使用，如果要自定义时，只需要创建自定义的@Bean覆盖默认Bean即可。</p>
+<p>下面以日志为例来演示如何自定义配置。</p>
+<h4 id="①配置文件方式"><a href="#①配置文件方式" class="headerlink" title="①配置文件方式"></a>①配置文件方式</h4><p>基于配置文件修改feign的日志级别可以针对单个服务：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span>  </span><br><span class="line">  <span class="attr">client:</span></span><br><span class="line">    <span class="attr">config:</span> </span><br><span class="line">      <span class="attr">userservice:</span> <span class="comment"># 针对某个微服务的配置</span></span><br><span class="line">        <span class="attr">loggerLevel:</span> <span class="string">FULL</span> <span class="comment">#  日志级别 </span></span><br></pre></td></tr></table></figure>
+
+<p>也可以针对所有服务：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span>  </span><br><span class="line">  <span class="attr">client:</span></span><br><span class="line">    <span class="attr">config:</span> </span><br><span class="line">      <span class="attr">default:</span> <span class="comment"># 这里用default就是全局配置，如果是写服务名称，则是针对某个微服务的配置</span></span><br><span class="line">        <span class="attr">loggerLevel:</span> <span class="string">FULL</span> <span class="comment">#  日志级别 </span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>而日志的级别分为四种：</p>
+<ul>
+<li>NONE：不记录任何日志信息，这是默认值。</li>
+<li>BASIC：仅记录请求的方法，URL以及响应状态码和执行时间</li>
+<li>HEADERS：在BASIC的基础上，额外记录了请求和响应的头信息</li>
+<li>FULL：记录所有请求和响应的明细，包括头信息、请求体、元数据。</li>
+</ul>
+<p>注意：过多的日志会影响Feign的效率，最好是NONE或BASIC</p>
+<h4 id="②Java代码方式"><a href="#②Java代码方式" class="headerlink" title="②Java代码方式"></a>②Java代码方式</h4><p>也可以基于Java代码来修改日志级别，先声明一个类，然后声明一个Logger.Level的对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DefaultFeignConfiguration</span>  &#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Logger.Level <span class="title function_">feignLogLevel</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Logger.Level.BASIC; <span class="comment">// 日志级别为BASIC</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>1）如果是<strong>局部生效</strong>，则把它放到对应的<code>@FeignClient</code>这个注解中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient(value = &quot;userservice&quot;, configuration = DefaultFeignConfiguration .class)</span> </span><br></pre></td></tr></table></figure>
+
+
+
+<p>2）如果要<strong>全局生效</strong>，将其放到启动类的<code>@EnableFeignClients</code>这个注解中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableFeignClients(defaultConfiguration = DefaultFeignConfiguration.class)</span> </span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://s2.loli.net/2022/08/06/EVbxOhjYLiCSUZm.png" alt="image-20220806121817386"></p>
+<h3 id="4）Feign使用优化"><a href="#4）Feign使用优化" class="headerlink" title="4）Feign使用优化"></a>4）Feign使用优化</h3><h4 id="①连接池"><a href="#①连接池" class="headerlink" title="①连接池"></a>①连接池</h4><p>Feign底层发起http请求，依赖于其它的框架。其底层客户端实现包括：</p>
+<ul>
+<li><p>URLConnection：默认实现，不支持连接池</p>
+</li>
+<li><p>Apache HttpClient ：支持连接池</p>
+</li>
+<li><p>OKHttp：支持连接池</p>
+</li>
+</ul>
+<p>因此提高Feign的性能主要手段就是使用<strong>连接池</strong>代替默认的URLConnection。</p>
+<p>这里我们用Apache的HttpClient来演示。</p>
+<p>1）引入依赖</p>
+<p>在order-service的pom文件中引入Apache的HttpClient依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--httpClient的依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.github.openfeign<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>feign-httpclient<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>2）配置连接池</p>
+<p>在order-service的application.yml中添加配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span></span><br><span class="line">  <span class="attr">client:</span></span><br><span class="line">    <span class="attr">config:</span></span><br><span class="line">      <span class="attr">default:</span> <span class="comment"># default全局的配置</span></span><br><span class="line">        <span class="attr">loggerLevel:</span> <span class="string">BASIC</span> <span class="comment"># 日志级别，BASIC就是基本的请求和响应信息</span></span><br><span class="line">  <span class="attr">httpclient:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span> <span class="comment"># 开启feign对HttpClient的支持</span></span><br><span class="line">    <span class="attr">max-connections:</span> <span class="number">200</span> <span class="comment"># 最大的连接数</span></span><br><span class="line">    <span class="attr">max-connections-per-route:</span> <span class="number">50</span> <span class="comment"># 每个路径的最大连接数</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>接下来，在FeignClientFactoryBean中的loadBalance方法中打断点：</p>
+<img src="https://s2.loli.net/2022/08/06/CM1uJvdhbs7FD46.png" alt="image-20210714185925910" style="zoom:80%;" />
+
+<p>Debug方式启动order-service服务，可以看到这里的client，底层就是Apache HttpClient：</p>
+<img src="https://s2.loli.net/2022/08/06/8JTOuziklbE5QMq.png" alt="image-20210714190041542" style="zoom:80%;" />
+
+<h4 id="②日志优化"><a href="#②日志优化" class="headerlink" title="②日志优化"></a>②日志优化</h4><p>日志的级别分为四种：</p>
+<ul>
+<li>NONE：不记录任何日志信息，这是默认值。</li>
+<li>BASIC：仅记录请求的方法，URL以及响应状态码和执行时间</li>
+<li>HEADERS：在BASIC的基础上，额外记录了请求和响应的头信息</li>
+<li>FULL：记录所有请求和响应的明细，包括头信息、请求体、元数据。</li>
+</ul>
+<p>注意：过多的日志会影响Feign的效率，最好是NONE或BASIC</p>
+<h4 id="③总结"><a href="#③总结" class="headerlink" title="③总结"></a>③总结</h4><p>Feign的优化：</p>
+<ul>
+<li><p>日志级别尽量用basic</p>
+</li>
+<li><p>使用HttpClient或OKHttp代替URLConnection</p>
+<ul>
+<li><p>引入feign-httpClient依赖</p>
+</li>
+<li><p>配置文件开启httpClient功能，设置连接池参数</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5）最佳实践"><a href="#5）最佳实践" class="headerlink" title="5）最佳实践"></a>5）最佳实践</h3><p>所谓最近实践，就是使用过程中总结的经验，最好的一种使用方式。</p>
+<p>自习观察可以发现，Feign的客户端与服务提供者的controller代码非常相似：</p>
+<p>feign客户端：</p>
+<p><img src="https://s2.loli.net/2022/08/06/vyQ5fJwdis9luIP.png" alt="image-20210714190542730"></p>
+<p>UserController：</p>
+<p><img src="https://s2.loli.net/2022/08/06/rAKPVc4vwO7oMl6.png" alt="image-20210714190528450"></p>
+<p>有没有一种办法简化这种重复的代码编写呢？</p>
+<h4 id="①继承方式"><a href="#①继承方式" class="headerlink" title="①继承方式"></a>①继承方式</h4><p>一样的代码可以通过继承来共享：</p>
+<p>1）定义一个API接口，利用定义方法，并基于SpringMVC注解做声明。</p>
+<p>2）Feign客户端和Controller都集成改接口</p>
+<p><img src="https://s2.loli.net/2022/08/06/ZOfBLdIGRr791zH.png" alt="image-20210714190640857"></p>
+<p>优点：</p>
+<ul>
+<li>简单</li>
+<li>实现了代码共享</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li><p>服务提供方、服务消费方紧耦合</p>
+</li>
+<li><p>参数列表中的注解映射并不会继承，因此Controller中必须再次声明方法、参数列表、注解</p>
+</li>
+</ul>
+<h4 id="②抽取方式"><a href="#②抽取方式" class="headerlink" title="②抽取方式"></a>②抽取方式</h4><p>将Feign的Client抽取为独立模块，并且把接口有关的POJO、默认的Feign配置都放到这个模块中，提供给所有消费者使用。</p>
+<p>例如，将UserClient、User、Feign的默认配置都抽取到一个feign-api包中，所有微服务引用该依赖包，即可直接使用。</p>
+<p><img src="https://s2.loli.net/2022/08/06/JoHbTz3SE5t6Clg.png" alt="image-20210714214041796"></p>
+<h4 id="③实现基于抽取的最佳实践"><a href="#③实现基于抽取的最佳实践" class="headerlink" title="③实现基于抽取的最佳实践"></a>③实现基于抽取的最佳实践</h4><h5 id="a）抽取"><a href="#a）抽取" class="headerlink" title="a）抽取"></a>a）抽取</h5><p>首先创建一个module，命名为feign-api：</p>
+<img src="https://s2.loli.net/2022/08/06/HQRi1Wzm8XntfeN.png" alt="image-20210714204557771" style="zoom:80%;" />
+
+<p>项目结构：</p>
+<p><img src="https://s2.loli.net/2022/08/06/28a1Q4MTFg6o39G.png" alt="image-20210714204656214"></p>
+<p>在feign-api中然后引入feign的starter依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-openfeign<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后，order-service中编写的UserClient、User、DefaultFeignConfiguration都复制到feign-api项目中</p>
+<p><img src="https://s2.loli.net/2022/08/06/HVbZiUkN4Dhcnoe.png" alt="image-20210714205221970"></p>
+<h5 id="b）在order-service中使用feign-api"><a href="#b）在order-service中使用feign-api" class="headerlink" title="b）在order-service中使用feign-api"></a>b）在order-service中使用feign-api</h5><p>首先，删除order-service中的UserClient、User、DefaultFeignConfiguration等类或接口。</p>
+<p>在order-service的pom文件中中引入feign-api的依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>cn.itcast.demo<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>feign-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>修改order-service中的所有与上述三个组件有关的导包部分，改成导入feign-api中的包</p>
+<h5 id="c）重启测试"><a href="#c）重启测试" class="headerlink" title="c）重启测试"></a>c）重启测试</h5><p>重启后，发现服务报错了：</p>
+<p><img src="https://s2.loli.net/2022/08/06/jY7KkHXiIB4Ze3W.png" alt="image-20210714205623048"></p>
+<p>这是因为UserClient现在在cn.itcast.feign.clients包下，这是我们自己导入的jar包，</p>
+<p>当前项目order-service的引导类中加了<code>@EnableFeignClients</code>，它会扫描自己所在的包，即cn.itcast.order，</p>
+<p>而导入的jar包是在cn.itcast.feign.clients下，所以虽然加上了<code>@EnableFeignClients</code>，UserClient也不会被扫描到，也就不会被加载到spring的容器中了</p>
+<h5 id="d）解决扫描包问题"><a href="#d）解决扫描包问题" class="headerlink" title="d）解决扫描包问题"></a>d）解决扫描包问题</h5><p>方式一：</p>
+<p>指定Feign应该扫描的包：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableFeignClients(basePackages = &quot;cn.itcast.feign.clients&quot;)</span></span><br></pre></td></tr></table></figure>
+
+<p>这种方式就是把所有clients都扫描到，userClients、stockClients….</p>
+<p>方式二：</p>
+<p>指定需要加载的Client接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableFeignClients(clients = &#123;UserClient.class&#125;)</span></span><br></pre></td></tr></table></figure>
+
+<p>这种方式就是精准定位，需要userClients就加入userClients，该方法更推荐</p>
+<h2 id="8-Gateway服务网关"><a href="#8-Gateway服务网关" class="headerlink" title="8. Gateway服务网关"></a>8. Gateway服务网关</h2><h3 id="1）网关作用"><a href="#1）网关作用" class="headerlink" title="1）网关作用"></a>1）网关作用</h3><p>Gateway网关是我们服务的守门神，所有微服务的统一入口。</p>
+<p>网关的<strong>核心功能特性</strong>：</p>
+<ul>
+<li><p>请求路由</p>
+<ul>
+<li>如将orderservice的请求路由到对应的orderservice为服务中</li>
+</ul>
+</li>
+<li><p>权限控制</p>
+<ul>
+<li>对请求进行权限管理</li>
+</ul>
+</li>
+<li><p>限流</p>
+<ul>
+<li>1000个请求先放500个进，等500个处理的差不多了，再放剩下的500个</li>
+</ul>
+</li>
+</ul>
+<p>架构图：</p>
+<p><img src="https://s2.loli.net/2022/08/06/YcW9spq7HIiDVeB.png" alt="image-20210714210131152"></p>
+<ul>
+<li><p><strong>路由和负载均衡</strong>：一切请求都必须先经过gateway，但网关不处理业务，而是根据某种规则，把请求转发到某个微服务，这个过程叫做路由。当然路由的目标服务有多个时，还需要做负载均衡。</p>
+</li>
+<li><p><strong>权限控制</strong>：网关作为微服务入口，需要校验用户是是否有请求资格，如果没有则进行拦截。</p>
+</li>
+<li><p><strong>限流</strong>：当请求流量过高时，在网关中按照下流的微服务能够接受的速度来放行请求，避免服务压力过大。</p>
+</li>
+</ul>
+<p>在SpringCloud中网关的实现包括两种：</p>
+<ul>
+<li>gateway</li>
+<li>zuul</li>
+</ul>
+<p>Zuul是基于Servlet的实现，属于阻塞式编程。</p>
+<p>而SpringCloudGateway则是基于Spring5中提供的WebFlux，属于响应式编程的实现，具备更好的性能：</p>
+<ul>
+<li>Spring Cloud Gateway 是 Spring Cloud 的一个全新项目，该项目是基于 Spring 5.0，Spring Boot 2.0 和 Project Reactor 等响应式编程和事件流技术开发的网关，它旨在为微服务架构提供一种简单有效的统一的 API 路由管理方式。</li>
+</ul>
+<h3 id="2）gateway快速入门"><a href="#2）gateway快速入门" class="headerlink" title="2）gateway快速入门"></a>2）gateway快速入门</h3><p>下面，我们就演示下网关的基本路由功能。基本步骤如下：</p>
+<ol>
+<li>创建SpringBoot工程gateway，引入网关依赖</li>
+<li>编写启动类</li>
+<li>编写基础配置和路由规则</li>
+<li>启动网关服务进行测试</li>
+</ol>
+<h4 id="①创建gateway服务，引入依赖"><a href="#①创建gateway服务，引入依赖" class="headerlink" title="①创建gateway服务，引入依赖"></a>①创建gateway服务，引入依赖</h4><p>创建服务：</p>
+<p><img src="https://s2.loli.net/2022/08/06/K1dnb2jf6kBxhYs.png" alt="image-20210714210919458"></p>
+<p>引入依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--网关--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-gateway<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--nacos服务发现依赖--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="②编写启动类"><a href="#②编写启动类" class="headerlink" title="②编写启动类"></a>②编写启动类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.itcast.gateway;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GatewayApplication</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">		SpringApplication.run(GatewayApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="③编写基础配置和路由规则"><a href="#③编写基础配置和路由规则" class="headerlink" title="③编写基础配置和路由规则"></a>③编写基础配置和路由规则</h4><p>创建application.yml文件，内容如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">10010</span> <span class="comment"># 网关端口</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">gateway</span> <span class="comment"># 服务名称</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">server-addr:</span> <span class="string">localhost:8848</span> <span class="comment"># nacos地址</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span> <span class="comment"># 网关路由配置</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">user-service</span> <span class="comment"># 路由id，自定义，只要唯一即可</span></span><br><span class="line">          <span class="comment"># uri: http://127.0.0.1:8081 # 路由的目标地址 http就是固定地址</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://userservice</span> <span class="comment"># 路由的目标地址 lb就是负载均衡，后面跟服务名称</span></span><br><span class="line">          <span class="attr">predicates:</span> <span class="comment"># 路由断言，也就是判断请求是否符合路由规则的条件</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/user/**</span> <span class="comment"># 这个是按照路径匹配，只要以/user/开头就符合要求</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>gateway也是一种服务，也需要注册到nacos中</p>
+</li>
+<li><p>uri有两种写法：固定地址和服务名称</p>
+<ul>
+<li>固定地址：<code>uri: http://127.0.0.1:8081</code> </li>
+<li>服务名称：<code>uri: lb://userservice</code></li>
+</ul>
+</li>
+<li><p>我们将符合<code>Path</code> 规则的一切请求，都代理到 <code>uri</code>参数指定的地址。</p>
+<ul>
+<li>本例中，我们将 <code>/user/**</code>开头的请求，代理到<code>lb://userservice</code>，lb是负载均衡，根据服务名拉取服务列表，实现负载均衡。</li>
+</ul>
+</li>
+</ul>
+<h4 id="④重启测试"><a href="#④重启测试" class="headerlink" title="④重启测试"></a>④重启测试</h4><p>重启网关，访问<a target="_blank" rel="noopener" href="http://localhost:10010/user/1%E6%97%B6%EF%BC%8C%E7%AC%A6%E5%90%88%60/user/**%60%E8%A7%84%E5%88%99%EF%BC%8C%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91%E5%88%B0uri%EF%BC%9Ahttp://userservice/user/1%EF%BC%8C%E5%BE%97%E5%88%B0%E4%BA%86%E7%BB%93%E6%9E%9C%EF%BC%9A">http://localhost:10010/user/1时，符合`/user/**`规则，请求转发到uri：http://userservice/user/1，得到了结果：</a></p>
+<p><img src="https://s2.loli.net/2022/08/06/KhmMTZyQqa3EpLr.png" alt="image-20210714211908341"></p>
+<h4 id="⑤路由的流程图"><a href="#⑤路由的流程图" class="headerlink" title="⑤路由的流程图"></a>⑤路由的流程图</h4><p>整个访问的流程如下：</p>
+<p><img src="https://s2.loli.net/2022/08/06/qF7KL5lBYHuroI6.png" alt="image-20210714211742956"></p>
+<h4 id="⑥总结"><a href="#⑥总结" class="headerlink" title="⑥总结"></a>⑥总结</h4><p>网关搭建步骤：</p>
+<ol>
+<li><p>创建项目，引入nacos服务发现和gateway依赖</p>
+</li>
+<li><p>配置application.yml，包括服务基本信息、nacos地址、路由</p>
+</li>
+</ol>
+<p>路由配置包括：</p>
+<ol>
+<li><p>路由id：路由的唯一标示</p>
+</li>
+<li><p>路由目标（uri）：路由的目标地址，http代表固定地址，lb代表根据服务名负载均衡</p>
+</li>
+<li><p>路由断言（predicates）：判断路由的规则，</p>
+</li>
+<li><p>路由过滤器（filters）：对请求或响应做处理</p>
+</li>
+</ol>
+<h3 id="3）断言工厂"><a href="#3）断言工厂" class="headerlink" title="3）断言工厂"></a>3）断言工厂</h3><p>我们在配置文件中写的断言规则只是字符串，这些字符串会被Predicate Factory读取并处理，转变为路由判断的条件</p>
+<p>例如Path&#x3D;&#x2F;user&#x2F;**是按照路径匹配，这个规则是由</p>
+<p><code>org.springframework.cloud.gateway.handler.predicate.PathRoutePredicateFactory</code>类来</p>
+<p>处理的，像这样的断言工厂在SpringCloudGateway还有十几个:</p>
+<table>
+<thead>
+<tr>
+<th><strong>名称</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>示例</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>After</td>
+<td>是某个时间点后的请求</td>
+<td>-  After&#x3D;2037-01-20T17:42:47.789-07:00[America&#x2F;Denver]</td>
+</tr>
+<tr>
+<td>Before</td>
+<td>是某个时间点之前的请求</td>
+<td>-  Before&#x3D;2031-04-13T15:14:47.433+08:00[Asia&#x2F;Shanghai]</td>
+</tr>
+<tr>
+<td>Between</td>
+<td>是某两个时间点之前的请求</td>
+<td>-  Between&#x3D;2037-01-20T17:42:47.789-07:00[America&#x2F;Denver],  2037-01-21T17:42:47.789-07:00[America&#x2F;Denver]</td>
+</tr>
+<tr>
+<td>Cookie</td>
+<td>请求必须包含某些cookie</td>
+<td>- Cookie&#x3D;chocolate, ch.p</td>
+</tr>
+<tr>
+<td>Header</td>
+<td>请求必须包含某些header</td>
+<td>- Header&#x3D;X-Request-Id, \d+</td>
+</tr>
+<tr>
+<td>Host</td>
+<td>请求必须是访问某个host（域名）</td>
+<td>-  Host&#x3D;<strong>.somehost.org,</strong>.anotherhost.org</td>
+</tr>
+<tr>
+<td>Method</td>
+<td>请求方式必须是指定方式</td>
+<td>- Method&#x3D;GET,POST</td>
+</tr>
+<tr>
+<td>Path</td>
+<td>请求路径必须符合指定规则</td>
+<td>- Path&#x3D;&#x2F;red&#x2F;{segment},&#x2F;blue&#x2F;**</td>
+</tr>
+<tr>
+<td>Query</td>
+<td>请求参数必须包含指定参数</td>
+<td>- Query&#x3D;name, Jack或者-  Query&#x3D;name</td>
+</tr>
+<tr>
+<td>RemoteAddr</td>
+<td>请求者的ip必须是指定范围</td>
+<td>- RemoteAddr&#x3D;192.168.1.1&#x2F;24</td>
+</tr>
+<tr>
+<td>Weight</td>
+<td>权重处理</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="4）过滤器工厂"><a href="#4）过滤器工厂" class="headerlink" title="4）过滤器工厂"></a>4）过滤器工厂</h3><p>GatewayFilter是网关中提供的一种过滤器，可以对进入网关的请求和微服务返回的响应做处理：</p>
+<p><img src="https://s2.loli.net/2022/08/06/7NzMfbnsGVWlvre.png" alt="image-20210714212312871"></p>
+<h4 id="①路由过滤器的种类"><a href="#①路由过滤器的种类" class="headerlink" title="①路由过滤器的种类"></a>①路由过滤器的种类</h4><p>Spring提供了31种不同的路由过滤器工厂。例如：</p>
+<table>
+<thead>
+<tr>
+<th><strong>名称</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AddRequestHeader</td>
+<td>给当前请求添加一个请求头</td>
+</tr>
+<tr>
+<td>RemoveRequestHeader</td>
+<td>移除请求中的一个请求头</td>
+</tr>
+<tr>
+<td>AddResponseHeader</td>
+<td>给响应结果中添加一个响应头</td>
+</tr>
+<tr>
+<td>RemoveResponseHeader</td>
+<td>从响应结果中移除有一个响应头</td>
+</tr>
+<tr>
+<td>RequestRateLimiter</td>
+<td>限制请求的流量</td>
+</tr>
+<tr>
+<td>……</td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="②请求头过滤器"><a href="#②请求头过滤器" class="headerlink" title="②请求头过滤器"></a>②请求头过滤器</h4><p>下面我们以AddRequestHeader 为例来讲解。</p>
+<blockquote>
+<p><strong>需求</strong>：给所有进入userservice的请求添加一个请求头：Truth&#x3D;itcast is freaking awesome!</p>
+</blockquote>
+<p>只需要修改gateway服务的application.yml文件，添加路由过滤即可：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">user-service</span> </span><br><span class="line">        <span class="attr">uri:</span> <span class="string">lb://userservice</span> </span><br><span class="line">        <span class="attr">predicates:</span> </span><br><span class="line">        <span class="bullet">-</span> <span class="string">Path=/user/**</span> </span><br><span class="line">        <span class="attr">filters:</span> <span class="comment"># 过滤器</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">AddRequestHeader=Truth,</span> <span class="string">Itcast</span> <span class="string">is</span> <span class="string">freaking</span> <span class="string">awesome!</span> <span class="comment"># 添加请求头</span></span><br></pre></td></tr></table></figure>
+
+<p>当前过滤器写在userservice路由下，因此仅仅对访问userservice的请求有效。</p>
+<h4 id="③默认过滤器"><a href="#③默认过滤器" class="headerlink" title="③默认过滤器"></a>③默认过滤器</h4><p>如果要对所有的路由都生效，则可以将过滤器工厂写到default下。格式如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">user-service</span> </span><br><span class="line">        <span class="attr">uri:</span> <span class="string">lb://userservice</span> </span><br><span class="line">        <span class="attr">predicates:</span> </span><br><span class="line">        <span class="bullet">-</span> <span class="string">Path=/user/**</span></span><br><span class="line">      <span class="attr">default-filters:</span> <span class="comment"># 默认过滤项</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">AddRequestHeader=Truth,</span> <span class="string">Itcast</span> <span class="string">is</span> <span class="string">freaking</span> <span class="string">awesome!</span> </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>routes和default-filters平级，是全局的，并不在某个服务的具体route下</li>
+</ul>
+<h4 id="④总结-1"><a href="#④总结-1" class="headerlink" title="④总结"></a>④总结</h4><p>过滤器的作用：</p>
+<ul>
+<li><p>对路由的请求或响应做加工处理，比如添加请求头</p>
+</li>
+<li><p>配置在路由下的过滤器只对当前路由的请求生效</p>
+</li>
+</ul>
+<p>defaultFilters的作用：</p>
+<ul>
+<li>对所有路由都生效的过滤器</li>
+</ul>
+<h3 id="5）全局过滤器"><a href="#5）全局过滤器" class="headerlink" title="5）全局过滤器"></a>5）全局过滤器</h3><p>过滤器工厂网关提供了31种，但每一种过滤器的作用都是固定的。</p>
+<p>如果我们希望拦截请求，做自己的业务逻辑则没办法实现，这时候需要就需要全局过滤器了。</p>
+<h4 id="①全局过滤器作用"><a href="#①全局过滤器作用" class="headerlink" title="①全局过滤器作用"></a>①全局过滤器作用</h4><p>全局过滤器的作用也是处理一切进入网关的请求和微服务响应，与GatewayFilter的作用一样。区别在于GatewayFilter通过配置定义，处理逻辑是固定的；而GlobalFilter的逻辑需要自己写代码实现。</p>
+<p>定义方式是实现<strong>GlobalFilter</strong>接口。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">GlobalFilter</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  处理当前请求，有必要的话通过&#123;<span class="doctag">@link</span> GatewayFilterChain&#125;将请求交给下一个过滤器处理</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> exchange 请求上下文，里面可以获取Request、Response等信息</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> chain 用来把请求委托给下一个过滤器 </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> &#123;<span class="doctag">@code</span> Mono&lt;Void&gt;&#125; 返回标示当前过滤器业务结束</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Mono&lt;Void&gt; <span class="title function_">filter</span><span class="params">(ServerWebExchange exchange, GatewayFilterChain chain)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在filter中编写自定义逻辑，可以实现下列功能：</p>
+<ul>
+<li>登录状态判断</li>
+<li>权限校验</li>
+<li>请求限流等</li>
+</ul>
+<h4 id="②自定义全局过滤器"><a href="#②自定义全局过滤器" class="headerlink" title="②自定义全局过滤器"></a>②自定义全局过滤器</h4><p>需求：定义全局过滤器，拦截请求，判断请求的参数是否满足下面条件：</p>
+<ul>
+<li><p>参数中是否有authorization，</p>
+</li>
+<li><p>authorization参数值是否为admin</p>
+</li>
+</ul>
+<p>如果同时满足则放行，否则拦截</p>
+<p>实现：</p>
+<p>在gateway中定义一个过滤器：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.itcast.gateway.filters;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.cloud.gateway.filter.GatewayFilterChain;</span><br><span class="line"><span class="keyword">import</span> org.springframework.cloud.gateway.filter.GlobalFilter;</span><br><span class="line"><span class="keyword">import</span> org.springframework.core.annotation.Order;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.HttpStatus;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.server.ServerWebExchange;</span><br><span class="line"><span class="keyword">import</span> reactor.core.publisher.Mono;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Order(-1)</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AuthorizeFilter</span> <span class="keyword">implements</span> <span class="title class_">GlobalFilter</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Mono&lt;Void&gt; <span class="title function_">filter</span><span class="params">(ServerWebExchange exchange, GatewayFilterChain chain)</span> &#123;</span><br><span class="line">        <span class="comment">// 1.获取请求参数</span></span><br><span class="line">        MultiValueMap&lt;String, String&gt; params = exchange.getRequest().getQueryParams();</span><br><span class="line">        <span class="comment">// 2.获取authorization参数，getFirst是取出第一个匹配的</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">auth</span> <span class="operator">=</span> params.getFirst(<span class="string">&quot;authorization&quot;</span>);</span><br><span class="line">        <span class="comment">// 3.校验</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;admin&quot;</span>.equals(auth)) &#123;</span><br><span class="line">            <span class="comment">// 放行</span></span><br><span class="line">            <span class="comment">//其实就是从filters链中找出下一个filter，传递exchange，这也就是放行了</span></span><br><span class="line">            <span class="keyword">return</span> chain.filter(exchange);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 4.拦截</span></span><br><span class="line">        <span class="comment">// 4.1.禁止访问，设置状态码</span></span><br><span class="line">        exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);</span><br><span class="line">        <span class="comment">// 4.2.结束处理</span></span><br><span class="line">        <span class="keyword">return</span> exchange.getResponse().setComplete();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>@Order(-1)</code>：定义过滤器优先级</li>
+<li>或者implement Ordered接口</li>
+</ul>
+<h4 id="④过滤器执行顺序"><a href="#④过滤器执行顺序" class="headerlink" title="④过滤器执行顺序"></a>④过滤器执行顺序</h4><p>请求进入网关会碰到三类过滤器：当前路由的过滤器、DefaultFilter、GlobalFilter</p>
+<p>请求路由后，会将当前路由过滤器和DefaultFilter、GlobalFilter，合并到一个过滤器链（集合）中，排序后依次执行每个过滤器：</p>
+<p><img src="https://s2.loli.net/2022/08/06/P2KxX3zGZl5MN4o.png" alt="image-20210714214228409"></p>
+<p>排序的规则是什么呢？</p>
+<ul>
+<li>每一个过滤器都必须指定一个int类型的order值，<strong>order值越小，优先级越高，执行顺序越靠前</strong>。</li>
+<li>GlobalFilter通过实现Ordered接口，或者添加<code>@Order</code>注解来指定order值，由我们自己指定</li>
+<li>路由过滤器和defaultFilter的order由Spring指定，默认是按照声明顺序从1递增。</li>
+<li>当过滤器的order值一样时，会按照 defaultFilter &gt; 路由过滤器 &gt; GlobalFilter的顺序执行。</li>
+</ul>
+<p><strong>为什么可以合并成一个过滤器链？</strong></p>
+<p>①对于filter和default filter</p>
+<p><code>org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator#getFilters()</code>方法是先加载defaultFilters，然后再加载某个route的filters，然后合并。</p>
+<p>这两种本质上都是<strong>GatewayFilter</strong>，很容易就能合并成filter链</p>
+<p><img src="https://s2.loli.net/2022/08/06/Lhp4KQ2M19bmjcF.png" alt="image-20220806160134573"></p>
+<p>②对于global filter</p>
+<p><code>org.springframework.cloud.gateway.handler.FilteringWebHandler#handle()</code>方法会加载全局过滤器，与前面的过滤器合并后根据order排序，组织过滤器链</p>
+<p>虽然全局过滤器类型是<strong>GlobalFilter</strong>，但是网关中有GlobalFilter的适配器，将其适配成一个GatewayFilter</p>
+<p><img src="https://s2.loli.net/2022/08/06/C6l8RbQe5kZvti9.png" alt="image-20220806160234845"></p>
+<p>因此global filter也就可以变成一个加入到GatewayFilter加入到filter链中了</p>
+<h3 id="6）跨域问题"><a href="#6）跨域问题" class="headerlink" title="6）跨域问题"></a>6）跨域问题</h3><h4 id="①什么是跨域问题"><a href="#①什么是跨域问题" class="headerlink" title="①什么是跨域问题"></a>①什么是跨域问题</h4><p>跨域：域名不一致就是跨域，主要包括：</p>
+<ul>
+<li><p>域名不同： <a target="_blank" rel="noopener" href="http://www.taobao.com/">www.taobao.com</a> 和 <a target="_blank" rel="noopener" href="http://www.taobao.org/">www.taobao.org</a> 和 <a target="_blank" rel="noopener" href="http://www.jd.com/">www.jd.com</a> 和 miaosha.jd.com</p>
+</li>
+<li><p>域名相同，端口不同：localhost:8080和localhost8081</p>
+</li>
+</ul>
+<p>跨域问题：<strong>浏览器</strong>禁止请求的发起者与服务端发生<strong>跨域ajax请求</strong>，请求被浏览器拦截的问题</p>
+<p>当我们在<strong>localhost:8081</strong>向<strong>localhost:8082</strong>发送 <strong>跨域ajax请求</strong>，浏览器会禁止这个操作</p>
+<p>解决方案：CORS-<a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2016/04/cors.html">https://www.ruanyifeng.com/blog/2016/04/cors.html</a></p>
+<p>简单来说，CORS就是浏览器在发生跨域请求的时候，会去询问服务端，看服务端是否同意该域名的跨域请求，</p>
+<p>所以我们需要在服务端进行跨域请求的配置，配置哪些域名能对本服务器进行跨域访问</p>
+<h4 id="②模拟跨域问题"><a href="#②模拟跨域问题" class="headerlink" title="②模拟跨域问题"></a>②模拟跨域问题</h4><p>页面文件：</p>
+<p><img src="https://s2.loli.net/2022/08/06/Say9GsN73UWMfVA.png" alt="image-20210714215713563"></p>
+<p>放入tomcat或者nginx这样的web服务器中，启动并访问。</p>
+<p>可以在浏览器控制台看到下面的错误：</p>
+<p><img src="https://s2.loli.net/2022/08/06/nHK54Te8CpfgNak.png" alt="image-20210714215832675"></p>
+<p>从localhost:8090访问localhost:10010，端口不同，显然是跨域的请求。</p>
+<h4 id="③解决跨域问题"><a href="#③解决跨域问题" class="headerlink" title="③解决跨域问题"></a>③解决跨域问题</h4><p>在gateway服务的application.yml文件中，添加下面的配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">globalcors:</span> <span class="comment"># 全局的跨域处理</span></span><br><span class="line">        <span class="attr">add-to-simple-url-handler-mapping:</span> <span class="literal">true</span> <span class="comment"># 解决options请求被拦截问题</span></span><br><span class="line">        <span class="attr">corsConfigurations:</span></span><br><span class="line">          <span class="string">&#x27;[/**]&#x27;</span><span class="string">:</span></span><br><span class="line">            <span class="attr">allowedOrigins:</span> <span class="comment"># 允许哪些网站的跨域请求 </span></span><br><span class="line">              <span class="bullet">-</span> <span class="string">&quot;http://localhost:8090&quot;</span></span><br><span class="line">            <span class="attr">allowedMethods:</span> <span class="comment"># 允许的跨域ajax的请求方式</span></span><br><span class="line">              <span class="bullet">-</span> <span class="string">&quot;GET&quot;</span></span><br><span class="line">              <span class="bullet">-</span> <span class="string">&quot;POST&quot;</span></span><br><span class="line">              <span class="bullet">-</span> <span class="string">&quot;DELETE&quot;</span></span><br><span class="line">              <span class="bullet">-</span> <span class="string">&quot;PUT&quot;</span></span><br><span class="line">              <span class="bullet">-</span> <span class="string">&quot;OPTIONS&quot;</span></span><br><span class="line">            <span class="attr">allowedHeaders:</span> <span class="string">&quot;*&quot;</span> <span class="comment"># 允许在请求中携带的头信息</span></span><br><span class="line">            <span class="attr">allowCredentials:</span> <span class="literal">true</span> <span class="comment"># 是否允许携带cookie</span></span><br><span class="line">            <span class="attr">maxAge:</span> <span class="number">360000</span> <span class="comment"># 这次跨域检测的有效期</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Spring-Cloud/" rel="tag"># Spring Cloud</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/12/spring%20Boot%E5%AE%9E%E7%94%A8%E5%BC%80%E5%8F%91/" rel="prev" title="Spring Boot实用开发">
+      <i class="fa fa-chevron-left"></i> Spring Boot实用开发
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/13/spring%20Boot%E5%8E%9F%E7%90%86%E6%8E%A2%E7%A9%B6/" rel="next" title="Spring Boot的一些探究">
+      Spring Boot的一些探究 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">1. 基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%8D%95%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="nav-text">1）单体架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E5%88%86%E5%B8%83%E5%BC%8F%E6%9E%B6%E6%9E%84"><span class="nav-text">2）分布式架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E5%BE%AE%E6%9C%8D%E5%8A%A1"><span class="nav-text">3）微服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89SpringCloud"><span class="nav-text">4）SpringCloud</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%89%E6%80%BB%E7%BB%93"><span class="nav-text">5）总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%9C%8D%E5%8A%A1%E6%8B%86%E5%88%86%E5%92%8C%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8"><span class="nav-text">2. 服务拆分和远程调用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E6%8B%86%E5%88%86%E5%8E%9F%E5%88%99"><span class="nav-text">1）拆分原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E6%8F%90%E4%BE%9B%E8%80%85%E4%B8%8E%E6%B6%88%E8%B4%B9%E8%80%85"><span class="nav-text">2）提供者与消费者</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Eureka%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83"><span class="nav-text">3. Eureka注册中心</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89Eureka%E7%9A%84%E7%BB%93%E6%9E%84%E5%92%8C%E4%BD%9C%E7%94%A8"><span class="nav-text">1）Eureka的结构和作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E6%90%AD%E5%BB%BAeureka-server"><span class="nav-text">2）搭建eureka-server</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%88%9B%E5%BB%BAeureka-server%E6%9C%8D%E5%8A%A1"><span class="nav-text">①创建eureka-server服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E5%BC%95%E5%85%A5eureka%E4%BE%9D%E8%B5%96"><span class="nav-text">②引入eureka依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E7%BC%96%E5%86%99%E5%90%AF%E5%8A%A8%E7%B1%BB"><span class="nav-text">③编写启动类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3%E7%BC%96%E5%86%99%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">④编写配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1"><span class="nav-text">⑤启动服务</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C"><span class="nav-text">3）服务注册</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="nav-text">①引入依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">②配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E5%90%AF%E5%8A%A8%E5%A4%9A%E4%B8%AAuser-service%E5%AE%9E%E4%BE%8B"><span class="nav-text">③启动多个user-service实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0"><span class="nav-text">4）服务发现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96-1"><span class="nav-text">①引入依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-1"><span class="nav-text">②配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E6%9C%8D%E5%8A%A1%E6%8B%89%E5%8F%96%E5%92%8C%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="nav-text">③服务拉取和负载均衡</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Ribbon%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="nav-text">4. Ribbon负载均衡</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%8E%9F%E7%90%86"><span class="nav-text">1）负载均衡原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E6%BA%90%E7%A0%81%E8%B7%9F%E8%B8%AA"><span class="nav-text">2）源码跟踪</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0LoadBalancerIntercepor"><span class="nav-text">①LoadBalancerIntercepor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1LoadBalancerClient"><span class="nav-text">②LoadBalancerClient</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5IRule"><span class="nav-text">③负载均衡策略IRule</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3%E6%80%BB%E7%BB%93"><span class="nav-text">④总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5"><span class="nav-text">3）负载均衡策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5"><span class="nav-text">①负载均衡策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E8%87%AA%E5%AE%9A%E4%B9%89%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5"><span class="nav-text">②自定义负载均衡策略</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89%E9%A5%A5%E9%A5%BF%E5%8A%A0%E8%BD%BD"><span class="nav-text">4）饥饿加载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Nacos%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83"><span class="nav-text">5. Nacos注册中心</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E8%AE%A4%E8%AF%86%E5%92%8C%E5%AE%89%E8%A3%85Nacos"><span class="nav-text">1）认识和安装Nacos</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%88%B0nacos"><span class="nav-text">2）服务注册到nacos</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96-2"><span class="nav-text">①引入依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E9%85%8D%E7%BD%AEnacos%E5%9C%B0%E5%9D%80"><span class="nav-text">②配置nacos地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E9%87%8D%E5%90%AF"><span class="nav-text">③重启</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E6%9C%8D%E5%8A%A1%E5%88%86%E7%BA%A7%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B"><span class="nav-text">3）服务分级存储模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">①基本概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E7%BB%99user-service%E9%85%8D%E7%BD%AE%E9%9B%86%E7%BE%A4"><span class="nav-text">①给user-service配置集群</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E5%90%8C%E9%9B%86%E7%BE%A4%E4%BC%98%E5%85%88%E7%9A%84%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="nav-text">②同集群优先的负载均衡</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89%E6%9D%83%E9%87%8D%E9%85%8D%E7%BD%AE"><span class="nav-text">4）权重配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%89%E7%8E%AF%E5%A2%83%E9%9A%94%E7%A6%BB"><span class="nav-text">5）环境隔离</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5-1"><span class="nav-text">①基本概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E5%88%9B%E5%BB%BAnamespace"><span class="nav-text">②创建namespace</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E7%BB%99%E5%BE%AE%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEnamespace"><span class="nav-text">③给微服务配置namespace</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%EF%BC%89%E5%AE%9E%E4%BE%8B%E7%B1%BB%E5%9E%8B"><span class="nav-text">6）实例类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%EF%BC%89Nacos%E4%B8%8EEureka%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">6）Nacos与Eureka的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Nacos%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86"><span class="nav-text">6. Nacos配置管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E7%BB%9F%E4%B8%80%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86"><span class="nav-text">1）统一配置管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%9C%A8nacos%E4%B8%AD%E6%B7%BB%E5%8A%A0%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">①在nacos中添加配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E4%BB%8E%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%8B%89%E5%8F%96%E9%85%8D%E7%BD%AE"><span class="nav-text">②从微服务拉取配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E9%85%8D%E7%BD%AE%E7%83%AD%E6%9B%B4%E6%96%B0"><span class="nav-text">2）配置热更新</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E6%96%B9%E5%BC%8F%E4%B8%80"><span class="nav-text">①方式一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E6%96%B9%E5%BC%8F%E4%BA%8C"><span class="nav-text">②方式二</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E9%85%8D%E7%BD%AE%E5%85%B1%E4%BA%AB"><span class="nav-text">3）配置共享</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA%E7%8E%AF%E5%A2%83%E5%85%B1%E4%BA%AB%E9%85%8D%E7%BD%AE"><span class="nav-text">①添加一个环境共享配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E5%9C%A8user-service%E4%B8%AD%E8%AF%BB%E5%8F%96%E5%85%B1%E4%BA%AB%E9%85%8D%E7%BD%AE"><span class="nav-text">②在user-service中读取共享配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E8%BF%90%E8%A1%8C%E4%B8%A4%E4%B8%AAUserApplication%EF%BC%8C%E4%BD%BF%E7%94%A8%E4%B8%8D%E5%90%8C%E7%9A%84profile"><span class="nav-text">③运行两个UserApplication，使用不同的profile</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89%E9%85%8D%E7%BD%AE%E5%85%B1%E4%BA%AB%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-text">4）配置共享的优先级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%89%E6%90%AD%E5%BB%BANacos%E9%9B%86%E7%BE%A4"><span class="nav-text">5）搭建Nacos集群</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Feign%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8"><span class="nav-text">7. Feign远程调用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89Feign%E4%BD%9C%E7%94%A8"><span class="nav-text">1）Feign作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89Feign%E6%9B%BF%E4%BB%A3RestTemplate"><span class="nav-text">2）Feign替代RestTemplate</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96-3"><span class="nav-text">①引入依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E6%B7%BB%E5%8A%A0%E6%B3%A8%E8%A7%A3"><span class="nav-text">②添加注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E7%BC%96%E5%86%99Feign%E7%9A%84%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-text">③编写Feign的客户端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3%E6%B5%8B%E8%AF%95"><span class="nav-text">④测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4%E6%80%BB%E7%BB%93"><span class="nav-text">⑤总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E8%87%AA%E5%AE%9A%E4%B9%89%E9%85%8D%E7%BD%AE"><span class="nav-text">3）自定义配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%96%B9%E5%BC%8F"><span class="nav-text">①配置文件方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1Java%E4%BB%A3%E7%A0%81%E6%96%B9%E5%BC%8F"><span class="nav-text">②Java代码方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89Feign%E4%BD%BF%E7%94%A8%E4%BC%98%E5%8C%96"><span class="nav-text">4）Feign使用优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E8%BF%9E%E6%8E%A5%E6%B1%A0"><span class="nav-text">①连接池</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%96"><span class="nav-text">②日志优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E6%80%BB%E7%BB%93"><span class="nav-text">③总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%89%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-text">5）最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F"><span class="nav-text">①继承方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E6%8A%BD%E5%8F%96%E6%96%B9%E5%BC%8F"><span class="nav-text">②抽取方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E5%AE%9E%E7%8E%B0%E5%9F%BA%E4%BA%8E%E6%8A%BD%E5%8F%96%E7%9A%84%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-text">③实现基于抽取的最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#a%EF%BC%89%E6%8A%BD%E5%8F%96"><span class="nav-text">a）抽取</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#b%EF%BC%89%E5%9C%A8order-service%E4%B8%AD%E4%BD%BF%E7%94%A8feign-api"><span class="nav-text">b）在order-service中使用feign-api</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#c%EF%BC%89%E9%87%8D%E5%90%AF%E6%B5%8B%E8%AF%95"><span class="nav-text">c）重启测试</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#d%EF%BC%89%E8%A7%A3%E5%86%B3%E6%89%AB%E6%8F%8F%E5%8C%85%E9%97%AE%E9%A2%98"><span class="nav-text">d）解决扫描包问题</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-Gateway%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3"><span class="nav-text">8. Gateway服务网关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E7%BD%91%E5%85%B3%E4%BD%9C%E7%94%A8"><span class="nav-text">1）网关作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89gateway%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="nav-text">2）gateway快速入门</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%88%9B%E5%BB%BAgateway%E6%9C%8D%E5%8A%A1%EF%BC%8C%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="nav-text">①创建gateway服务，引入依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E7%BC%96%E5%86%99%E5%90%AF%E5%8A%A8%E7%B1%BB"><span class="nav-text">②编写启动类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E7%BC%96%E5%86%99%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE%E5%92%8C%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99"><span class="nav-text">③编写基础配置和路由规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3%E9%87%8D%E5%90%AF%E6%B5%8B%E8%AF%95"><span class="nav-text">④重启测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4%E8%B7%AF%E7%94%B1%E7%9A%84%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="nav-text">⑤路由的流程图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A5%E6%80%BB%E7%BB%93"><span class="nav-text">⑥总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E6%96%AD%E8%A8%80%E5%B7%A5%E5%8E%82"><span class="nav-text">3）断言工厂</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89%E8%BF%87%E6%BB%A4%E5%99%A8%E5%B7%A5%E5%8E%82"><span class="nav-text">4）过滤器工厂</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E8%B7%AF%E7%94%B1%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E7%A7%8D%E7%B1%BB"><span class="nav-text">①路由过滤器的种类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E8%AF%B7%E6%B1%82%E5%A4%B4%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-text">②请求头过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E9%BB%98%E8%AE%A4%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-text">③默认过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3%E6%80%BB%E7%BB%93-1"><span class="nav-text">④总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%89%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-text">5）全局过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8%E4%BD%9C%E7%94%A8"><span class="nav-text">①全局过滤器作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E8%87%AA%E5%AE%9A%E4%B9%89%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-text">②自定义全局过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3%E8%BF%87%E6%BB%A4%E5%99%A8%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F"><span class="nav-text">④过滤器执行顺序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%EF%BC%89%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98"><span class="nav-text">6）跨域问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E4%BB%80%E4%B9%88%E6%98%AF%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98"><span class="nav-text">①什么是跨域问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E6%A8%A1%E6%8B%9F%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98"><span class="nav-text">②模拟跨域问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98"><span class="nav-text">③解决跨域问题</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="f1ashades"
+      src="/images/mine.jpg">
+  <p class="site-author-name" itemprop="name">f1ashades</p>
+  <div class="site-description" itemprop="description">once again I am a child</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">f1ashades</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

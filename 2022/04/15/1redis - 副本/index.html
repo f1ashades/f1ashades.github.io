@@ -108,6 +108,7 @@
 <meta property="og:image" content="https://s2.loli.net/2022/07/16/E52aNkuZ3nSjs8D.png">
 <meta property="og:image" content="https://s2.loli.net/2022/07/16/iTdfkALw7H1IUBQ.png">
 <meta property="og:image" content="https://s2.loli.net/2022/07/16/MefLypt1dBQTXrn.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/10/xZEWf1ps53UAivX.png">
 <meta property="og:image" content="https://s2.loli.net/2022/07/16/ZRzKeaxDY7jrETy.png">
 <meta property="og:image" content="https://s2.loli.net/2022/07/16/TdXiGZ9SjqNEHbB.png">
 <meta property="og:image" content="https://s2.loli.net/2022/07/16/rFg8A5cQTqYZDwm.png">
@@ -201,7 +202,7 @@
 <meta property="og:image" content="https://s2.loli.net/2022/07/17/52eNlbAV1wkxFja.png">
 <meta property="og:image" content="https://s2.loli.net/2022/07/17/s5LPMCAZwc4JDyt.png">
 <meta property="article:published_time" content="2022-04-15T08:05:12.000Z">
-<meta property="article:modified_time" content="2022-08-10T09:37:07.839Z">
+<meta property="article:modified_time" content="2022-08-11T15:59:48.102Z">
 <meta property="article:author" content="f1ashades">
 <meta property="article:tag" content="redis">
 <meta name="twitter:card" content="summary">
@@ -365,7 +366,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-10 17:37:07" itemprop="dateModified" datetime="2022-08-10T17:37:07+08:00">2022-08-10</time>
+                <time title="修改时间：2022-08-11 23:59:48" itemprop="dateModified" datetime="2022-08-11T23:59:48+08:00">2022-08-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -383,14 +384,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>95k</span>
+              <span>96k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2:38</span>
+              <span>2:40</span>
             </span>
 
         </div>
@@ -1394,9 +1395,9 @@
 <li>两次备份间隔数据容易丢失，数据完整性不如AOF</li>
 <li>RDB优先级低于AOF</li>
 </ul>
-<p>AOF：</p>
+<p><strong>AOF：</strong></p>
 <ul>
-<li>存储的是指令，文件大小较高</li>
+<li>存储的是指令，文件大小较大</li>
 <li>存储的是指令，开机恢复的耗时更长</li>
 <li>主要是IO操作，但是重写要另开线程执行，也会消耗CPU和内存</li>
 <li>数据完整性取决于刷盘策略，完整性较RDB更高</li>
@@ -1443,7 +1444,7 @@
 <p>第二阶段：</p>
 <ul>
 <li>主节点执行bgsave，开启单独的线程来生成RDB，并发送给从节点<ul>
-<li>在主节点RDB的过程中，还会接收写请求，这部分数据为生成指令存在repl_baklog缓存区中（类似AOF记录命令）</li>
+<li>在主节点RDB的过程中，还会接收写请求，这部分数据以<strong>指令的形式</strong>存在repl_baklog缓存区中（类似AOF记录命令）</li>
 </ul>
 </li>
 <li>从节点接收主节点的RDB，清空本地数据，加载RDB数据<ul>
@@ -1504,7 +1505,7 @@
 </li>
 <li><p>Redis单节点上的内存占用不要太大，减少RDB导致的过多磁盘IO</p>
 <ul>
-<li>8g内存不要让redis占用全部，使Redis整体的数据不要他打，减少RDB大小</li>
+<li>8g内存不要让redis占用全部，使Redis整体的数据不要太大，减少RDB大小</li>
 </ul>
 </li>
 <li><p>适当提高repl_baklog的大小，发现slave宕机时尽快实现故障恢复，尽可能避免全量同步</p>
@@ -1561,7 +1562,7 @@
 </li>
 </ul>
 <p>当选出一个新的master后，该如何实现切换呢？</p>
-<p>注意：sentinel之间也会选一个老大，让整个老大去执行<strong>通知</strong>和<strong>切换主节点</strong>的操作，就是最先发现问题的sentinel</p>
+<p>注意：sentinel之间也会选一个老大，让这个老大去执行<strong>通知</strong>和<strong>切换主节点</strong>的操作，就是最先发现问题的sentinel</p>
 <p>流程如下：</p>
 <ul>
 <li>sentinel给备选的slave1节点发送<code>slaveof no one</code>命令，让该节点成为master（加入该节点是7002）</li>
@@ -2071,6 +2072,7 @@
 <li>不包含特殊字符</li>
 </ul>
 <p>例如：我们的登录业务，保存用户信息，其key可以设计成如下格式：</p>
+<p><img src="https://s2.loli.net/2022/08/10/xZEWf1ps53UAivX.png" alt="image-20220521120213631"></p>
 <p>这样设计的好处：</p>
 <ul>
 <li>可读性强</li>
@@ -2079,7 +2081,7 @@
 </ul>
 </li>
 <li>方便管理</li>
-<li>更节省内存： key是string类型，底层编码包含int、embstr和raw三种。embstr在小于44字节使用，采用连续内存空间，内存占用更小。当字节数大于44字节时，会转为raw模式存储，在raw模式下，内存空间不是连续的，而是采用一个指针指向了另外一段内存空间，在这段空间里存储SDS内容，这样空间不连续，访问的时候性能也就会收到影响，还有可能产生内存碎片</li>
+<li>更节省内存： key是string类型，底层编码包含intSet、embstr和raw三种。embstr在小于44字节使用，采用连续内存空间，内存占用更小。当字节数大于44字节时，会转为raw模式存储，在raw模式下，内存空间不是连续的，而是采用一个指针指向了另外一段内存空间，在这段空间里存储SDS内容，这样空间不连续，访问的时候性能也就会收到影响，还有可能产生内存碎片</li>
 </ul>
 <img src="https://s2.loli.net/2022/07/16/ZRzKeaxDY7jrETy.png" alt="image-20220713222935068" style="zoom:80%;" />
 
@@ -2088,7 +2090,7 @@
 <h3 id="2）BigKey"><a href="#2）BigKey" class="headerlink" title="2）BigKey"></a>2）BigKey</h3><h4 id="①基本概念-3"><a href="#①基本概念-3" class="headerlink" title="①基本概念"></a>①基本概念</h4><p>BigKey指的是一条记录很大，和这一条的value有关，并只是说key很大！</p>
 <p>BigKey通常以Key的大小和Key中成员的数量来综合判定，例如：</p>
 <ul>
-<li>Key本身的数据量过大：一个String类型的Key，它的值为5 MB</li>
+<li>Key本身的数据量过大：一个String类型的Key，它的value为 5MB</li>
 <li>Key中的成员数过多：一个ZSET类型的Key，它的成员数量为10,000个</li>
 <li>Key中成员的数据量过大：一个Hash类型的Key，它的成员数量虽然只有1,000个但这些成员的Value（值）总大小为100 MB</li>
 </ul>
@@ -2140,7 +2142,7 @@
 <li>自定义工具，监控进出Redis的网络数据，超出预警值时主动告警</li>
 <li>一般阿里云搭建的云服务器就有相关监控页面</li>
 </ul>
-<h4 id="④如何删除BigKey"><a href="#④如何删除BigKey" class="headerlink" title="④如何删除BigKey"></a>④如何删除BigKey</h4><p>BigKey内存占用较多，即便时删除这样的key也需要耗费很长时间，导致Redis主线程阻塞，引发一系列问题。</p>
+<h4 id="④如何删除BigKey"><a href="#④如何删除BigKey" class="headerlink" title="④如何删除BigKey"></a>④如何删除BigKey</h4><p>BigKey内存占用较多，即便是删除这样的key也需要耗费很长时间，导致Redis主线程阻塞，引发一系列问题。</p>
 <ul>
 <li>redis 3.0 及以下版本<ul>
 <li>如果是集合类型，则遍历BigKey的元素，先逐个删除子元素，最后删除BigKey</li>
@@ -2149,7 +2151,7 @@
 </li>
 </ul>
 <ul>
-<li><p>Redis在4.0后提供了异步删除的命令：unlink</p>
+<li><p>Redis在4.0后提供了异步删除的命令：unlink </p>
 <p><img src="https://s2.loli.net/2022/07/16/g2jriIcMvlQFy3u.png" alt="image-20220713225958139"></p>
 </li>
 </ul>
@@ -2423,32 +2425,39 @@
 
 <h2 id="3-服务器端优化"><a href="#3-服务器端优化" class="headerlink" title="3.服务器端优化"></a>3.服务器端优化</h2><h3 id="1）持久化配置"><a href="#1）持久化配置" class="headerlink" title="1）持久化配置"></a>1）持久化配置</h3><p>Redis的持久化虽然可以保证数据安全，但也会带来很多额外的开销，因此持久化请遵循下列建议：</p>
 <ul>
-<li>用来做缓存的Redis实例尽量不要开启持久化功能<ul>
+<li><p>用来做缓存的Redis实例尽量不要开启持久化功能</p>
+<ul>
 <li>因为缓存并不需要高安全性，禁用持久化可以提升性能</li>
 </ul>
 </li>
-<li>建议关闭RDB持久化功能，使用AOF持久化<ul>
+<li><p>建议关闭RDB持久化功能，使用AOF持久化</p>
+<ul>
 <li>RDB采用<strong>fork</strong>和<strong>copy-on-write</strong>，会消耗大量内存和cpu</li>
 </ul>
 </li>
-<li>利用脚本定期在slave节点做RDB，实现数据备份<ul>
+<li><p>利用脚本定期在slave节点做RDB，实现数据备份</p>
+<ul>
 <li>RDB关闭后我们可以手动的在从节点上做数据备份</li>
 </ul>
 </li>
-<li>设置合理的rewrite阈值，避免频繁的bgrewrite<ul>
+<li><p>设置合理的rewrite阈值，避免频繁的bgrewrite</p>
+<ul>
 <li>bgrewrite会进行内存读写、消耗CPU资源(计算哪些指令可以合并或删除)</li>
 </ul>
 </li>
-<li>配置no-appendfsync-on-rewrite &#x3D; yes，禁止在rewrite期间做aof，避免因AOF引起的阻塞<ul>
-<li><img src="https://s2.loli.net/2022/07/16/uOi2xTI7LXReCy3.png" alt="image-20220714132735652" style="zoom: 67%;" /></li>
+<li><p>配置no-appendfsync-on-rewrite &#x3D; yes，禁止在rewrite期间做aof刷盘，避免因AOF引起的阻塞</p>
+<img src="https://s2.loli.net/2022/07/16/uOi2xTI7LXReCy3.png" alt="具体过程" style="zoom: 67%;" />
+
+<ul>
 <li>fsync就是刷盘时间，如果超过2s，那么redis会认为刷盘有问题，主线程阻塞不再接收新命令并等待刷盘完成</li>
 <li>rewrite和RDB的fork会涉及到大量IO，就可能导致aof的fsync阻塞，导致redis阻塞</li>
 <li>要想安全性，在rewrite期间做持久化，开启；要想性能，关闭</li>
 </ul>
 </li>
-<li>部署有关建议：<ul>
+<li><p>部署有关建议：</p>
+<ul>
 <li>Redis实例的物理机要预留足够内存，应对fork和rewrite</li>
-<li>单个Redis实例内存上限不要太大，例如4G或8G。<ul>
+<li>单个Redis实例内存上限不要太大，例如4G或8G<ul>
 <li>单个Redis内存小，意味着可以加快fork的速度、减少主从同步、数据迁移压力</li>
 </ul>
 </li>
@@ -2568,7 +2577,7 @@
 <p>以上缓冲区中 **复制缓冲区 **和 <strong>AOF缓冲区</strong> 不会有问题，最关键就是客户端缓冲区的问题</p>
 <p>​		客户端缓冲区：指的就是我们发送命令时，客户端用来缓存命令的一个缓冲区，也就是我们向redis输入数据的输入端缓冲区和redis向客户端返回数据的响应缓存区，<strong>输入缓冲区最大1G且不能设置</strong>，所以这一块我们根本不用担心，如果超过了这个空间，redis会直接断开，因为本来此时此刻就代表着redis处理不过来了，我们需要担心的就是输出端缓冲区</p>
 <p><img src="https://s2.loli.net/2022/07/16/a8hzlGip9jkOdNs.png" alt="1653132410073"></p>
-<p>​		我们在使用redis过程中，处理大量的big value，那么会导致我们的输出结果过多，如果输出缓存区过大，会导致redis直接断开，而默认配置的情况下， 其实他是没有大小的，内存可能一下子被占满，会直接导致redis断开，所以解决方案有两个</p>
+<p>​		我们在使用redis过程中，处理大量的big value，那么会导致我们的输出结果过多，如果输出缓存区过大，会导致redis直接断开，而默认配置的情况下， 其实它是没有大小的，内存可能一下子被占满，会直接导致redis断开，所以解决方案有两个</p>
 <ul>
 <li><p>设置输出缓冲区的大小</p>
 </li>
@@ -2612,7 +2621,7 @@
 <li>1个Redis实例ping100个，那么10个就会ping1000个</li>
 </ul>
 </li>
-<li>配置合适的cluster-node-timeout值，也就是集群间心跳检测客观认为down的值，ping的时间就是这个值的一半<ul>
+<li>配置合适的cluster-node-timeout值，也就是集群间心跳检测主观认为down的，ping的时间就是这个值的一半<ul>
 <li>适量调高，可以减少ping的频率</li>
 <li>如果太高会导致redis集群检测故障的能力降低</li>
 </ul>
@@ -2649,9 +2658,9 @@
 <ul>
 <li><p>假如我们要给SDS追加一段字符串“,Amy”，这里首先会申请新内存空间：</p>
 <ul>
-<li><p>如果新字符串小于1M，则新空间为<strong>扩展后字符串长度</strong>的两倍+1（+1是结束标志）；</p>
+<li><p>如果新字符串小于1M，则新空间为<strong>扩展后字符串长度</strong>的两倍+1（+1是结束标志）</p>
 </li>
-<li><p>如果新字符串大于1M，则新空间为<strong>扩展后字符串长度</strong>+1M+1（+1是结束标志），称为<strong>内存预分配</strong>。</p>
+<li><p>如果新字符串大于1M，则新空间为<strong>扩展后字符串长度</strong>+1M+1（+1是结束标志），称为<strong>内存预分配</strong></p>
 </li>
 </ul>
 </li>
@@ -2714,15 +2723,18 @@
 <p><img src="https://s2.loli.net/2022/07/16/BV6jl3DWQJbzfrT.png" alt="image-20220714172245867"></p>
 <p>这就和java中的HashMap很类似，哈希节点就相当于Map.Entry，记录了自己的key和value，如果是链表还记录了下个entry的指针</p>
 <ul>
-<li>entry中union代表该entry的value是这里面的一种，可以是int也可以是字符串（指针）</li>
-<li>为什么哈希表大小必须是2^n？<ul>
-<li>若现在size&#x3D;4&#x3D;(100)，其掩码sizemask&#x3D;3&#x3D;（011），那么元素算出来的哈希值h &amp; sizemask，这样一直到倒数第二位，前面的值进行&amp;0都&#x3D;0，最后两位是1，那么元素hash这里的值是多少，最后就是多少。</li>
-<li>这样的效果就是所有元素hash值计算后都会在00,01,10,11这个区间，也就是0,1,2,3，这就相当于将所有的元素对4取余了</li>
-<li><img src="https://s2.loli.net/2022/07/16/91FRbHNWqO2QoEL.png" alt="image-20220714173447275"></li>
+<li><p>entry中union代表该entry的value是这里面的一种，可以是int也可以是字符串（指针）</p>
+</li>
+<li><p>为什么哈希表大小必须是2^n？</p>
+<ul>
+<li><p>若现在size&#x3D;4&#x3D;(100)，其掩码sizemask&#x3D;3&#x3D;（011），那么元素算出来的哈希值h &amp; sizemask，这样一直到倒数第二位，前面的值进行&amp;0都&#x3D;0，最后两位是1，那么元素hash这里的值是多少，最后就是多少。</p>
+</li>
+<li><p>这样的效果就是所有元素hash值计算后都会在00,01,10,11这个区间，也就是0,1,2,3，这就相当于将所有的元素对4取余了</p>
+<img src="https://s2.loli.net/2022/07/16/91FRbHNWqO2QoEL.png" alt="image-20220714173447275" style="zoom:200%;" /></li>
 </ul>
 </li>
 </ul>
-<p>​		当我们向Dict添加键值对时，Redis首先根据key计算出hash值（h），然后利用 h &amp; sizemask来计算元素应该存储到数组中的哪个索引位置。我们存储k1&#x3D;v1，假设k1的哈希值h &#x3D;1，则1&amp;3 &#x3D;1，因此k1&#x3D;v1要存储到数组角标1位置。</p>
+<p>​		当我们向Dict添加键值对时，Redis首先根据key计算出hash值（h），然后利用 h &amp; sizemask来计算元素应该存储到数组中的哪个索引位置。我们存储k1,v1，假设k1的哈希值h &#x3D;1，则1&amp;3 &#x3D;1，因此k1,v1要存储到数组角标1位置。</p>
 <p>Dict由三部分组成，分别是：哈希表（DictHashTable）、哈希节点（DictEntry）、字典（Dict）</p>
 <p><img src="https://s2.loli.net/2022/07/16/mzIlSj8pJPT2BU4.png" alt="image-20220714172643426"></p>
 <p>它们之间的关系如下：</p>
@@ -3175,7 +3187,7 @@
 </ul>
 </li>
 <li>为什么是44，因为这和redis的内存分配有关系，redis的内存分片是以2^n来分片的<ul>
-<li>如果SDS&#x3D;44，那么教师SDS头信息，redisObject的头信息，刚好是64，正好符合一个数据分片的长度</li>
+<li>如果SDS&#x3D;44+SDS头信息+redisObject的头信息，刚好是64，正好符合一个数据分片的长度</li>
 </ul>
 </li>
 </ul>
@@ -3420,7 +3432,7 @@
 <ul>
 <li>可以看到，非阻塞IO模型中，用户进程在第一个阶段是非阻塞，第二个阶段是阻塞状态。</li>
 <li>虽然是非阻塞，但性能并没有得到提高。而且忙等机制会导致CPU空转，CPU使用率暴增。<ul>
-<li>这样看非阻塞IO并不一定比阻塞IO好，但非阻塞IO在</li>
+<li>这样看非阻塞IO并不一定比阻塞IO好，但非阻塞IO在IO多路复用中有着重要作用</li>
 </ul>
 </li>
 </ul>
@@ -3494,7 +3506,7 @@
 <p><img src="https://s2.loli.net/2022/07/17/WbJjcT7EX4BAPhd.png" alt="image-20220715170818028"></p>
 <ul>
 <li>nfds可以使内核态知道遍历到哪儿结束</li>
-<li>用户空间要先将要坚挺的fdSet拷贝到内核空间，当内核空间有fd就绪了，还要将就绪的fdSet拷贝回去，重复该过程会有大量的用户态和内核态切换</li>
+<li>用户空间要先将要监听的fdSet拷贝到内核空间，当内核空间有fd就绪了，还要将就绪的fdSet拷贝回去，重复该过程会有大量的用户态和内核态切换</li>
 <li>而且内核空间并不直接知道要监听哪些fd，需要遍历fdSet，用户空间也不知道哪些fd就绪了，需要遍历fdSet，这就涉及大量的遍历操作</li>
 </ul>
 <h4 id="③poll"><a href="#③poll" class="headerlink" title="③poll"></a>③poll</h4><img src="https://s2.loli.net/2022/07/17/RyVwhTFb9S1WYpu.png" alt="image-20220715172158045" style="zoom:67%;" />
@@ -3510,7 +3522,7 @@
 </li>
 <li><p>数据就绪或超时后，拷贝pollfd数组到用户空间，返回就绪fd数量n</p>
 </li>
-<li><p>用户进程判断n是否大于0,大于0则遍历pollfd数组，找到就绪的fd</p>
+<li><p>用户进程判断n是否大于0，大于0则遍历pollfd数组，找到就绪的fd</p>
 </li>
 </ul>
 <p><strong>与select对比：</strong></p>
@@ -3518,12 +3530,23 @@
 <li>select模式中的fd_set大小固定为1024，而pollfd在内核中采用链表，理论上无上限</li>
 <li>监听FD越多，每次遍历消耗时间也越久，性能反而会下降</li>
 </ul>
-<h4 id="④epoll"><a href="#④epoll" class="headerlink" title="④epoll"></a>④epoll</h4><p><img src="https://s2.loli.net/2022/07/17/6ftipVMK9EQWre5.png" alt="image-20220715174015950"></p>
+<h4 id="④epoll"><a href="#④epoll" class="headerlink" title="④epoll"></a>④epoll</h4><blockquote>
+<p>详细：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/63179839">https://zhuanlan.zhihu.com/p/63179839</a></p>
+</blockquote>
+<p><img src="https://s2.loli.net/2022/07/17/6ftipVMK9EQWre5.png" alt="image-20220715174015950"></p>
 <ul>
 <li>句柄唯一标识了一个eventpoll，内核空间可能有多个eventpoll，用户态可根据句柄来确定某一个eventpoll</li>
 <li>原来select的作用被分开了<ul>
-<li>ctl只会添加要监听的事件fd并加上一个监听函数，放入event的红黑树中</li>
-<li>epoll_wait函数，这个函数会去校验是否有数据准备完毕（因为数据一旦准备就绪，就会被回调函数添加到list_head中），在等待了一段时间后(可以进行配置)，如果等够了超时时间，则返回没有数据，如果有，则进一步判断当前是什么事件，如果是建立连接时间，则调用accept() 接受客户端socket，拿到建立连接的socket，然后建立起来连接，如果是其他事件，则把数据进行写出</li>
+<li>ctl只会添加要监听的事件fd并加上一个监听函数，放入event的红黑树中<ul>
+<li>对于每一个FD，只会被放入红黑树一次，减少了大量无意义的放入</li>
+</ul>
+</li>
+<li>epoll_wait函数，这个函数会去校验是否有数据准备完毕（因为数据一旦准备就绪，就会被回调函数添加到list_head中）<ul>
+<li>epoll_wait进行循环，每次都取检查list中是否有准备好的数据，并且epoll_wait函数中传入了一个空数组，epoll_wait会将lsit中已经准备好的节点放入这个空数组中并返回就绪的数量</li>
+<li>如果FD没有，epoll_wait会将自己线程挂在eventpoll.wq等待队列上。如果在超时时间内，list上有FD就绪了，就会唤醒该eventpoll.wq上的等待线程，该线程就能够获取到该FD并放入数组中</li>
+<li>这样用户空间所见即所得，不需要再去遍历数组</li>
+</ul>
+</li>
 </ul>
 </li>
 <li>就绪的fd会执行一个监听函数，回调函数把对应fd从红黑树放入就绪list中，<ul>
@@ -3555,8 +3578,14 @@
 <li><p>基于epoll实例中的红黑树保存要监听的FD，理论上无上限，而且增删改查效率都非常高</p>
 </li>
 <li><p>每个FD只需要执行一次epoll_ctl添加到红黑树，以后每次epol_wait无需传递任何参数，无需重复拷贝FD到内核空间</p>
+<ul>
+<li>拷贝的时候只拷贝就绪的FD，用户遍历的都是就绪的FD</li>
+</ul>
 </li>
 <li><p>利用ep_poll_callback机制来监听FD状态，无需遍历所有FD，因此性能不会随监听的FD数量增多而下降</p>
+<ul>
+<li>FD就绪后会通过回调函数，把自己挂在list上</li>
+</ul>
 </li>
 </ul>
 </li>
@@ -3569,38 +3598,47 @@
 <li>EdgeTriggered：简称ET，也叫做边沿触发。只有在某个FD有状态变化时，调用epoll_wait才会被通知。</li>
 </ul>
 <p>举个栗子：</p>
-<ul>
+<ol>
 <li><p>假设一个客户端socket对应的FD已经注册到了epoll实例中</p>
 </li>
 <li><p>客户端socket发送了2kb的数据</p>
 </li>
-<li><p>服务端调用epoll_wait，得到通知说FD就绪</p>
+<li><p>服务端调用epoll_wait，得到通知说FD就绪，将FD放入用户空间的数组中，并断开list中的指针</p>
 </li>
-<li><p>服务端从FD读取了1kb数据回到步骤3（再次调用epoll_wait，形成循环）</p>
+<li><p>服务端从FD读取了1kb数据的时候又回到步骤3（再次调用epoll_wait，形成循环）</p>
 <ul>
 <li><p>LT：内核会检查FD看是否有数据没有读取完，如果没有读取完就再次将FD放入list，再次调用epoll_wait就会又一次获得这些FD，然后读取剩余的数据</p>
 </li>
 <li><p>ET：只能读一次，所以内核会直接移除这些FD，epoll_wait并不会得到结果</p>
 </li>
-<li><p>即：</p>
+</ul>
 </li>
+</ol>
+<p>即：</p>
+<ul>
 <li><p>如果我们采用LT模式，因为FD中仍有1kb数据，则第⑤步依然会返回结果，并且得到通知</p>
 </li>
 <li><p>如果我们采用ET模式，因为第③步已经消费了FD可读事件，第⑤步FD状态没有变化，因此epoll_wait不会返回，数据无法读取，客户端响应超时。</p>
 </li>
 </ul>
-</li>
-</ul>
 <p><strong>问题1：为什么还要使用ET</strong>？</p>
 <p>​	 	因为LT会触发<strong>惊群现象</strong>：</p>
-<p>​		如有2个进程分别是进程A和进程B，来读取FD5&#x3D;2kb，进程A在第一次epoll_wait就已经读完了，而进程B第一次只读了1KB，如果是LT，那么FD5还会再次放入到list中，但实际上只有进程B还需要读，进程A不需要了，而epoll_wait会导致进程A再次读到FD5，所以进程A被惊扰到了，如果有很多进程都被惊扰到了，就发生了<strong>惊群现象</strong>，这样会对性能有损耗。</p>
+<p>epoll_wait回去list上尝试获取FD，如果没有获取成功会将自己瓜子对应的eventpoll.wq等待队列上，在时间范围内，如果有FD就绪（被挂在了list上）那么就会通知该等待队列上的线程，A现在等待队列上，然后被唤醒了处理FD（取出放数组），FD仍然是挂在list上，那么进程B也在该eventpoll.wq等待队列上等待资源，该FD就会可能会唤醒B进程来进行处理。</p>
+<blockquote>
+<p>我们仔细看 <code>ep_scan_ready_list</code> 源码，当 <code>ep-&gt;rdllist</code> 不为空时，会唤醒进程。</p>
+<p>当多个进程共享同一个 “epoll fd” 时，多个进程同时在等待资源，也就是多个进程通过 epoll_wait 将自己当前进程的等待事件挂在内核 epoll 实例 eventpoll.wq 等待队列上，换句话说，eventpoll.wq 等待队列上挂着多个进程的等待事件（操作系统），当某个事件触发时，等待队列上的进程会被唤醒。</p>
+<p>如果是 lt 模式，epoll 在下一个 epoll_wait 执行前，fd 事件节点仍然会存在就绪队列中，不管事件是否处理完成，那么唤醒进程 A 处理事件时，如果 B 进程也在等待资源，那么同样的事件有可能将 B 进程也唤醒处理，然后 B 又是同样的逻辑唤醒 C —— 连环唤醒问题，这种情况可能是用户不愿意看到的。<br>链接：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/403893498/answer/2258283710">https://www.zhihu.com/question/403893498/answer/2258283710</a></p>
+</blockquote>
 <p><strong>问题2：怎样解决ET不能读完的问题</strong></p>
 <ul>
-<li>方案1，设计为阻塞IO使其while读完，读完后会返回一个error<ul>
+<li><p>方案1：因为已经读入了FD，需要在这一次通知中把通知读完</p>
+<ul>
+<li>设计为非阻塞IO使其while读完，读完后会返回一个error</li>
 <li>不能是阻塞IO，因为读完后没内容了会一直阻塞</li>
 </ul>
 </li>
-<li>方案2，手动再放入list</li>
+<li><p>方案2，手动再放入list，因为其它的进程已经读完了，开始监听其它的数据了，这时候</p>
+</li>
 </ul>
 <h4 id="⑥基于epoll的web流程"><a href="#⑥基于epoll的web流程" class="headerlink" title="⑥基于epoll的web流程"></a>⑥基于epoll的web流程</h4><p><img src="https://s2.loli.net/2022/07/17/vOlI3GzY6FwJms4.png" alt="image-20220715182144450"></p>
 <ul>
@@ -4021,13 +4059,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">707k</span>
+    <span title="站点总字数">708k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">19:39</span>
+    <span title="站点阅读时长">19:40</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

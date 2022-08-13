@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/source/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="网络层：IPV4（分类、划分子网、无分类）、IP首部、ICMP 运输层：UDP、TCP、三次握手、四次挥手、TCP流量控制、拥塞控制、ARQ、保活计数器、TCP首部格式 应用层：DHCP、DNS、FTP、电子邮件、HTTP、HTTPS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络">
+<meta property="og:url" content="http://example.com/2022/03/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="f1ashades&#39; blogs">
+<meta property="og:description" content="网络层：IPV4（分类、划分子网、无分类）、IP首部、ICMP 运输层：UDP、TCP、三次握手、四次挥手、TCP流量控制、拥塞控制、ARQ、保活计数器、TCP首部格式 应用层：DHCP、DNS、FTP、电子邮件、HTTP、HTTPS">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/xUVlfkgTSBFWuJM.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/d1W6bK3qLNwnPJm.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/SpFzjXAw7Bgx8fo.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/E1Y8i5cDItXwh23.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/vrKEYF1bjBpCko4.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/TERFd4UpK7vIboA.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/ehJCVnKWD5zsTtp.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/d6A5UhyCLjgXZvN.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/Vd1iwbCZ4kNYjp7.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/no3FWQgCVqhI8wE.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/Gpntcq9KloCZhF2.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/TBwoQyWuAPnlraN.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/dchJB5SMCnyIbK9.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/mV3KTEh62FbH7q9.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/SXVOt83oYUsRv2j.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/gZedOfmFXGDos2I.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/cHdNDoeiPvATxta.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/tYJIdQAMmzcy8UX.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/Ah9nKIikHmJDy1v.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/olVGMCkYBcxuzse.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/XrSbIuUEBcKzRh8.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/LIQ1BKuSyGcRWXT.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/4eiCxPuaFotvk5z.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/AZ6iKSHLR1PBJMT.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/8HZdDlrUwXSuj2O.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/rRnieZlsdWKw6PT.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/fY7AgQ9MsCVzBtO.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/VNz7qjdWMJnDhHQ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/siePp4tD3S6YurH.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/5DISoyeMvY9Cpc4.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/dlTktvCMDFzVjmh.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/6pdnAOk9VGjtWDZ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/d1QRTveb6o74Dtj.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/J4TIfhAmy1iQVKS.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/XB3uo9ZAk5l4cCf.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/w7q6p9dY5bLAhsN.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/BoAKziVbldXS14N.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/MW746QGKiEFtcCx.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/8mSABh2NZuaPzY3.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/oQy1N5cHIrlxP6M.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/rd8gxavbwE97cjT.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/jwxto94FIzb8qBX.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/TPUb3WtndIOXekK.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/B76ws8ZojnlIFHE.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/HNGZ6tsyPXQUghW.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/rs5i6oY7QImvuet.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/MbcmZ57vRgqxDXo.png">
+<meta property="og:image" content="d:/Typora/TyporaPictureBed/image-20220614172105767.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/uBwmJjvqCg39WDf.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/12/c3WFj26QLEaT1dv.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/ArYGyMNv9WkePhu.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/d1GJ2oZXgHOeqMP.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/FxuD4bKar6E2py9.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/RQkhKXuC1qj74ed.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/VHx5uUW4MjSTQ1a.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/09/Wbmd2RhaQ1Dt4vl.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/Cxc6gtLbvPVKh4p.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/rZqcB6eT4gGian8.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/L8mOG9RMHBEtYZi.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/o7SYQUx3Hky8Cn1.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/gEhIfW5qtZejnX9.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/YZSzJ8no5hjFDfG.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/Jljoc8BTLD7ItXh.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/zvW7UcDFBgYdeZS.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/gEhIfW5qtZejnX9.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/n3xmNKhGuC7E846.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/14/KJHU6eSTlDFg2Ez.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/2RZpJxbVQFOfrY3.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/6iqjHFk8Zu4cNBd.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/UfaZdhvDbTNS2nl.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2021020616352945.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210207202515558.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210207202811307.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210207202944916.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210207203428220.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210207203535280.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/202102072037163.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210207204112145.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2021020720415451.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210207205458363.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210207205545305.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210207211418599.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210207212315333.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210207213717975.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210207214154870.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2021020721581138.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210207215936604.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210207221244185.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210208011109996.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210208012003776.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210208012429614.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://s2.loli.net/2022/06/05/biDCthaSHmKrec7.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/6tZQXg3iumDRb2n.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/DYnQHaIKJiVgvcF.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210208014438548.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/DvyV7O8hmJoMtCT.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/nrK6vOkZBLxS1eI.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/hJmxwGIQvA3SHB5.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/37N8VeWujzHQ5pc.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/OmAETx8RjdZ2WYv.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/13/QkIbMV9BTFdez5J.webp">
+<meta property="article:published_time" content="2022-03-15T03:36:48.000Z">
+<meta property="article:modified_time" content="2022-08-13T07:49:12.435Z">
+<meta property="article:author" content="f1ashades">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/06/14/xUVlfkgTSBFWuJM.png">
+
+<link rel="canonical" href="http://example.com/2022/03/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>计算机网络 | f1ashades' blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">f1ashades' blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/mine.jpg">
+      <meta itemprop="name" content="f1ashades">
+      <meta itemprop="description" content="once again I am a child">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="f1ashades' blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机网络
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-15 11:36:48" itemprop="dateCreated datePublished" datetime="2022-03-15T11:36:48+08:00">2022-03-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-13 15:49:12" itemprop="dateModified" datetime="2022-08-13T15:49:12+08:00">2022-08-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>16k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>27 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>网络层：IPV4（分类、划分子网、无分类）、IP首部、ICMP</p>
+<p>运输层：UDP、TCP、三次握手、四次挥手、TCP流量控制、拥塞控制、ARQ、保活计数器、TCP首部格式</p>
+<p>应用层：DHCP、DNS、FTP、电子邮件、HTTP、HTTPS</p>
+<span id="more"></span>
+
+<h1 id="三、网络层"><a href="#三、网络层" class="headerlink" title="三、网络层"></a>三、网络层</h1><h2 id="1-IPv4地址"><a href="#1-IPv4地址" class="headerlink" title="1.IPv4地址"></a>1.IPv4地址</h2><h3 id="1）分类编址"><a href="#1）分类编址" class="headerlink" title="1）分类编址"></a>1）分类编址</h3><h4 id="①A类地址"><a href="#①A类地址" class="headerlink" title="①A类地址"></a>①A类地址</h4><p><img src="https://s2.loli.net/2022/06/14/xUVlfkgTSBFWuJM.png" alt="image-20220614152035361"></p>
+<ul>
+<li>A类地址网络号占8比特，主机号占24比特</li>
+<li>网络号最高位固定为0</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/06/14/d1W6bK3qLNwnPJm.png" alt="image-20220614153809833"></p>
+<p>注意：</p>
+<ul>
+<li><p>最小网络号是全0，保留不指派</p>
+</li>
+<li><p>最小可分配网络号：00000001 ——&gt; 1</p>
+</li>
+<li><p>最大可分配网络号：01111110 ——&gt; 126</p>
+</li>
+<li><p>最小本地环回测试地址主机号为1，因为全0就是127.0.0.0代表网络号</p>
+</li>
+<li><p>最大本地环回测试地址主机号为255-1（最后一位为0），因为全1就是127.255.255.255代表广播地址了</p>
+</li>
+</ul>
+<h4 id="②B类地址"><a href="#②B类地址" class="headerlink" title="②B类地址"></a>②B类地址</h4><p><img src="https://s2.loli.net/2022/06/14/SpFzjXAw7Bgx8fo.png" alt="image-20220614153516411"></p>
+<ul>
+<li>B类地址网络号和主机号分别占16比特</li>
+<li>B类地址网络号前两位固定为10</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/06/14/E1Y8i5cDItXwh23.png" alt="image-20220614153905970"></p>
+<p>注意：</p>
+<ul>
+<li>最小可分配网络号：10000000 . 00000000 ——&gt; 127.0</li>
+<li>最大网可分配络号：10111111 . 11111111 ——&gt; 191(2^7+2^6-1).255</li>
+</ul>
+<h4 id="③C类地址"><a href="#③C类地址" class="headerlink" title="③C类地址"></a>③C类地址</h4><p><img src="https://s2.loli.net/2022/06/14/vrKEYF1bjBpCko4.png" alt="C类地址"></p>
+<ul>
+<li>C类地址网络号占24位，主机号占8位</li>
+<li>C类地址网络号前三位固定为110</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/06/14/TERFd4UpK7vIboA.png" alt="image-20220614154900800"></p>
+<p>注意：</p>
+<ul>
+<li>最小可分配网络号：11000000.00000000.00000000 ——&gt; 192.0.0</li>
+<li>最大可分配网络号：11011111 . 11111111.11111111 ——&gt; 223(2^7+2^6+2^5-1).255.255</li>
+</ul>
+<h3 id="2）划分子网编址"><a href="#2）划分子网编址" class="headerlink" title="2）划分子网编址"></a>2）划分子网编址</h3><p><img src="https://s2.loli.net/2022/06/14/ehJCVnKWD5zsTtp.png" alt="image-20220614155832232"></p>
+<h4 id="①子网掩码"><a href="#①子网掩码" class="headerlink" title="①子网掩码"></a>①子网掩码</h4><p><img src="https://s2.loli.net/2022/06/14/d6A5UhyCLjgXZvN.png" alt="image-20220614160106854"></p>
+<h4 id="②eg1"><a href="#②eg1" class="headerlink" title="②eg1"></a>②eg1</h4><p><img src="https://s2.loli.net/2022/06/14/Vd1iwbCZ4kNYjp7.png" alt="image-20220614160626488">	</p>
+<p><img src="https://s2.loli.net/2022/06/14/no3FWQgCVqhI8wE.png" alt="image-20220614161259939"></p>
+<p>218开头是110，所以这是一个C类地址，其子网掩码255.255.255.128（前三部分为C类网络号，最后从主机号借用的地址）</p>
+<p>可以看出从主机号中借用了1位，1位可以划分出两个子网（0,1），每个子网有7位可以来编码</p>
+<h4 id="②eg2"><a href="#②eg2" class="headerlink" title="②eg2"></a>②eg2</h4><p><img src="https://s2.loli.net/2022/06/14/Gpntcq9KloCZhF2.png" alt="image-20220614161429856"></p>
+<h4 id="③eg3"><a href="#③eg3" class="headerlink" title="③eg3"></a>③eg3</h4><p><img src="https://s2.loli.net/2022/06/14/TBwoQyWuAPnlraN.png" alt="image-20220614161538999"></p>
+<h3 id="3）无分类编址"><a href="#3）无分类编址" class="headerlink" title="3）无分类编址"></a>3）无分类编址</h3><p><img src="https://s2.loli.net/2022/06/14/dchJB5SMCnyIbK9.png" alt="image-20220614162054964"></p>
+<h4 id="①eg1"><a href="#①eg1" class="headerlink" title="①eg1"></a>①eg1<img src="https://s2.loli.net/2022/06/14/mV3KTEh62FbH7q9.png" alt="image-20220614162504683"></h4><h4 id="②eg2-1"><a href="#②eg2-1" class="headerlink" title="②eg2"></a>②eg2</h4><p><img src="https://s2.loli.net/2022/06/14/SXVOt83oYUsRv2j.png" alt="image-20220614162530920"></p>
+<h4 id="③路由聚合（构建超网）"><a href="#③路由聚合（构建超网）" class="headerlink" title="③路由聚合（构建超网）"></a>③路由聚合（构建超网）</h4><p><img src="https://s2.loli.net/2022/06/14/gZedOfmFXGDos2I.png" alt="image-20220614163231519"></p>
+<p>对于图中R1连接了5个网络，若R1要将这五个网络信息发送给R2，就需要发送5个路由信息给R2（也就是需要5个网络编号）：</p>
+<p><img src="https://s2.loli.net/2022/06/14/cHdNDoeiPvATxta.png" alt="image-20220614163306724"></p>
+<p>很显然，这五个网络网络号中由很多部分是共同前缀的，那么这部分能不能<strong>采用CIDR路由聚合成一个网络再发送给R2来降低路由表大小</strong>呢，显然是可以的：</p>
+<p><img src="https://s2.loli.net/2022/06/14/tYJIdQAMmzcy8UX.png" alt="image-20220614163345512"></p>
+<p>因此其聚合地址块为：</p>
+<p><img src="https://s2.loli.net/2022/06/14/Ah9nKIikHmJDy1v.png" alt="image-20220614163413264"></p>
+<p>这样就把5条记录缩小到一条记录，当R2的目的网络是该聚合地址块就会跳R1</p>
+<p>在路由过程中，我们可以得出两个结论：</p>
+<ul>
+<li>网络前缀越长，地址块越小（主机号），路由约具体。</li>
+<li>若地址块转发分组时发现由多条路由可选，则选择网络前缀最长的那条，这样子的路由更具体（网络号越长，说明再继续聚合的可能性越低，也就越具体）</li>
+</ul>
+<h4 id="④eg3"><a href="#④eg3" class="headerlink" title="④eg3"></a>④eg3</h4><p><img src="https://s2.loli.net/2022/06/14/olVGMCkYBcxuzse.png" alt="image-20220614163714834"></p>
+<h4 id="⑤eg4"><a href="#⑤eg4" class="headerlink" title="⑤eg4"></a>⑤eg4</h4><p><img src="https://s2.loli.net/2022/06/14/XrSbIuUEBcKzRh8.png" alt="image-20220614163748158"></p>
+<h2 id="2-IP首部格式"><a href="#2-IP首部格式" class="headerlink" title="2.IP首部格式"></a>2.IP首部格式</h2><p><img src="https://s2.loli.net/2022/06/14/LIQ1BKuSyGcRWXT.png" alt="image-20220614164029786"></p>
+<h3 id="1）版本"><a href="#1）版本" class="headerlink" title="1）版本"></a>1）版本</h3><p><img src="https://s2.loli.net/2022/06/14/4eiCxPuaFotvk5z.png" alt="image-20220614164421771"></p>
+<h3 id="2）首部长度"><a href="#2）首部长度" class="headerlink" title="2）首部长度"></a>2）首部长度</h3><p><img src="https://s2.loli.net/2022/06/14/AZ6iKSHLR1PBJMT.png" alt="image-20220614164441470"></p>
+<h3 id="3）可选字段"><a href="#3）可选字段" class="headerlink" title="3）可选字段"></a>3）可选字段</h3><p><img src="https://s2.loli.net/2022/06/14/8HZdDlrUwXSuj2O.png" alt="image-20220614164524615"></p>
+<h3 id="4）填充字段"><a href="#4）填充字段" class="headerlink" title="4）填充字段"></a>4）填充字段</h3><p><img src="https://s2.loli.net/2022/06/14/rRnieZlsdWKw6PT.png" alt="image-20220614164556906"></p>
+<h3 id="5）区分服务字段"><a href="#5）区分服务字段" class="headerlink" title="5）区分服务字段"></a>5）区分服务字段</h3><p><img src="https://s2.loli.net/2022/06/14/fY7AgQ9MsCVzBtO.png" alt="image-20220614164640580"></p>
+<h3 id="6）总长度字段"><a href="#6）总长度字段" class="headerlink" title="6）总长度字段"></a>6）总长度字段</h3><p><img src="https://s2.loli.net/2022/06/14/VNz7qjdWMJnDhHQ.png" alt="image-20220614164749843"></p>
+<p>eg：</p>
+<p><img src="https://s2.loli.net/2022/06/14/siePp4tD3S6YurH.png" alt="image-20220614164826984"></p>
+<p><img src="https://s2.loli.net/2022/06/14/5DISoyeMvY9Cpc4.png" alt="数据载荷长度计算"></p>
+<h3 id="7）标识、标志、片偏移字段"><a href="#7）标识、标志、片偏移字段" class="headerlink" title="7）标识、标志、片偏移字段"></a>7）标识、标志、片偏移字段</h3><p><img src="https://s2.loli.net/2022/06/14/dlTktvCMDFzVjmh.png" alt="image-20220614165015729"></p>
+<p><img src="https://s2.loli.net/2022/06/14/6pdnAOk9VGjtWDZ.png" alt="image-20220614165030855"></p>
+<h4 id="①数据报分片"><a href="#①数据报分片" class="headerlink" title="①数据报分片"></a>①数据报分片</h4><p><img src="https://s2.loli.net/2022/06/14/d1QRTveb6o74Dtj.png" alt="image-20220614165119021"></p>
+<h4 id="②eg"><a href="#②eg" class="headerlink" title="②eg"></a>②eg</h4><p><img src="https://s2.loli.net/2022/06/14/J4TIfhAmy1iQVKS.png" alt="image-20220614165150657"></p>
+<p><img src="https://s2.loli.net/2022/06/14/XB3uo9ZAk5l4cCf.png" alt="image-20220614165224296"></p>
+<h3 id="8）生存时间"><a href="#8）生存时间" class="headerlink" title="8）生存时间"></a>8）生存时间</h3><p><img src="https://s2.loli.net/2022/06/14/w7q6p9dY5bLAhsN.png" alt="image-20220614165403552"></p>
+<h3 id="9）协议字段"><a href="#9）协议字段" class="headerlink" title="9）协议字段"></a>9）协议字段</h3><p><img src="https://s2.loli.net/2022/06/14/BoAKziVbldXS14N.png" alt="image-20220614165435910"></p>
+<h3 id="10）首部检验和"><a href="#10）首部检验和" class="headerlink" title="10）首部检验和"></a>10）首部检验和</h3><p><img src="https://s2.loli.net/2022/06/14/MW746QGKiEFtcCx.png" alt="image-20220614165548093"></p>
+<h3 id="11）源IP地址、目的IP地址字段"><a href="#11）源IP地址、目的IP地址字段" class="headerlink" title="11）源IP地址、目的IP地址字段"></a>11）源IP地址、目的IP地址字段</h3><p><img src="https://s2.loli.net/2022/06/14/8mSABh2NZuaPzY3.png" alt="image-20220614165643534"></p>
+<h2 id="3-ICMP"><a href="#3-ICMP" class="headerlink" title="3.ICMP"></a>3.ICMP</h2><h3 id="1）差错报文"><a href="#1）差错报文" class="headerlink" title="1）差错报文"></a>1）差错报文</h3><p><img src="https://s2.loli.net/2022/06/14/oQy1N5cHIrlxP6M.png" alt="image-20220614171934632"></p>
+<h4 id="①终点不可达"><a href="#①终点不可达" class="headerlink" title="①终点不可达"></a>①终点不可达</h4><p><img src="https://s2.loli.net/2022/06/14/rd8gxavbwE97cjT.png" alt="image-20220614170631385"></p>
+<h4 id="②源点抑制"><a href="#②源点抑制" class="headerlink" title="②源点抑制"></a>②源点抑制</h4><p><img src="https://s2.loli.net/2022/06/14/jwxto94FIzb8qBX.png" alt="image-20220614170716681"></p>
+<h4 id="③时间超过"><a href="#③时间超过" class="headerlink" title="③时间超过"></a>③时间超过</h4><p><img src="https://s2.loli.net/2022/06/14/TPUb3WtndIOXekK.png" alt="image-20220614170928213"></p>
+<h4 id="④参数问题"><a href="#④参数问题" class="headerlink" title="④参数问题"></a>④参数问题</h4><p><img src="https://s2.loli.net/2022/06/14/B76ws8ZojnlIFHE.png" alt="image-20220614171129906"></p>
+<h4 id="⑤改变路由"><a href="#⑤改变路由" class="headerlink" title="⑤改变路由"></a>⑤改变路由</h4><p><img src="https://s2.loli.net/2022/06/14/HNGZ6tsyPXQUghW.png" alt="image-20220614171157679"></p>
+<p><img src="https://s2.loli.net/2022/06/14/rs5i6oY7QImvuet.png" alt="image-20220614171223774"></p>
+<h4 id="⑥不发送给ICMP差错报告报文情况"><a href="#⑥不发送给ICMP差错报告报文情况" class="headerlink" title="⑥不发送给ICMP差错报告报文情况"></a>⑥不发送给ICMP差错报告报文情况</h4><p><img src="https://s2.loli.net/2022/06/14/MbcmZ57vRgqxDXo.png" alt="image-20220614171345707"></p>
+<h3 id="2）ICMP询问报文"><a href="#2）ICMP询问报文" class="headerlink" title="2）ICMP询问报文"></a>2）ICMP询问报文</h3><p>回送回答和回答报文：</p>
+<ul>
+<li><p>ICMP回送回答报文是由主机和路由向一个特定的目的主机发出的询问</p>
+</li>
+<li><p>收到此报文的主机必须给源主机或路由器发送ICMP回送回答报文</p>
+</li>
+<li><p><strong>主要用来测试目的站是否可达以及了解其有关状态</strong></p>
+</li>
+</ul>
+<p>时间戳请求和回答：</p>
+<ul>
+<li>ICMP时间戳请求报文时请某个主机或路由器回答当前的日期和时间</li>
+<li>ICMP时间戳回答报文中有一个32位的字段，写入的整数代表从1900年1月1日到当前时刻一共有多少秒</li>
+<li>主要用来进行时钟同步和测量时间</li>
+</ul>
+<h3 id="3）应用"><a href="#3）应用" class="headerlink" title="3）应用"></a>3）应用</h3><h4 id="①PING"><a href="#①PING" class="headerlink" title="①PING"></a>①PING</h4><ul>
+<li>用来<strong>测试主机或路由器之间的连通性</strong></li>
+<li>应用层<strong>直接使用网际层的ICMP</strong>(没有经过运输层的TCP或UDP)</li>
+<li>使用ICMP<strong>回送请求和回答报文</strong></li>
+</ul>
+<h4 id="②traceroute"><a href="#②traceroute" class="headerlink" title="②traceroute"></a>②traceroute</h4><p><img src="D:/Typora/TyporaPictureBed/image-20220614172105767.png" alt="image-20220614172105767"></p>
+<p>跟踪路由traceroute实现原理：</p>
+<p>​	简单来说，就是先发送一个TTL &#x3D; 1的报文，当TTL到达第一个主机后TTL变为0，此时路由器会回送时间超过差错报文，此时就能知道第一个路由位置。此时源主机再发送TTL &#x3D; 2 的报文，当TTL到达第二个主机后TTL变为0，此时路由器会回送时间超过差错报文，此时就能够知道第二个路由的地址。如此反复，直到到达最后一个路由。<br><img src="https://s2.loli.net/2022/06/14/uBwmJjvqCg39WDf.png" alt="traceroute第三步"></p>
+<h1 id="四、运输层"><a href="#四、运输层" class="headerlink" title="四、运输层"></a>四、运输层</h1><h2 id="1-一次请求"><a href="#1-一次请求" class="headerlink" title="1.一次请求"></a>1.一次请求</h2><ol>
+<li><p>浏览器输入域名<a target="_blank" rel="noopener" href="http://www.baidu.com,用户pc中的dns客户端进程就会发送一个dns请求报文到dns服务器/">www.baidu.com，用户PC中的DNS客户端进程就会发送一个DNS请求报文到DNS服务器</a></p>
+<p>DNS是通过UDP封装的，DNS客户端会随机挑选一个短暂端口号作为源端口号49152，目标端口号是53</p>
+</li>
+<li><p>DNS服务器接收到了这个DNS请求报文，就会解析数据然后返回结果</p>
+<p>源端口:53	目标端口:49152</p>
+</li>
+<li><p>客户端接收到了DNS响应报文，发现端口是49152，知道了是DNS的回复，解析该报文得到域名对应的IP地址xxx</p>
+</li>
+<li><p>知道了ip地址xxx，就可以开始构建HTTP请求，xxx:80，请求对应的数据</p>
+</li>
+</ol>
+<p>​		源端口:挑选到 49153 	目标端口:80</p>
+<ol start="5">
+<li><p>web服务器收到HTTP请求，解析出目标端口，HTTP服务端进程解析到了请求内容，然后返回回去</p>
+</li>
+<li><p>客户端接收到HTTP响应报文，49153HTTP客户端进程解析内容</p>
+<p>源端口:80 	目标端口:49153</p>
+</li>
+</ol>
+<h2 id="2-UDP和TCP的对比"><a href="#2-UDP和TCP的对比" class="headerlink" title="2.UDP和TCP的对比"></a>2.UDP和TCP的对比</h2><ul>
+<li><p>TCP：运输层采用面向连接的 TCP 协议时，尽管下面的网络是不可靠的（只提供尽最大努力服务），但TCP协议就相当于在逻辑上建立了一条通信信道，该信道是全双工的可靠信道。</p>
+</li>
+<li><p>UDP：当运输层采用无连接的 UDP 协议时，这种逻辑通信信道是一条不可靠信道。</p>
+</li>
+</ul>
+<p>接下来，我们从以下几个方面对比UDP和TCP:</p>
+<p>以下的连接是逻辑上连接不是物理上的连接。</p>
+<ol>
+<li><strong>在连接方式上：</strong></li>
+</ol>
+<ul>
+<li><p>UDP是无连接的通信方式</p>
+</li>
+<li><p>TCP是通过著名的<strong>三次握手建立连接</strong>，<strong>四次挥手释放连接</strong>。</p>
+</li>
+</ul>
+<ol start="2">
+<li><strong>在传播方式上：</strong></li>
+</ol>
+<ul>
+<li><p>UDP由于不建立连接，支持<strong>多播和广播</strong></p>
+</li>
+<li><p>TCP由于每次通信需要建立<strong>基于TCP连接的可靠信道</strong>，且<strong>每次只能建立一条连接</strong>，因此只支持<strong>单播</strong></p>
+</li>
+</ul>
+<ol start="3">
+<li><strong>在报文传输处理上：</strong></li>
+</ol>
+<ul>
+<li><p>UDP协议中，对于应用层传输下来的报文不进行处理，保留报文的边界。在给报文加上UDP首部，进行发送。UDP接收方首部接收到UDP数据后，去除其首部，交付给应用层。</p>
+<p>可以看出，UDP是针对报文为单位进行处理的，也就是UDP是面向应用报文的。</p>
+</li>
+<li><p>在TCP发送方：</p>
+</li>
+</ul>
+<p>TCP协议会把应用进程交付下来的数据块（报文）<strong>看作是一连串无结构的字节流（TCP并不知道这些子节含义）</strong>，将他们编号，并存储在自己的发送缓存中，TCP再根据发送策略，<strong>提取一定量的字节，加上TCP首部，构建成TCP报文进行发送</strong>。</p>
+<ul>
+<li><p>对于接收方,同时进行两件事：</p>
+<ul>
+<li>从所接受到的TCP报文段中，取出数据载荷部分并存储在接收缓存中，同时将接收缓存中的一些字节交付给应用进程。</li>
+</ul>
+</li>
+<li><p>有两个点值得注意：</p>
+<ul>
+<li><p>TCP协议保证接收方收到的字节流和发送方应用进程发出的字节流完全一样</p>
+</li>
+<li><p>TCP不保证接收方应用进程所收到的数据块与发送方发送的数据块，具有对应大小的关系,例如，发送方应用进程交给发送方的TCP共10个数据块，但接收方的TCP可能只用了4个数据块，就把收到的字节流交付给了上层的应用进程。就是不会全部将数据交付给上层。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>因此接收方的TCP应用进程必须有能力识别收到的字节流，把它还原成有意义的应用层数据</p>
+<p>可以看出，TCP对报文的处理是以字节为单位的，也就是TCP是面向字节流的，这正是TCP实现可靠传输、流量控制、以及拥塞控制的基础</p>
+<ol start="4">
+<li><strong>在给上层提供的服务上：</strong></li>
+</ol>
+<ul>
+<li><p>UDP提供的是不可靠服务：<br>对于发送的UDP数据报，接收方在检测到其误码后直接丢弃，不做其他操作。对于发送方发送过程中出现分组丢失，也不做处理。因此其传输数据是不一定能使接收方全部收到数据，因此是不可靠服务。</p>
+</li>
+<li><p>TCP提供的是可靠服务：<br>由于TCP字传输过程中需要建立连接，通过建立的可靠信道进行传输，因此不会出现传输差错，也就是误码、丢失、乱序、重复。因此可以保证发送端发送什么，接收端接收到什么，是可靠传输。</p>
+</li>
+</ul>
+<ol start="5">
+<li><strong>协议首部的对比：</strong></li>
+</ol>
+<p><img src="https://s2.loli.net/2022/08/12/c3WFj26QLEaT1dv.png" alt="协议首部对比"></p>
+<ul>
+<li><p>由于UDP不提供可靠传输的服务，因此其首部只需要在网际层的基础上添加区分端口的子节，其首部比较简单。</p>
+</li>
+<li><p>在TCP中，需要提供可靠传输、流量控制、拥塞控制等服务，首部比较复杂，字段比较多。</p>
+</li>
+</ul>
+<h2 id="3-三次握手"><a href="#3-三次握手" class="headerlink" title="3.三次握手"></a>3.三次握手</h2><p><img src="https://s2.loli.net/2022/08/13/ArYGyMNv9WkePhu.png" alt="三次握手完毕"></p>
+<p>准备阶段：<br>服务器创建 传输控制块：TCP连接表 发送和接收缓存的指针 重传队列指针 当前接收 发送序列号<br>然后客户端进入监听状态：</p>
+<p>①客户端创建传输控制块：发送和接收缓存的指针 重传队列的指正 当前发送和传输的序列号<br>然后客户端向服务器发送一个TCP连接请求并进入 同步已发送状态<br>TCP连接请求 SYN置1 并且seq&#x3D;x</p>
+<p>②服务器接收到该请求后发送一个TCP连接回应并进入 同步已接收状态并发送一个 TCP连接请求确认报文段<br>TCP连接请求确认报文段：SYN&#x3D;1，ACK&#x3D;1，ack&#x3D;x+1，seq&#x3D;y</p>
+<p>③客户端接收到TCP连接请求确认报文段后进入连接已经建立状态并再发送一个普通TCP确认报文段<br>普通TCP确认报文段：ACK&#x3D;1,ack&#x3D;y+1,sex&#x3D;x+1<br>服务器接收到普通TCP确认报文段后也进入了连接已建立状态<br>注：TCP规定SYN设置为1的报文段不能携带数据但是要消耗掉一个序号</p>
+<p><strong>Problem：为什么不能两次握手？</strong></p>
+<p>主要是因为防止已失效的TCP请求发送到服务器发生错误</p>
+<p><img src="https://s2.loli.net/2022/08/13/d1GJ2oZXgHOeqMP.png" alt="两次握手建立连接示例"></p>
+<p>第一个TCP连接请求发送后并没有丢失而是因为某些原因迟到了，这时候客户端再次发送给了一个TCP连接请求，</p>
+<p>服务器收到第二个TCP连接请求后发送一个TCP连接请求确认报文段给客户端，这时候两方都通过两次握手进入了同步已连接状态并建立了连接，在传输完毕后两边关闭了该连接。</p>
+<p>这时第一个TCP连接请求迟到到了服务器，服务器这时候又进入了连接已建立状态并发送TCP连接请求确认报文段给客户端，客户端不理睬仍为关闭状态，服务器会一直接收不到数据处于等待状态，这样就会白白浪费网络资源</p>
+<h2 id="3-四次挥手"><a href="#3-四次挥手" class="headerlink" title="3.四次挥手"></a>3.四次挥手</h2><p><img src="https://s2.loli.net/2022/08/13/FxuD4bKar6E2py9.png" alt="image-20220420151541731"></p>
+<p>①首先TCP客户端上层应用通知下层主动关闭连接，这时候客户端会向服务器放松一个TCP连接释放报文段并进入终止等待1状态，</p>
+<p>其中FIN&#x3D;1，ACK&#x3D;1，seq&#x3D;u（客户端上一个发送的seq+1)，ack&#x3D;v（客户端上一个接收的seq+1），</p>
+<p>注：FIN&#x3D;1的报文段不携带任何数据但是要消耗一个seq</p>
+<p>②服务器接收该TCP连接释放报文段并进入关闭等待状态然后通知上层应用要关闭连接（被动关闭），然后服务器向客户端发送一个</p>
+<p>普通TCP确认报文段并进入关闭等待状态，ACK&#x3D;1,seq&#x3D;v,ack&#x3D;u+1</p>
+<p>注：这时候从客户端到服务器这一方向的连接就已经关闭了，这时候TCP处于半关闭状态，这段时间内客户端不再向服务器发送数据，</p>
+<p>服务器若有数据可以继续向客户端发送，客户端会接收这些数据</p>
+<p>③服务器在发送了这些数据后会向客户端发送一个TCP连接释放报文段并且进入最后确认状态，</p>
+<p>其中FIN&#x3D;1，ACK&#x3D;1，seq&#x3D;w（服务器上一个发送的seq+1），ack&#x3D;u+1，因为上一个客户端发送的seq&#x3D;u并且客户端没有再发送数据</p>
+<p>④客户端在接收了该TCP连接释放报文段后会进入时间等待状态，并且向服务器发送一个普通TCP确认报文段，</p>
+<p>ACK&#x3D;1，seq&#x3D;u+1，ack&#x3D;w+1，而服务器在接收到该普通TCP确认报文报文段后会关闭连接</p>
+<p>⑤最后客户端会进入时间等待阶段，并等待2个MSL时间后关闭连接：MSL是最长报文段寿命</p>
+<p><strong>Problem：户端在最终关闭前需要等待2个MSL，有必要吗？</strong></p>
+<p><img src="https://s2.loli.net/2022/08/13/RQkhKXuC1qj74ed.jpg" alt="image-20220420153424794"></p>
+<p>有：因为最后客户端向服务器发送普通TCP确认报文段，发送完后客户端直接进入关闭状态，这必然会引起服务器的超时重传，</p>
+<p>服务器会再次发送TCP链接释放报文段，但是这时候客户端已经关闭不会理财，客户端就会持续超时重传从而无法进入关闭状态，</p>
+<p>这样会造成网络资源的浪费</p>
+<p>所以等待2个MSL（Maximum Segment Lifetime，RFC793建议2分钟）时间有两个作用：</p>
+<p>①保证服务器接收到了第四次挥手，正常进入关闭状态</p>
+<p>②同时在2个MSL时间内，TCP连接中所有的数据会被清空，保证下一次TCP连接不会出现旧的报文段</p>
+<h2 id="4-实现可靠传输"><a href="#4-实现可靠传输" class="headerlink" title="4.实现可靠传输"></a>4.实现可靠传输</h2><h3 id="1）TCP流量控制"><a href="#1）TCP流量控制" class="headerlink" title="1）TCP流量控制"></a>1）TCP流量控制</h3><p><img src="https://s2.loli.net/2022/08/13/VHx5uUW4MjSTQ1a.png" alt="流量控制示例2"></p>
+<p>①首先建立连接的双发按约定的窗口大小来发送数据，目前是400：应发送前三条数据，当A-&gt;B发送了三条数据后，第三条丢失</p>
+<p>②这时候接收方会发送一个TCP确认报文段，按最小seq来返回ack，并调整窗口大小，则现在窗口的覆盖区域应从201开始后三条：如图</p>
+<p>③发送窗口内还未发送的数据，当重传计数器到时候发送201报文段</p>
+<p>④接收方发送TCP确认报文段，这时调整窗口大小为100，来控制A的流量，此时窗口内数据仅由501-600</p>
+<p>注：在确认数据后，接收方和发送方都会在缓存中删除已确认的数据</p>
+<p><strong>持续计时器（发送零窗口探测报文）</strong></p>
+<p><img src="https://s2.loli.net/2022/06/09/Wbmd2RhaQ1Dt4vl.png" alt="流量控制示例3"></p>
+<p><img src="https://s2.loli.net/2022/08/13/Cxc6gtLbvPVKh4p.png" alt="调整为零后情况"></p>
+<p>当接收方缓冲有空间可以接收数据后会发送一个新的报文段调整接收窗口，但是这条报文丢失了，为避免死锁情况：</p>
+<p><img src="https://s2.loli.net/2022/08/13/rZqcB6eT4gGian8.png" alt="持续计时器"></p>
+<p>发送方在发送窗口值被调整为0后会启动持续计数器，该计数器会在到时后发送零窗口探测报文，接收方会根据自己情况来返回接收窗口大小</p>
+<h3 id="2）拥塞控制"><a href="#2）拥塞控制" class="headerlink" title="2）拥塞控制"></a>2）拥塞控制</h3><p><strong>慢开始、拥塞避免、快重传、快恢复</strong></p>
+<p><img src="https://s2.loli.net/2022/08/13/L8mOG9RMHBEtYZi.png" alt="算法使用顺序图"></p>
+<p>①首先TCP传输从0开始传输报文段（慢开始算法），慢开始时候1+1,2+2,4+4，这样的方式增加</p>
+<p>②达到慢开始门限阈值ssthresh后开始使用拥塞避免算法，这时候拥塞窗口是以+1的方式慢慢增加</p>
+<p>​	当达到某一值后发生了超时重传，说明网络可能发生了拥塞，这时候就会把慢开始门限值ssthresh&#x3D;现在的值的一半，</p>
+<p>​    然后令拥塞窗口值&#x3D;1开始使用慢开始算法</p>
+<p>③当达到新的慢开始门限阈值后开始使用慢开始算法，然后使用拥塞避免算法，若这后面的报文段出现了失序到达情况（某个报文段丢失了），服务器会发送重复确认，当客户端收到三个重复确认报文段后就会马上重传响应的报文段而不是等待重传计数器到时后重传</p>
+<p>④当客户端收到了三个重复确认并进行快重传后，服务器会马上执行快恢复：将慢开始ssthresh门限&#x3D;现在值的一半并开始拥塞避免</p>
+<h3 id="3）ARQ协议"><a href="#3）ARQ协议" class="headerlink" title="3）ARQ协议"></a>3）ARQ协议</h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/261152357">https://zhuanlan.zhihu.com/p/261152357</a></p>
+<h4 id="①停等ARQ协议（stop-and-wait）"><a href="#①停等ARQ协议（stop-and-wait）" class="headerlink" title="①停等ARQ协议（stop-and-wait）"></a>①停等ARQ协议（stop-and-wait）</h4><p>停等ARQ协议相当于发送窗口和接收窗口大小均为1的滑动窗口协议。即发送方发送一个帧后，必须接收到一个确认帧（ACK）才能发送下一个。</p>
+<p><img src="https://s2.loli.net/2022/08/13/o7SYQUx3Hky8Cn1.png" alt="img"></p>
+<p><strong>原理：</strong></p>
+<ol>
+<li><p>发送方发送数据后会进入等待状态直到获得接收方发送的确认信息</p>
+</li>
+<li><p>当发送方没有接收到确认信息，那么可能有两种情况：</p>
+<p>​	①发送方发送的数据丢失，发送方重传计时器到时间后，发送方会重新发送该数据</p>
+<p>​	②接收方发送的确认信息（ACK）丢失，发送方重传计时器到时后会重发该数据，此时接收方就会得到重复数据，</p>
+<p>​		接收方会直接丢弃重复数据并返回确认</p>
+</li>
+</ol>
+<p><strong>优点：</strong></p>
+<p>原理简单，广泛运用于分组交换网络。</p>
+<p><strong>缺点：</strong></p>
+<p>较长的等待时间，使得数据传输速度低。低速传输时频道利用率较高，高速传输时频道利用率较低。</p>
+<h4 id="②-回退N帧ARQ协议（Go-Back-N）"><a href="#②-回退N帧ARQ协议（Go-Back-N）" class="headerlink" title="② 回退N帧ARQ协议（Go-Back-N）"></a>② 回退N帧ARQ协议（Go-Back-N）</h4><p>连续ARQ协议（Continuous ARQ），为了克服停等ARQ协议长时间等待ACK的缺点，这个协议会连续发送一组数据包，然后再等待这些数据包的ACK。</p>
+<p><img src="https://s2.loli.net/2022/06/14/gEhIfW5qtZejnX9.jpg" alt="img"></p>
+<p><strong>具体实现：</strong></p>
+<p><img src="https://s2.loli.net/2022/08/13/YZSzJ8no5hjFDfG.png" alt="image-20220614122015979"></p>
+<p>①接收方对发送方的数据进行累计确认，如发送方发送了0,1,2,3,4,5条数据，可能接收方第一次确认就是确认3（说明0,1,2,3都正确到达，这里和TCP的ack有些不同，ack&#x3D;3是指已经到了的最后一个分组，不是期待的下一个分组）</p>
+<p>②接收方的窗口值一直都是1，若接收的序列是3,1,2,0,5，那么滑动的顺序仍然是0,1,2,3，并发送ack&#x3D;3（5到了，4没到，仍然确认3）</p>
+<p>③这时4号分组出现了数据丢失（5号没丢），那么接收方会反复发送ack&#x3D;3告知接收方，虽然接收方接收到了5号，但发送方仍然要回退到4号开始重新发送（因为3号及之前的已经被确认了）</p>
+<p><strong>总结：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/14/Jljoc8BTLD7ItXh.png" alt="image-20220614122622324"></p>
+<p><img src="https://s2.loli.net/2022/06/14/zvW7UcDFBgYdeZS.png" alt="image-20220614123351895"></p>
+<h4 id="③选择重传协议"><a href="#③选择重传协议" class="headerlink" title="③选择重传协议"></a>③选择重传协议</h4><p>连续ARQ协议（Continuous ARQ），为了克服停等ARQ协议长时间等待ACK的缺点，这个协议会连续发送一组数据包，然后再等待这些数据包的ACK。</p>
+<p><img src="https://s2.loli.net/2022/06/14/gEhIfW5qtZejnX9.jpg" alt="img"></p>
+<p><strong>具体实现：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/14/n3xmNKhGuC7E846.png" alt="image-20220614124559231"></p>
+<p>①发送方发送窗口为4，接收方接收窗口也4，发送方首先发送了0,1,2,3共4个分组，其中0,1,4三个分组都被正确接收且发送了ack，因为0,1号分组是正确顺序接收，所以发送和接收方都可以向前滑两个。</p>
+<p>②接收方会对每一个到达的分组都发送ack（不再是累计确认），发送窗口此时可以发送4,5号分组，并且接收窗口也正确接收了并发送了ack。发送方3,4,5号都已经被发送且接收到了ack，此时要做一个标记避免超时重传。</p>
+<p>③因为2号分组丢失，当重传计时器超时就会重传2号分组，接收方接收到了2号后接收方接收窗口才能向后滑，同时发送ack&#x3D;2，发送方接收到了ack&#x3D;2后发送窗口才能继续想后滑。</p>
+<p><strong>总结：</strong></p>
+<p><img src="https://s2.loli.net/2022/06/14/KJHU6eSTlDFg2Ez.png" alt="image-20220614124733862"></p>
+<h4 id="④回退N帧和选择重传的对比"><a href="#④回退N帧和选择重传的对比" class="headerlink" title="④回退N帧和选择重传的对比"></a>④回退N帧和选择重传的对比</h4><ul>
+<li>回退N帧的接收窗口为1；选择重传接收窗口大小一般&#x3D;发送窗口大小</li>
+<li>回退N帧累计确认，ack&#x3D;3是确认3号分组及以前的；选择重传对对每一个分组都要确认，ack&#x3D;3只代表3号分组已接收</li>
+</ul>
+<h3 id="4）保活计数器"><a href="#4）保活计数器" class="headerlink" title="4）保活计数器"></a>4）保活计数器</h3><p><img src="https://s2.loli.net/2022/08/13/2RZpJxbVQFOfrY3.png" alt="保活计时器"></p>
+<p>当主机发生故障时就不能向服务器发送数据，TCP如何发现并关闭连接以免浪费网络资源：</p>
+<p>①服务器每接收到一次来自客户端的数据就会更新启动保活计数器</p>
+<p>②当保活计时器到时就会发送TCP探测报文，发送10个后还未响应就会断开连接</p>
+<h3 id="5）总结"><a href="#5）总结" class="headerlink" title="5）总结"></a>5）总结</h3><p><img src="https://s2.loli.net/2022/08/13/6iqjHFk8Zu4cNBd.png" alt="image-20220812225900112"></p>
+<h2 id="5-TCP首部格式"><a href="#5-TCP首部格式" class="headerlink" title="5.TCP首部格式"></a>5.TCP首部格式</h2><p><img src="https://s2.loli.net/2022/08/13/UfaZdhvDbTNS2nl.png" alt="TCP首部"></p>
+<p>①数据偏移：占4字节（0-15），并以4字节为单位，数据偏移*4&#x3D;首部长度</p>
+<p>②保留字段，保留为以后所使用，现在为0</p>
+<p>③SYN：三挥手阶段建立时用来同步序号</p>
+<p>④ACK：TCP连接建立后所有报文段都需置1</p>
+<p>⑤RST：置1时代表TCP连接出现异常，需要释放该次连接并重新连接</p>
+<p>​              RST也可用来拒绝一个非法报文段或者打开一个TCP连接（服务器）</p>
+<p>⑥URG：置1时代表紧急指针字段有效</p>
+<p>⑦紧急指针：报文段格式：首部+紧急数据（有的话）+普通数据</p>
+<p>​														数             据              载           荷</p>
+<p>紧急指针会指出本报文段数据载荷部分包含了多长的紧急数据</p>
+<p>注：发送方有紧急数据时可将紧急数据插队到发送缓存最前面并立刻封装到一个TCP报文段中发送</p>
+<p>⑦PSH：置1后接收方收到该报文段会尽快交付给上层应用而不是等接受缓存都填满后再上传</p>
+<p>⑧选项（长度可变）</p>
+<p>最大报文段长度MSS选项：TCP报文段数据载荷部分最大长度</p>
+<p>窗口扩大选项：扩大窗口（提高吞吐率）</p>
+<p>时间戳选项：计算往返RTT</p>
+<p>​						用于处理序号超范围情况</p>
+<p>选择确认选项：</p>
+<p>⑨填充：保证首部字段是4倍数</p>
+<h1 id="五、应用层"><a href="#五、应用层" class="headerlink" title="五、应用层"></a>五、应用层</h1><h2 id="1-DHCP"><a href="#1-DHCP" class="headerlink" title="1.DHCP"></a>1.DHCP</h2><p><img src="https://img-blog.csdnimg.cn/2021020616352945.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70"></p>
+<p>①DHCP主要作用就是给网络中的主机分配配置信息，因为静态单独配置配置信息会较为麻烦，所以可以在主机的时候启动DHCP程序来   	获得一个暂时的配置信息</p>
+<p>②DHCP使用的C&#x2F;S方式，网络层使用的是UDP协议</p>
+<p>​	客户端使用的是68号，服务器使用的是67号</p>
+<p>③租借过程</p>
+<p>a.寻找DHCP服务器过程：源地址是0.0.0.0（未分配IP），地址是广播地址（255.255.255.255），源端口号是68，目的端口是67</p>
+<p>​	所有主机只监听了68号端口，所以不会理睬该数据，所有DHCP监听67号端口会接收该数据</p>
+<p>b.DHCP服务器在接收了数据后会选择一个IP地址并通过ARP来检查该IP地址是否已被占用，然后将配置信息广播发送，主机会根据事务ID	来判断是否是自己需要的数据，</p>
+<p>c.主机在接收该IP地址租约信息后会再次向服务器进行确认</p>
+<p>d.服务器会再次确认该IP地址然后广播发送，主机会通过ARP再次确认该IP未被占用，直到这时候主机才有了IP地址</p>
+<p>④续约过程</p>
+<p>a.主机向DHCP发送续约，DHCP同意并返回数据扩大租期</p>
+<p>b.主机向DHCP发送续约，DHCP不同意并返回数据，这时候主机应立即停用该IP信息并重新租借</p>
+<p>⑤主机不再使用IP租约，主机地址是0.0.0.0（不用租约），广播发送通知DHCP服务器</p>
+<h2 id="2-DNS"><a href="#2-DNS" class="headerlink" title="2.DNS"></a>2.DNS</h2><h3 id="1）层次树状的域名结构"><a href="#1）层次树状的域名结构" class="headerlink" title="1）层次树状的域名结构"></a>1）层次树状的域名结构</h3><p><img src="https://img-blog.csdnimg.cn/20210207202515558.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="关于域名的知识点"></p>
+<p><img src="https://img-blog.csdnimg.cn/20210207202811307.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="域名分类"></p>
+<p><img src="https://img-blog.csdnimg.cn/20210207202944916.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="域名空间倒树"></p>
+<h3 id="2）域名服务器和查询方式"><a href="#2）域名服务器和查询方式" class="headerlink" title="2）域名服务器和查询方式"></a>2）域名服务器和查询方式</h3><p><img src="https://img-blog.csdnimg.cn/20210207203428220.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="域名服务器的分类"></p>
+<h4 id="①递归查询（不采用）"><a href="#①递归查询（不采用）" class="headerlink" title="①递归查询（不采用）"></a>①递归查询（不采用）</h4><p><img src="https://img-blog.csdnimg.cn/20210207203535280.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="递归查询"></p>
+<p>递归查询：主机首先会查询本地域名服务器（默认配置域名服务器），然后首先查询最上层的根域名服务器，根域名服务器不会返回结果，它会根据域名递归查询其所属的顶级域名服务器，这时候可能会返回结果，也可能再次查询相应的权限域名服务器，最后再将结果层层返回。</p>
+<p>这种方式未被采用因为会对域名服务器造成太大负担，所以不被采用</p>
+<h4 id="②迭代查询（采用）"><a href="#②迭代查询（采用）" class="headerlink" title="②迭代查询（采用）"></a>②迭代查询（采用）</h4><p><img src="https://img-blog.csdnimg.cn/202102072037163.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="迭代查询"></p>
+<p>主机到本地域名服务器采用的是递归查询，其它都是迭代查询，本地域名服务器首先询问根域名服务器，根域名服务器将下一个需要查询的顶级域名服务器告诉本地DNS，本地DNS会根据信息查询对应的顶级DNS，返回的可能是结果，也有可能是下一个需要查询的权限DNS，最后本地DNS将最终结果传回给本地主机。</p>
+<p>这样其实将查询的负担交给了本地DNS，这是现在采用的方式</p>
+<p>③高速缓存查询</p>
+<p><img src="https://img-blog.csdnimg.cn/20210207204112145.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="高速缓存"></p>
+<p><img src="https://img-blog.csdnimg.cn/2021020720415451.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="高速缓存查询过程"></p>
+<p>主机和本地域名服务器都有高速缓存， 主机会首先查询高速缓存表然后再进行DNS的查询</p>
+<h2 id="3-应用协议"><a href="#3-应用协议" class="headerlink" title="3.应用协议"></a>3.应用协议</h2><h3 id="1）文件传送协议FTP"><a href="#1）文件传送协议FTP" class="headerlink" title="1）文件传送协议FTP"></a>1）文件传送协议FTP</h3><p>①ftp主要功能是文件传输：客户能将各类型文件传送到FTP服务器，客户也能从FTP服务器下载各种类型文件</p>
+<p><img src="https://img-blog.csdnimg.cn/20210207205458363.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="上传文件到FTP服务器"></p>
+<p><img src="https://img-blog.csdnimg.cn/20210207205545305.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="从FTP服务器下载文件"></p>
+<p>②FTP的工作原理</p>
+<p>a.主动连接（FTP服务器主动与客户端建立数据连接）<img src="https://img-blog.csdnimg.cn/20210207211418599.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="主动发起请求"></p>
+<p>客户端选择一个<strong>临时端口号1</strong>向<strong>FTP服务器21号端口</strong>发起连接，这次连接是用于传送控制命令的<strong>控制连接</strong>，然后客户端选择一个临时端口号2并通过控制连接来告知FTP服务器该临时端口号2<strong>，FTP服务器20号端口</strong>来与<strong>客户端的临时端口2</strong>建立<strong>数据连接</strong>，该连接用于传输数据</p>
+<p>b.被动连接（FTP服务器被动接受客户端的数据连接）</p>
+<p><img src="https://img-blog.csdnimg.cn/20210207212315333.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="被动连接"></p>
+<p>客户端首先通过<strong>临时端口号1</strong>来主动与<strong>FTP服务器21号端口</strong>建立<strong>控制连接</strong>，服务器选择一个临时端口a并告知给客户端，客户端选择一个临时端口号2来主动与FTP服务器进行连接，FTP服务器被动接受连接</p>
+<h3 id="2）电子邮件"><a href="#2）电子邮件" class="headerlink" title="2）电子邮件"></a>2）电子邮件</h3><p><img src="https://img-blog.csdnimg.cn/20210207213717975.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="电子邮件发送过程"></p>
+<h4 id="①邮件发送协议SMTP"><a href="#①邮件发送协议SMTP" class="headerlink" title="①邮件发送协议SMTP"></a>①邮件发送协议SMTP</h4><p><img src="https://img-blog.csdnimg.cn/20210207214154870.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="SMTP概述"></p>
+<p>①用户代理TCP连接发送方SMTP服务器1，SMTP服务器TCP连接接收方SMTP服务器2，文件的传输是通过SMTP协议传输的</p>
+<p>②SMTP使用命令和应答的方式来传输文件</p>
+<p>③SMTP文件只能传输ASKII码文本数据，为实现中文、法语等传输，需要用到MIME转换：<br>    发送方通过MIME将数据转换成ASKII文本，接收方再通过MIME将ASKII转换成原来的数据</p>
+<p><img src="https://img-blog.csdnimg.cn/2021020721581138.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="SMTP知识点"></p>
+<p><img src="https://img-blog.csdnimg.cn/20210207215936604.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="MIME工作流程"></p>
+<h4 id="②邮件接收协议POP3-x2F-IMAP"><a href="#②邮件接收协议POP3-x2F-IMAP" class="headerlink" title="②邮件接收协议POP3&#x2F;IMAP"></a>②邮件接收协议<strong>POP3&#x2F;IMAP</strong></h4><p>都是基于TCP连接的接收协议，IMAP功能较POP3更强大</p>
+<h4 id="③基于万维网的电子邮件HTTP"><a href="#③基于万维网的电子邮件HTTP" class="headerlink" title="③基于万维网的电子邮件HTTP"></a>③基于万维网的电子邮件HTTP</h4><p><img src="https://img-blog.csdnimg.cn/20210207221244185.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="不同的服务器"></p>
+<p>用户<strong>通过浏览器使用HTTP协议</strong>将邮件传输到邮箱所属的邮件服务器，邮件服务器<strong>通过SMTP协议</strong>来将文件传输到对应的邮件服务器，接收方用户<strong>通过浏览器使用HTTP协议</strong>从邮件服务器来接收邮件</p>
+<h3 id="3）HTTP"><a href="#3）HTTP" class="headerlink" title="3）HTTP"></a>3）HTTP</h3><p>TCP客户进程会使用80端口来与服务器建立TCP连接，并且通过该链接来发送<strong>请求报文</strong>并接收<strong>响应报文</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20210208011109996.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="img"></p>
+<p>万维网通过URL来指明英特网上任何种类的资源</p>
+<h4 id="①HTTP版本"><a href="#①HTTP版本" class="headerlink" title="①HTTP版本"></a>①HTTP版本</h4><p>​	<img src="https://img-blog.csdnimg.cn/20210208012003776.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="HTTP举例"></p>
+<p>①HTTP&#x2F;1.0采用非持续连接方式：每次请求都要和服务器建立TCP连接，收到连接后马上关闭该连接</p>
+<p><img src="https://img-blog.csdnimg.cn/20210208012429614.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="非持续连接示例"></p>
+<p>该种方式会在三握手的第3次握手携带HTTP请求报文并进行发送：</p>
+<ul>
+<li>每次请求一个资源都需要2倍RTT，若一个网页有很多引用对象，那么就会浪费大量时间</li>
+<li>为提高效率，浏览器会建立多个并行的TCP来与服务器建立连接并请求对象，但这样会大量占用万维网资源并增加服务器负担</li>
+</ul>
+<p>②HTTP&#x2F;1.1采用持续连接方式：万维网在发送响应报文后仍保持该条连接，这样后续客户端还可以继续发送HTTP请求</p>
+<ul>
+<li>为提高效率，HTTP&#x2F;1.1持续连接还可以采用流水线方式，即在收到HTTP响应前发送多条HTTP请求，然后服务器再发回一个个HTTP响应</li>
+</ul>
+<h4 id="②HTTP报文格式"><a href="#②HTTP报文格式" class="headerlink" title="②HTTP报文格式"></a>②HTTP报文格式</h4><p>HTTP报文是面向文本的，包含了多个ASKII码串且长度不确定</p>
+<p>①请求报文</p>
+<p><img src="https://s2.loli.net/2022/06/05/biDCthaSHmKrec7.png" alt="image-20220424155358641"></p>
+<p>其中Connection:close说明该连接是收到回应后就关闭，是非持续连接，keep-alive是持续连接</p>
+<ul>
+<li>Request格式</li>
+</ul>
+<p>​    1. 请求行</p>
+<p>​      	请求方式&#x2F;请求url 请求协议&#x2F;版本</p>
+<p>​     	 GET&#x2F;login.html  HTTP&#x2F;1.1</p>
+<p>​      	①请求方式：</p>
+<p>​			HTTP协议有7中请求方式，常用的有2种</p>
+<p>​			GET：</p>
+<p>​            		1. 请求参数在请求行中，在url后。</p>
+<p>​            		2. 请求的url长度有限制的</p>
+<p>​            		3. 不太安全</p>
+<p>​         	POST：</p>
+<p>​           	 	1. 请求参数在请求体中</p>
+<p>​            		2. 请求的url长度没有限制的</p>
+<p>​            		3. 相对安全</p>
+<p>​    </p>
+<p>​	2. 请求头（首部行）：客户端浏览器告诉服务器一些信息</p>
+<p>​      	请求头名称: 请求头值</p>
+<p>​      	常见的请求头：</p>
+<p>​           ①User-Agent</p>
+<p>​			浏览器告诉服务器，我访问你使用的浏览器版本信息，可以在服务器端获取该头的信息，解决浏览器的兼容性问题</p>
+<p>​			</p>
+<p>​			②Referer：<a target="_blank" rel="noopener" href="http://localhost/login.html">http://localhost/login.html</a></p>
+<p>​          	  告诉服务器，我(当前请求)从哪里来？</p>
+<p>​            	作用：</p>
+<p>​              		1. 防盗链：防止第三方网站盗链</p>
+<p>​              		2. 统计工作：通过判断来查看从各处来的流量</p>
+<p>​    </p>
+<p>​	3. 请求空行</p>
+<p>​          空行（CRLF），就是用于分割POST请求的请求头，和请求体的。</p>
+<p>​    </p>
+<p>​	4. 请求体(正文)：</p>
+<p>​          封装POST请求消息的请求参数的</p>
+<p>​	</p>
+<p>​	5.例子</p>
+<p>​      	POST &#x2F;login.html HTTP&#x2F;1.1 <strong>（请求行）</strong></p>
+<p>​      	Host: localhost	<strong>（请求头、首部行）</strong></p>
+<p>​      	User-Agent: Mozilla&#x2F;5.0 (Windows NT 6.1; Win64; x64; rv:60.0) Gecko&#x2F;20100101 Firefox&#x2F;60.0</p>
+<p>​      	Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,<em>&#x2F;</em>;q&#x3D;0.8</p>
+<p>​      	Accept-Language: zh-CN,zh;q&#x3D;0.8,zh-TW;q&#x3D;0.7,zh-HK;q&#x3D;0.5,en-US;q&#x3D;0.3,en;q&#x3D;0.2</p>
+<p>​      	Accept-Encoding: gzip, deflate</p>
+<p>​      	Referer: <a target="_blank" rel="noopener" href="http://localhost/login.html">http://localhost/login.html</a></p>
+<p>​      	Connection: keep-alive</p>
+<p>​      	Upgrade-Insecure-Requests: 1</p>
+<p>​     	 <strong>（请求空行）</strong></p>
+<p>​      	username&#x3D;zhangsan  <strong>（请求正文）</strong></p>
+<p>②响应报文</p>
+<ul>
+<li>Response格式</li>
+</ul>
+<p>​    1. 状态行</p>
+<p>​          协议&#x2F;版本 响应状态码 状态码描述</p>
+<p>​      	响应状态码：服务器告诉客户端浏览器本次请求和响应的一个状态， 状态码都是3位数字 </p>
+<p>​           分类：</p>
+<p>​            	1xx：服务器已收客户端消息，但没有接受完成，等待一段时间后，发送1xx多状态码</p>
+<p>​            	2xx：成功。代表：200</p>
+<p>​            	3xx：重定向。代表：302(重定向)，304(访问缓存)</p>
+<p>​            	4xx：客户端错误。</p>
+<p>​              	 代表：</p>
+<p>​                 	404（请求路径没有对应的资源） </p>
+<p>​                	 405：请求方式没有对应的doXxx方法</p>
+<p>​             	5xx：服务器端错误。代表：500(服务器内部出现异常)</p>
+<p>​              </p>
+<p>​          </p>
+<p>​      2. 响应头（首部行）：</p>
+<p>​        	头名称： 值</p>
+<p>​        	常见的响应头：</p>
+<p>​             ①Content-Type：服务器告诉客户端本次响应体数据格式以及编码格式</p>
+<p>​											浏览器是通过MIME类型来判断数据类型的</p>
+<p>​             ②Content-disposition：服务器告诉客户端以什么格式打开响应体数据</p>
+<p>​            		 值：</p>
+<p>​              		 	in-line:默认值,在当前页面内打开</p>
+<p>​              		 	attachment;filename&#x3D;xxx：以附件形式打开响应体。文件下载</p>
+<p>​      		</p>
+<p>​		3. 响应空行：空行CRLF</p>
+<p>​      </p>
+<p>​		4. 响应体:传输的数据</p>
+<p>​		5. 响应字符串格式</p>
+<p>​      	HTTP&#x2F;1.1 200 OK <strong>（响应头）</strong></p>
+<p>​      	Content-Type: text&#x2F;html;charset&#x3D;UTF-8<strong>（响应行）</strong></p>
+<p>​      	Content-Length: 101</p>
+<p>​      	Date: Wed, 06 Jun 2018 07:08:42 GMT</p>
+<p>​		<strong>（响应空行）</strong></p>
+<p>​     	 <html><strong>（响应正文）</strong></p>
+<p>​       	<head></p>
+<p>​        	<title>$Title$</title></p>
+<p>​      	 </head></p>
+<p>​       	<body></p>
+<p>​       	hello , response</p>
+<p>​       	</body></p>
+<p>​      	 </html></p>
+<h4 id="③cookie"><a href="#③cookie" class="headerlink" title="③cookie"></a>③cookie</h4><p><img src="https://s2.loli.net/2022/08/13/6tZQXg3iumDRb2n.png" alt="image-20220421174040365"></p>
+<p>①原理</p>
+<p>​	cookie的作用是完成一次会话中多次请求的数据共享</p>
+<p>​	服务器首先通过在响应头中通过set-cookie:username&#x3D;zs来添加信息，浏览器获取到这个cookie后会将其存入浏览器内存，然后浏览器在后续向服务器发送数据的时候，会在请求头中添加cookie：username&#x3D;zs，最后服务端可以获取所有cookie值的数组</p>
+<p>（1）编写一个新Servlet类，名称为BServlet</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(&quot;/bServlet&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        <span class="built_in">this</span>.doGet(request, response);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（2）在BServlet中使用request对象获取Cookie数组，遍历数组，从数据中获取指定名称对应的值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(&quot;/bServlet&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        <span class="comment">//获取Cookie</span></span><br><span class="line">        <span class="comment">//1. 获取Cookie数组</span></span><br><span class="line">        Cookie[] cookies = request.getCookies();</span><br><span class="line">        <span class="comment">//2. 遍历数组</span></span><br><span class="line">        <span class="keyword">for</span> (Cookie cookie : cookies) &#123;</span><br><span class="line">            <span class="comment">//3. 获取数据</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> cookie.getName();</span><br><span class="line">            <span class="keyword">if</span>(<span class="string">&quot;username&quot;</span>.equals(name))&#123;</span><br><span class="line">                <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> cookie.getValue();</span><br><span class="line">                System.out.println(name+<span class="string">&quot;:&quot;</span>+value);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        <span class="built_in">this</span>.doGet(request, response);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>②cookie相关</p>
+<ul>
+<li><p>cookie存储中文</p>
+<p>这个时候，我们可以使用之前学过的一个知识点叫<code>URL编码</code>，所以如果需要存储中文，就需要进行转码，具体的实现思路为:</p>
+<p>首先将cookie进行URL编码，最后取出的cookie再通过URL解码来获取</p>
+</li>
+<li><p>cookie的存活时间：setMaxAge(int seconds)</p>
+<p>为了再关闭浏览器后不消除cookie，我们可以设置一个cookie的存活时间</p>
+</li>
+</ul>
+<h4 id="④session"><a href="#④session" class="headerlink" title="④session"></a>④session</h4><p>①原理：session是基于cookie实现的</p>
+<p>session是存储于服务器端的，也是为了实现一次会话中多次请求间的数据共享</p>
+<p><img src="https://s2.loli.net/2022/08/13/DYnQHaIKJiVgvcF.png" alt="image-20220425145521121"></p>
+<p>SessionDemo1</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(&quot;/demo1&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SessionDemo1</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">    	<span class="comment">//存储到Session中</span></span><br><span class="line">        <span class="comment">//1. 获取Session对象</span></span><br><span class="line">        <span class="type">HttpSession</span> <span class="variable">session</span> <span class="operator">=</span> request.getSession();</span><br><span class="line">        System.out.println(session);</span><br><span class="line">        <span class="comment">//2. 存储数据</span></span><br><span class="line">        session.setAttribute(<span class="string">&quot;username&quot;</span>,<span class="string">&quot;zs&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        <span class="built_in">this</span>.doGet(request, response);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>SessionDemo2</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(&quot;/demo2&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SessionDemo2</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        <span class="comment">//获取数据，从session中</span></span><br><span class="line">        <span class="comment">//1. 获取Session对象</span></span><br><span class="line">        <span class="type">HttpSession</span> <span class="variable">session</span> <span class="operator">=</span> request.getSession();</span><br><span class="line">        System.out.println(session);</span><br><span class="line">        <span class="comment">//2. 获取数据</span></span><br><span class="line">        <span class="type">Object</span> <span class="variable">username</span> <span class="operator">=</span> session.getAttribute(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">        System.out.println(username);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        <span class="built_in">this</span>.doGet(request, response);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（1）demo1在第一次获取session的时候，session会有一个唯一标识<code>id=10</code></p>
+<p>（2）demo1在处理完业务并将数据存入session中后，需要通过tomcat将响应结果返回给浏览器</p>
+<p>（3）tomcat发现在demo1使用了session对象，就会把session的唯一标识<code>id=10</code>当做一个cookie存，添加<code>set-cookie:JESSIONID=10</code>到响应头中并响应给浏览器</p>
+<p>（4）浏览器收到响应后会把<code>cookie:JESSIONID=10</code>存入浏览器内存中</p>
+<p>（5）浏览器在同一会话中访问demo2的时候，请求头中会含有<code>cookie:JESSIONID=10</code>并将请求发送到服务器</p>
+<p>（6）demo2在收到该请求后，就会读取到session<code>id=10</code>，这样demo2在获取session的时候就会从服务器内存中寻找<code>id=10</code>的session对象，如果找到了则返回该对象，如果没找到则返回一个新的session对象</p>
+<p>（7）当浏览器关闭后，记录了session<code>id=10</code>的cookie已经被销毁，这时候再获取session，就是一个全新的session 了</p>
+<p>②session相关</p>
+<ul>
+<li><p>钝化和活化</p>
+<p>若浏览器关闭后，内存被释放掉，session也就没有了，tomcat会通过session的钝化和活化来持久化保存session数据</p>
+<ul>
+<li><p>钝化：在服务器正常关闭后，Tomcat会自动将Session数据写入硬盘的文件中</p>
+<ul>
+<li>钝化的数据路径为:<code>项目目录\target\tomcat\work\Tomcat\localhost\项目名称\SESSIONS.ser</code></li>
+</ul>
+</li>
+<li><p>活化：再次启动服务器后，从文件中加载数据到Session中</p>
+<ul>
+<li>数据加载到Session中后，路径中的<code>SESSIONS.ser</code>文件会被删除掉</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>销毁session</p>
+<p>（1）web.xml中配置无操作自动销毁时间，默认30分钟</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="line">&lt;web-app xmlns=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;</span></span><br><span class="line">         xmlns:xsi=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="line">         xsi:schemaLocation=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&quot;</span></span><br><span class="line">         version=<span class="string">&quot;3.1&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line">    &lt;session-config&gt;</span><br><span class="line">        &lt;session-timeout&gt;<span class="number">100</span>&lt;/session-timeout&gt;</span><br><span class="line">    &lt;/session-config&gt;</span><br><span class="line"></span><br><span class="line">&lt;/web-app&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​	（2）调用Session对象的invalidate()进行销毁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. 获取Session对象</span></span><br><span class="line">    <span class="type">HttpSession</span> <span class="variable">session</span> <span class="operator">=</span> request.getSession();</span><br><span class="line"><span class="comment">//2.销毁</span></span><br><span class="line">    session.invalidate();</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="⑤万维网中的缓存（代理服务器）"><a href="#⑤万维网中的缓存（代理服务器）" class="headerlink" title="⑤万维网中的缓存（代理服务器）"></a>⑤万维网中的缓存（代理服务器）</h4><p><img src="https://img-blog.csdnimg.cn/20210208014438548.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05pbXJvZF9f,size_16,color_FFFFFF,t_70" alt="缓存和代理服务器"></p>
+<p>①过程</p>
+<p>当使用校园网来访问internet上某一个资源的时候，会先请求代理服务器，若代理服务器有所请求的对象会直接直接返回给用户</p>
+<p><img src="https://s2.loli.net/2022/08/13/DvyV7O8hmJoMtCT.png" alt="代理服务器情况一"></p>
+<p>若代理服务器没有，则代理服务器会向原始服务器发送请求，在得到响应后会先Web缓存一份再将相应发送给用户</p>
+<p><img src="https://s2.loli.net/2022/08/13/nrK6vOkZBLxS1eI.png" alt="代理服务器没有该对象"></p>
+<p>②修改时间和有效日期</p>
+<p>如果原始服务器有所修改，那么代理服务器返回给用户主机的就是旧的响应，为避免这种情况，我们会用到<code>修改时间</code>和<code>有效日期</code></p>
+<p>（1）若<code>修改时间未到期</code>，那么代理服务器会将web缓存中的响应返回给用户主机（可能也是旧的）</p>
+<p><img src="https://s2.loli.net/2022/08/13/hJmxwGIQvA3SHB5.png" alt="修改时间字段未过期"></p>
+<p>（2）若<code>修改时间到期</code>，那么代理服务器会向原始服务器发送请求看是否有改变，如果没改变则更新修改时间并直接返回缓存的响应</p>
+<p><img src="https://s2.loli.net/2022/08/13/37N8VeWujzHQ5pc.png" alt="若修改时间过期但是没有修改"></p>
+<p>（3）若修改时间到期，且原始服务器有修改</p>
+<p><img src="https://s2.loli.net/2022/08/13/OmAETx8RjdZ2WYv.png" alt="修改时间过期并且有修改"></p>
+<p>原始服务器会在响应中返回最新的数据，代理服务器会更新修改时间并将最新数据web缓存然后发给用户主机</p>
+<h4 id="⑥http1-x-和-http2-0"><a href="#⑥http1-x-和-http2-0" class="headerlink" title="⑥http1.x 和 http2.0"></a>⑥http1.x 和 http2.0</h4><p>最早http建立的连接无法复用，就是一次数据传输之后立即断开，后来使用keep-alive保活。但是请求只有在服务应答之后才能发送后续请求在客户端形成阻塞。后来使用管道化http pipeling技术，使得客户端可以一次发送多个请求，但是对于服务端的第一个资源无法返回的时候，也会形成服务端阻塞。虽然可以服务端和客户端建立多个连接，但是也需要多次3次握手。<br>http1.x的问题在于：<br>1、线头阻塞问题：无论是服务端还有客户端都会有请求资源的阻塞问题。<br>2、冗余头部字段：http1.x的头部都采用文本格式，未压缩，并且每次都会发送重复的字段。<br>3、只有客户端发送请求，服务方才会应答。</p>
+<p>http2.x改进：<br>1、采用二进制协议编码，传输的是二进制格式传输数据。响应分为header和data两个帧。<br>2、头部字段会保存在客户端和服务端，动态添加，避免重复发送。<br>3、多路复用：支持多个请求在一个连接中完成，也不会由因为某个包的延迟而导致整体链路的阻塞。<br>4、服务端会主动根据请求分析，客户端是否需要其他资源，主动发送。</p>
+<p>5、由于使用了单个TCP连接，如果该TCP出问题，可用性较低。1.x是有多个TCP连接的，如果1个出问题还可以使用其它的</p>
+<h3 id="4）HTTPS"><a href="#4）HTTPS" class="headerlink" title="4）HTTPS"></a>4）HTTPS</h3><p><img src="https://s2.loli.net/2022/08/13/QkIbMV9BTFdez5J.webp" alt="image.png"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"># 计算机网络</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/10/%E4%B8%80%E3%80%81Stream%E6%B5%81/" rel="prev" title="Stream流">
+      <i class="fa fa-chevron-left"></i> Stream流
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/03/git%20-%20%E5%89%AF%E6%9C%AC/" rel="next" title="git">
+      git <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E7%BD%91%E7%BB%9C%E5%B1%82"><span class="nav-text">三、网络层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-IPv4%E5%9C%B0%E5%9D%80"><span class="nav-text">1.IPv4地址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%88%86%E7%B1%BB%E7%BC%96%E5%9D%80"><span class="nav-text">1）分类编址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0A%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="nav-text">①A类地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1B%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="nav-text">②B类地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2C%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="nav-text">③C类地址</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E5%88%92%E5%88%86%E5%AD%90%E7%BD%91%E7%BC%96%E5%9D%80"><span class="nav-text">2）划分子网编址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81"><span class="nav-text">①子网掩码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1eg1"><span class="nav-text">②eg1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1eg2"><span class="nav-text">②eg2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2eg3"><span class="nav-text">③eg3</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E6%97%A0%E5%88%86%E7%B1%BB%E7%BC%96%E5%9D%80"><span class="nav-text">3）无分类编址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0eg1"><span class="nav-text">①eg1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1eg2-1"><span class="nav-text">②eg2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E8%B7%AF%E7%94%B1%E8%81%9A%E5%90%88%EF%BC%88%E6%9E%84%E5%BB%BA%E8%B6%85%E7%BD%91%EF%BC%89"><span class="nav-text">③路由聚合（构建超网）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3eg3"><span class="nav-text">④eg3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4eg4"><span class="nav-text">⑤eg4</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-IP%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F"><span class="nav-text">2.IP首部格式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E7%89%88%E6%9C%AC"><span class="nav-text">1）版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E9%A6%96%E9%83%A8%E9%95%BF%E5%BA%A6"><span class="nav-text">2）首部长度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E5%8F%AF%E9%80%89%E5%AD%97%E6%AE%B5"><span class="nav-text">3）可选字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89%E5%A1%AB%E5%85%85%E5%AD%97%E6%AE%B5"><span class="nav-text">4）填充字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%89%E5%8C%BA%E5%88%86%E6%9C%8D%E5%8A%A1%E5%AD%97%E6%AE%B5"><span class="nav-text">5）区分服务字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%EF%BC%89%E6%80%BB%E9%95%BF%E5%BA%A6%E5%AD%97%E6%AE%B5"><span class="nav-text">6）总长度字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7%EF%BC%89%E6%A0%87%E8%AF%86%E3%80%81%E6%A0%87%E5%BF%97%E3%80%81%E7%89%87%E5%81%8F%E7%A7%BB%E5%AD%97%E6%AE%B5"><span class="nav-text">7）标识、标志、片偏移字段</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%88%86%E7%89%87"><span class="nav-text">①数据报分片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1eg"><span class="nav-text">②eg</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8%EF%BC%89%E7%94%9F%E5%AD%98%E6%97%B6%E9%97%B4"><span class="nav-text">8）生存时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9%EF%BC%89%E5%8D%8F%E8%AE%AE%E5%AD%97%E6%AE%B5"><span class="nav-text">9）协议字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10%EF%BC%89%E9%A6%96%E9%83%A8%E6%A3%80%E9%AA%8C%E5%92%8C"><span class="nav-text">10）首部检验和</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11%EF%BC%89%E6%BA%90IP%E5%9C%B0%E5%9D%80%E3%80%81%E7%9B%AE%E7%9A%84IP%E5%9C%B0%E5%9D%80%E5%AD%97%E6%AE%B5"><span class="nav-text">11）源IP地址、目的IP地址字段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-ICMP"><span class="nav-text">3.ICMP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%B7%AE%E9%94%99%E6%8A%A5%E6%96%87"><span class="nav-text">1）差错报文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E7%BB%88%E7%82%B9%E4%B8%8D%E5%8F%AF%E8%BE%BE"><span class="nav-text">①终点不可达</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E6%BA%90%E7%82%B9%E6%8A%91%E5%88%B6"><span class="nav-text">②源点抑制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E6%97%B6%E9%97%B4%E8%B6%85%E8%BF%87"><span class="nav-text">③时间超过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3%E5%8F%82%E6%95%B0%E9%97%AE%E9%A2%98"><span class="nav-text">④参数问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4%E6%94%B9%E5%8F%98%E8%B7%AF%E7%94%B1"><span class="nav-text">⑤改变路由</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A5%E4%B8%8D%E5%8F%91%E9%80%81%E7%BB%99ICMP%E5%B7%AE%E9%94%99%E6%8A%A5%E5%91%8A%E6%8A%A5%E6%96%87%E6%83%85%E5%86%B5"><span class="nav-text">⑥不发送给ICMP差错报告报文情况</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89ICMP%E8%AF%A2%E9%97%AE%E6%8A%A5%E6%96%87"><span class="nav-text">2）ICMP询问报文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E5%BA%94%E7%94%A8"><span class="nav-text">3）应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0PING"><span class="nav-text">①PING</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1traceroute"><span class="nav-text">②traceroute</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E8%BF%90%E8%BE%93%E5%B1%82"><span class="nav-text">四、运输层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%B8%80%E6%AC%A1%E8%AF%B7%E6%B1%82"><span class="nav-text">1.一次请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-UDP%E5%92%8CTCP%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-text">2.UDP和TCP的对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B"><span class="nav-text">3.三次握手</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B"><span class="nav-text">3.四次挥手</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%AE%9E%E7%8E%B0%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93"><span class="nav-text">4.实现可靠传输</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89TCP%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6"><span class="nav-text">1）TCP流量控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="nav-text">2）拥塞控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89ARQ%E5%8D%8F%E8%AE%AE"><span class="nav-text">3）ARQ协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E5%81%9C%E7%AD%89ARQ%E5%8D%8F%E8%AE%AE%EF%BC%88stop-and-wait%EF%BC%89"><span class="nav-text">①停等ARQ协议（stop-and-wait）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1-%E5%9B%9E%E9%80%80N%E5%B8%A7ARQ%E5%8D%8F%E8%AE%AE%EF%BC%88Go-Back-N%EF%BC%89"><span class="nav-text">② 回退N帧ARQ协议（Go-Back-N）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E9%80%89%E6%8B%A9%E9%87%8D%E4%BC%A0%E5%8D%8F%E8%AE%AE"><span class="nav-text">③选择重传协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3%E5%9B%9E%E9%80%80N%E5%B8%A7%E5%92%8C%E9%80%89%E6%8B%A9%E9%87%8D%E4%BC%A0%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-text">④回退N帧和选择重传的对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89%E4%BF%9D%E6%B4%BB%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="nav-text">4）保活计数器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%89%E6%80%BB%E7%BB%93"><span class="nav-text">5）总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-TCP%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F"><span class="nav-text">5.TCP首部格式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%BA%94%E7%94%A8%E5%B1%82"><span class="nav-text">五、应用层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-DHCP"><span class="nav-text">1.DHCP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-DNS"><span class="nav-text">2.DNS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%B1%82%E6%AC%A1%E6%A0%91%E7%8A%B6%E7%9A%84%E5%9F%9F%E5%90%8D%E7%BB%93%E6%9E%84"><span class="nav-text">1）层次树状的域名结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E5%9F%9F%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%92%8C%E6%9F%A5%E8%AF%A2%E6%96%B9%E5%BC%8F"><span class="nav-text">2）域名服务器和查询方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E9%80%92%E5%BD%92%E6%9F%A5%E8%AF%A2%EF%BC%88%E4%B8%8D%E9%87%87%E7%94%A8%EF%BC%89"><span class="nav-text">①递归查询（不采用）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E8%BF%AD%E4%BB%A3%E6%9F%A5%E8%AF%A2%EF%BC%88%E9%87%87%E7%94%A8%EF%BC%89"><span class="nav-text">②迭代查询（采用）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%BA%94%E7%94%A8%E5%8D%8F%E8%AE%AE"><span class="nav-text">3.应用协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E6%96%87%E4%BB%B6%E4%BC%A0%E9%80%81%E5%8D%8F%E8%AE%AEFTP"><span class="nav-text">1）文件传送协议FTP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6"><span class="nav-text">2）电子邮件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81%E5%8D%8F%E8%AE%AESMTP"><span class="nav-text">①邮件发送协议SMTP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1%E9%82%AE%E4%BB%B6%E6%8E%A5%E6%94%B6%E5%8D%8F%E8%AE%AEPOP3-x2F-IMAP"><span class="nav-text">②邮件接收协议POP3&#x2F;IMAP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2%E5%9F%BA%E4%BA%8E%E4%B8%87%E7%BB%B4%E7%BD%91%E7%9A%84%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6HTTP"><span class="nav-text">③基于万维网的电子邮件HTTP</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89HTTP"><span class="nav-text">3）HTTP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A0HTTP%E7%89%88%E6%9C%AC"><span class="nav-text">①HTTP版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A1HTTP%E6%8A%A5%E6%96%87%E6%A0%BC%E5%BC%8F"><span class="nav-text">②HTTP报文格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A2cookie"><span class="nav-text">③cookie</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A3session"><span class="nav-text">④session</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A4%E4%B8%87%E7%BB%B4%E7%BD%91%E4%B8%AD%E7%9A%84%E7%BC%93%E5%AD%98%EF%BC%88%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%89"><span class="nav-text">⑤万维网中的缓存（代理服务器）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%91%A5http1-x-%E5%92%8C-http2-0"><span class="nav-text">⑥http1.x 和 http2.0</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89HTTPS"><span class="nav-text">4）HTTPS</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="f1ashades"
+      src="/images/mine.jpg">
+  <p class="site-author-name" itemprop="name">f1ashades</p>
+  <div class="site-description" itemprop="description">once again I am a child</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">f1ashades</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">723k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">20:05</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

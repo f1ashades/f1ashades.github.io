@@ -90,7 +90,7 @@
 <meta property="og:image" content="https://s2.loli.net/2022/07/06/LDsHQm1ibvoWceZ.png">
 <meta property="og:image" content="https://s2.loli.net/2022/07/07/ReT2BzMlSNFCv6P.png">
 <meta property="article:published_time" content="2022-04-14T08:05:12.000Z">
-<meta property="article:modified_time" content="2022-08-17T06:11:37.340Z">
+<meta property="article:modified_time" content="2022-08-17T06:14:12.631Z">
 <meta property="article:author" content="f1ashades">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
@@ -254,7 +254,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-17 14:11:37" itemprop="dateModified" datetime="2022-08-17T14:11:37+08:00">2022-08-17</time>
+                <time title="修改时间：2022-08-17 14:14:12" itemprop="dateModified" datetime="2022-08-17T14:14:12+08:00">2022-08-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -423,7 +423,7 @@
 <h2 id="3-本地方法区"><a href="#3-本地方法区" class="headerlink" title="3.本地方法区"></a>3.本地方法区</h2><blockquote>
 <p>origin：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/fY0DKPwcyNIhjtBWvaKnew">https://mp.weixin.qq.com/s/fY0DKPwcyNIhjtBWvaKnew</a>	</p>
 </blockquote>
-<p>​		本地方法栈（Native Method Stack）在JVM内存布局中，也是<code>线程对象私有</code>的，但是虚拟机栈“主内”，而本地方法栈“主外”。这个“内外”是针对JVM来说的，本地方法栈为<code>Native方法</code>服务。线程开始调用本地方法时，会进入一个不再受JVM约束的世界。本地方法可以通过<code>JVNI</code>（Java Native Interface）来访问虚拟机运行时的数据区，甚至可以调用寄存器，具有和JVM相同的能力和权限。当大量本地方法出现时，势必会削弱JVM对系统的控制力，因为它的出错信息都比较黑盒，难以捉摸。对于内存不足的情况，本地方法栈还是会抛出 <code>native heap OutOfMemory</code>。</p>
+<p>​		本地方法栈（Native Method Stack）在JVM内存布局中，也是<code>线程对象私有</code>的，但是虚拟机栈“主内”，而本地方法栈“主外”。这个“内外”是针对JVM来说的，本地方法栈为<code>Native方法</code>服务。线程开始调用本地方法时，会进入一个不再受JVM约束的世界。本地方法可以通过<code>JNI</code>（Java Native Interface）来访问虚拟机运行时的数据区，甚至可以调用寄存器，具有和JVM相同的能力和权限。当大量本地方法出现时，势必会削弱JVM对系统的控制力，因为它的出错信息都比较黑盒，难以捉摸。对于内存不足的情况，本地方法栈还是会抛出 <code>native heap OutOfMemory</code>。</p>
 <p>​		重点说下JNI类本地方法，最常用的本地方法应该是<code>System.currentTimeMills()</code>，<code>JNI</code>使Java深度使用操作系统的特性功能，复用非Java代码。但是在项目过程中，如果大量使用其他语言来实现<code>JNI</code>，就会丧失跨平台特性，威胁到程序运行的稳定性。假如需要与本地代码交互，就可以用中间标准框架来进行解耦，这样即使本地方法崩溃也不至于影响到<code>JVM</code>的稳定。</p>
 <ul>
 <li>本地方法栈是内存私有的，本地方法栈为<code>Native方法</code>服务（系统调用等）</li>

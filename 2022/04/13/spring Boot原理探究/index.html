@@ -57,7 +57,7 @@
 <meta property="og:image" content="https://s2.loli.net/2022/06/26/owcpqTf21xtkBLE.png">
 <meta property="og:image" content="https://s2.loli.net/2022/06/26/1fMiUr5RNCckmx8.png">
 <meta property="article:published_time" content="2022-04-13T04:06:12.000Z">
-<meta property="article:modified_time" content="2022-08-14T09:54:16.978Z">
+<meta property="article:modified_time" content="2022-08-28T14:55:12.092Z">
 <meta property="article:author" content="f1ashades">
 <meta property="article:tag" content="Spring Boot">
 <meta name="twitter:card" content="summary">
@@ -221,7 +221,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-14 17:54:16" itemprop="dateModified" datetime="2022-08-14T17:54:16+08:00">2022-08-14</time>
+                <time title="修改时间：2022-08-28 22:55:12" itemprop="dateModified" datetime="2022-08-28T22:55:12+08:00">2022-08-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -674,8 +674,8 @@
 </ol>
 <h3 id="2）源码分析"><a href="#2）源码分析" class="headerlink" title="2）源码分析"></a>2）源码分析</h3><h4 id="①加载技术"><a href="#①加载技术" class="headerlink" title="①加载技术"></a>①加载技术</h4><p><img src="https://s2.loli.net/2022/06/24/V3ncAC8gXy7Q9Fv.png" alt="image-20220624181546862"></p>
 <p>通过<code>@SpringBootApplication</code>我们可以看到该注解主要包含①②③三部分功能，我们需要对该三部分功能做一个分析，当拆解了这三部分注解及其子注解后，我们可以看到如下结构</p>
-<p><img src="https://s2.loli.net/2022/06/24/NUlPphrMYEIZywc.png" alt="image-20220624181725005">①</p>
-<p>①首先我们可以看到</p>
+<p><img src="https://s2.loli.net/2022/06/24/NUlPphrMYEIZywc.png" alt="image-20220624181725005"></p>
+<p>①中首先我们可以看到</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line">    <span class="meta">@Component</span></span><br></pre></td></tr></table></figure>
 
 <p>​	这样两个注解，@Configuration中包含了@Component，@Component能够使被注解的bean作为组件被spring扫描进容器，而@Configuration则多了一个proxyBeanMethods()属性，默认设置为true，当值&#x3D;true的时候，这个类中方法返回的bean就永远都是同一个对象，且该类和方法返回的bean都是以cglib动态代理的方式生成的。若将值设置为false，那么该类和类中方法返回的bean的class都是该类的全限定类名，并不会以cglib的方式生成，同时，该类中**@bean类方法返回的bean就不再是同一个，每次返回的都是不同的bean**。</p>
@@ -896,7 +896,7 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/04/12/%E5%AE%9E%E7%94%A8-mine/" rel="prev" title="Spring Cloud的基本使用">
+    <a href="/2022/04/12/spring%20cloud/" rel="prev" title="Spring Cloud的基本使用">
       <i class="fa fa-chevron-left"></i> Spring Cloud的基本使用
     </a></div>
       <div class="post-nav-item">
@@ -1017,7 +1017,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -1027,13 +1027,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">744k</span>
+    <span title="站点总字数">746k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">20:40</span>
+    <span title="站点阅读时长">20:43</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

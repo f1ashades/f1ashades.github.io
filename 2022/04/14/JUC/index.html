@@ -148,7 +148,7 @@
 <meta property="og:image" content="https://s2.loli.net/2022/07/12/k8nWDJYHPcaxw1y.png">
 <meta property="og:image" content="https://s2.loli.net/2022/07/12/TSBORMNfXIPrW58.png">
 <meta property="article:published_time" content="2022-04-14T08:05:12.000Z">
-<meta property="article:modified_time" content="2022-08-17T10:13:02.630Z">
+<meta property="article:modified_time" content="2022-09-24T09:35:52.628Z">
 <meta property="article:author" content="f1ashades">
 <meta property="article:tag" content="JUC并发">
 <meta name="twitter:card" content="summary">
@@ -312,7 +312,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-17 18:13:02" itemprop="dateModified" datetime="2022-08-17T18:13:02+08:00">2022-08-17</time>
+                <time title="修改时间：2022-09-24 17:35:52" itemprop="dateModified" datetime="2022-09-24T17:35:52+08:00">2022-09-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -819,8 +819,7 @@
 <li>线程安全，性能差</li>
 <li>线程不安全性能好，假如开发中不会存在多线程安全问题，建议使用线程不安全的设计类</li>
 </ul>
-<h2 id="2-synchronized"><a href="#2-synchronized" class="headerlink" title="2.synchronized"></a>2.synchronized</h2><h3 id="1）基本概念"><a href="#1）基本概念" class="headerlink" title="1）基本概念"></a>1）基本概念</h3><p>​		<strong>synchronized</strong>俗称<strong>【对象锁】</strong>，它采用互斥的方式让同一时刻至多只有一个线程能持有【对象锁】，其它线程再想获取这个【对象</p>
-<p>锁】时就会阻塞住(blocked)。这样就能保证拥有锁的线程可以安全的执行临界区内的代码，不用担心线程上下文切换。</p>
+<h2 id="2-synchronized"><a href="#2-synchronized" class="headerlink" title="2.synchronized"></a>2.synchronized</h2><h3 id="1）基本概念"><a href="#1）基本概念" class="headerlink" title="1）基本概念"></a>1）基本概念</h3><p>​		<strong>synchronized</strong>俗称<strong>【对象锁】</strong>，它采用互斥的方式让同一时刻至多只有一个线程能持有【对象锁】，其它线程再想获取这个【对象锁】时就会阻塞住(blocked)。这样就能保证拥有锁的线程可以安全的执行临界区内的代码，不用担心线程上下文切换。</p>
 <p>​		线程1持有锁钥匙，那么即使线程1时间片用完了，也不会交出钥匙，只有当其完全执行完临界区中的代码以后，才会交出钥匙。可以这样说，synchronized利用了对象锁保证了临界区中代码的原子性，不会被线程切换打断。</p>
 <p>eg：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">demo</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="type">int</span> <span class="variable">counter</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//static修饰，则元素是属于类本身的，不属于对象，与类一起加载一次，只有一个</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Object</span> <span class="variable">room</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">5000</span>; i++) &#123;</span><br><span class="line">                <span class="keyword">synchronized</span> (room) &#123;</span><br><span class="line">                    counter++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="string">&quot;t1&quot;</span>);</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">5000</span>; i++) &#123;</span><br><span class="line">                <span class="keyword">synchronized</span> (room) &#123;</span><br><span class="line">                    counter--;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="string">&quot;t2&quot;</span>);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        t1.join();</span><br><span class="line">        t2.join();</span><br><span class="line">        System.out.println(counter);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -2196,7 +2195,7 @@
 </li>
 <li><p>问题4</p>
 <ul>
-<li>这种实现是饿汉式，因为其在类加载阶段中的<strong>链接阶段</strong>就把对象创建了</li>
+<li>这种实现是饿汉式，因为其在类加载阶段中的<strong>初始化阶段</strong>就把对象创建了</li>
 <li>可以，类加载器会保证单例对象创建时的安全</li>
 </ul>
 </li>
@@ -4305,7 +4304,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -4315,13 +4314,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">744k</span>
+    <span title="站点总字数">746k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">20:40</span>
+    <span title="站点阅读时长">20:43</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
